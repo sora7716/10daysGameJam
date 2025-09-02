@@ -14,13 +14,19 @@
     <Filter Include="KamataEngine\Adapter">
       <UniqueIdentifier>{c6468eb4-788b-4a83-b207-a5f4804e56c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="KamataEngine\Source\gameObject">
+      <UniqueIdentifier>{7f84ae11-2e3e-4fba-b7b5-5521b8b64960}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp">
       <Filter>KamataEngine\Adapter</Filter>
     </ClCompile>
+    <ClCompile Include="project\gameObject\Player.cpp">
+      <Filter>KamataEngine\Source\gameObject</Filter>
+    </ClCompile>
     <ClCompile Include="project\main.cpp">
-      <Filter>KamataEngine</Filter>
+      <Filter>KamataEngine\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.h">
       <Filter>KamataEngine\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="project\gameObject\Player.h">
+      <Filter>KamataEngine\Source\gameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
