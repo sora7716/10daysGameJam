@@ -1,5 +1,4 @@
 #include <Novice.h>
-
 const char kWindowTitle[] = "MyGame";
 
 // Windowsアプリでのエントリーポイント(main関数)
