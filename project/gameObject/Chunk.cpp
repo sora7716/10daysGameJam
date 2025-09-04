@@ -1,0 +1,41 @@
+#include "Chunk.h"
+#include <fstream>
+#include <sstream>
+#include <cassert>
+
+void Chunk::LoadMapChipCsv(const std::string& filePath)
+{
+	std::ifstream file;
+
+	file.open(filePath);
+
+	assert(file.is_open());
+
+	std::stringstream mapChipCsv;
+
+	mapChipCsv << file.rdbuf();
+
+	file.close();
+
+	for (uint32_t y = 0; y < kMaxHeight; y++)
+	{
+		std::string line;
+
+		std::getline(mapChipCsv, line);
+
+		std::istringstream line_stream(line);
+
+		for (uint32_t x = 0; y < kMaxWidth; x++)
+		{
+			std::string word;
+
+			std::getline(line_stream, word, ',');
+
+			if (!word.empty())
+			{
+				int number = std::stoi(word);
+				chunk_[y][x] = number;
+			}
+		}
+	}
+}

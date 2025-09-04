@@ -160,6 +160,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp" />
+    <ClCompile Include="project\gameObject\Chunk.cpp" />
     <ClCompile Include="project\gameObject\Player.cpp" />
     <ClCompile Include="project\main.cpp" />
   </ItemGroup>
@@ -191,7 +192,9 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\DirectXGame\input\Input.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\scene\GameScene.h" />
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
+    <ClInclude Include="project\gameObject\Chunk.h" />
     <ClInclude Include="project\gameObject\Player.h" />
+    <ClInclude Include="project\Vector2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project\.editorconfig" />

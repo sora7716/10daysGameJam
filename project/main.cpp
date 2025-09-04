@@ -1,5 +1,8 @@
 #include <Novice.h>
 #include <imgui.h>
+#include "Vector2.h"
+#include <array>
+#include "gameObject/Chunk.h"
 
 const char kWindowTitle[] = "MyGame";
 
@@ -7,22 +10,27 @@ const int kMaxWidth = 5;
 const int kMaxHeight = 5;
 const int kBlockSize = 32;
 
-struct Vector2
-{
-	float x;
-	float y;
-};
-
-struct Vector2Int
-{
-	int x;
-	int y;
-};
-
 enum BlockType
 {
 	kBlank,
 	kBlock,
+};
+
+void DrowMap(std::array<std::array<int, kMaxWidth>, kMaxHeight>map, const Vector2& origin)
+{
+
+	for (int y = 0; y < kMaxHeight; y++)
+	{
+		for (int x = 0; x < kMaxWidth; x++)
+		{
+			if (map[y][x] == kBlock)
+			{
+				Novice::DrawBox(
+					static_cast<int>(origin.x) + x * kBlockSize,
+					static_cast<int>(origin.y) + y * kBlockSize, kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeWireFrame);
+			}
+		}
+	}
 };
 
 // Windowsアプリでのエントリーポイント(main関数)
@@ -36,16 +44,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
 
-	int chunk[kMaxHeight][kMaxWidth] =
+	std::array<std::array<int, kMaxWidth>, kMaxHeight> chunk =
 	{
-		{0,0,0,0,0},
-		{0,0,0,0,0},
-		{0,0,0,0,0},
-		{0,0,0,0,0},
-		{1,1,1,1,1}
+		0,0,0,0,0,
+		0,0,0,0,0,
+		0,0,0,0,0,
+		0,0,0,0,0,
+		1,1,1,1,1
 	};
 
 	Vector2 origin = {};
+
+	Chunk* chunk1 = new Chunk();
+	chunk1->LoadMapChipCsv("resource/map1.csv");
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
@@ -62,8 +73,12 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		///
 
 		ImGui::Begin("Chunk");
-		ImGui::DragFloat2("origin",&origin.x,1.0f);
+		ImGui::DragFloat2("origin", &origin.x, 1.0f);
 		ImGui::End();
+
+		
+
+
 
 		///
 		/// ↑更新処理ここまで
@@ -73,18 +88,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		/// ↓描画処理ここから
 		///
 
-		for (int y = 0; y < kMaxHeight; y++)
-		{
-			for (int x = 0; x < kMaxWidth; x++)
-			{
-				if (chunk[y][x] == kBlock)
-				{
-					Novice::DrawBox(
-						static_cast<int>(origin.x) + x * kBlockSize,
-						static_cast<int>(origin.y) + y * kBlockSize, kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeWireFrame);
-				}
-			}
-		}
+		DrowMap(chunk1->chunk_,origin);
 
 		///
 		/// ↑描画処理ここまで
