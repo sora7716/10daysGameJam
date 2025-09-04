@@ -1,19 +1,54 @@
 #include <Novice.h>
+#include <imgui.h>
+
 const char kWindowTitle[] = "MyGame";
 
+const int kMaxWidth = 5;
+const int kMaxHeight = 5;
+const int kBlockSize = 32;
+
+struct Vector2
+{
+	float x;
+	float y;
+};
+
+struct Vector2Int
+{
+	int x;
+	int y;
+};
+
+enum BlockType
+{
+	kBlank,
+	kBlock,
+};
+
 // Windowsアプリでのエントリーポイント(main関数)
-int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) 
+int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
 
 	// ライブラリの初期化
 	Novice::Initialize(kWindowTitle, 1280, 720);
 
 	// キー入力結果を受け取る箱
-	char keys[256] = {0};
-	char preKeys[256] = {0};
+	char keys[256] = { 0 };
+	char preKeys[256] = { 0 };
+
+	int chunk[kMaxHeight][kMaxWidth] =
+	{
+		{0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,0},
+		{0,0,0,0,0},
+		{1,1,1,1,1}
+	};
+
+	Vector2 origin = {};
 
 	// ウィンドウの×ボタンが押されるまでループ
-	while (Novice::ProcessMessage() == 0) 
+	while (Novice::ProcessMessage() == 0)
 	{
 		// フレームの開始
 		Novice::BeginFrame();
@@ -26,6 +61,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		/// ↓更新処理ここから
 		///
 
+		ImGui::Begin("Chunk");
+		ImGui::DragFloat2("origin",&origin.x,1.0f);
+		ImGui::End();
+
 		///
 		/// ↑更新処理ここまで
 		///
@@ -33,6 +72,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		///
 		/// ↓描画処理ここから
 		///
+
+		for (int y = 0; y < kMaxHeight; y++)
+		{
+			for (int x = 0; x < kMaxWidth; x++)
+			{
+				if (chunk[y][x] == kBlock)
+				{
+					Novice::DrawBox(
+						static_cast<int>(origin.x) + x * kBlockSize,
+						static_cast<int>(origin.y) + y * kBlockSize, kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeWireFrame);
+				}
+			}
+		}
 
 		///
 		/// ↑描画処理ここまで
