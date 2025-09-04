@@ -11,14 +11,21 @@ private://定数
 
 private://メンバ変数
 
-
-private:
-
+	std::array<std::array<int, kMaxWidth>, kMaxHeight> chunk_ ={};
 
 public://メンバ関数
-	std::array<std::array<int, kMaxWidth>, kMaxHeight> chunk_ ={};
+
+	/// <summary>
+	/// CSV読み込み
+	/// </summary>
+	/// <param name="filePath">ファイルパス</param>
 	void LoadMapChipCsv(const std::string& filePath);
 
+	/// <summary>
+	/// chunkのゲッター
+	/// </summary>
+	/// <returns>chunk</returns>
+	std::array<std::array<int, kMaxWidth>, kMaxHeight>GetChunk() { return chunk_; };
 
 };
 

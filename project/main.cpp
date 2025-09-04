@@ -44,19 +44,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
 
-	std::array<std::array<int, kMaxWidth>, kMaxHeight> chunk =
-	{
-		0,0,0,0,0,
-		0,0,0,0,0,
-		0,0,0,0,0,
-		0,0,0,0,0,
-		1,1,1,1,1
-	};
-
 	Vector2 origin = {};
 
-	Chunk* chunk1 = new Chunk();
-	chunk1->LoadMapChipCsv("resource/map1.csv");
+	Chunk* chunk = new Chunk();
+	chunk->LoadMapChipCsv("resource/map3.csv");
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
@@ -88,7 +79,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		/// ↓描画処理ここから
 		///
 
-		DrowMap(chunk1->chunk_,origin);
+		DrowMap(chunk->GetChunk(), origin);
 
 		///
 		/// ↑描画処理ここまで
