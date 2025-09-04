@@ -3,7 +3,7 @@
 #include <sstream>
 #include <cassert>
 
-void Chunk::LoadMapChipCsv(const std::string& filePath)
+void Chunk::LoadChunkCsv(const std::string& filePath)
 {
 	std::ifstream file;
 

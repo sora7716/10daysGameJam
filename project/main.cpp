@@ -2,7 +2,7 @@
 #include <imgui.h>
 #include "Vector2.h"
 #include <array>
-#include "gameObject/Chunk.h"
+#include "gameObject/ChunkManager.h"
 
 const char kWindowTitle[] = "MyGame";
 
@@ -46,8 +46,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	Vector2 origin = {};
 
-	Chunk* chunk = new Chunk();
-	chunk->LoadMapChipCsv("resource/map3.csv");
+	ChunkManager::GetInstance()->LoadChunk("map1");
+	ChunkManager::GetInstance()->LoadChunk("map2");
+	ChunkManager::GetInstance()->LoadChunk("map3");
+	Chunk* chunk = ChunkManager::GetInstance()->FindChunk("map1");
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
@@ -65,6 +67,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		ImGui::Begin("Chunk");
 		ImGui::DragFloat2("origin", &origin.x, 1.0f);
+
+		if (ImGui::Button("map1")) 
+		{
+			chunk = ChunkManager::GetInstance()->FindChunk("map1");
+		}
+		else if (ImGui::Button("map2")) 
+		{
+			chunk = ChunkManager::GetInstance()->FindChunk("map2");
+		}
+		else if (ImGui::Button("map3")) 
+		{
+			chunk = ChunkManager::GetInstance()->FindChunk("map3");
+		}
 		ImGui::End();
 
 		
@@ -97,5 +112,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	// ライブラリの終了
 	Novice::Finalize();
+	ChunkManager::GetInstance()->Finalize();
 	return 0;
 }

@@ -19,7 +19,7 @@ public://メンバ関数
 	/// CSV読み込み
 	/// </summary>
 	/// <param name="filePath">ファイルパス</param>
-	void LoadMapChipCsv(const std::string& filePath);
+	void LoadChunkCsv(const std::string& filePath);
 
 	/// <summary>
 	/// chunkのゲッター
