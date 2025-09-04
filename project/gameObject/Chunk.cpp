@@ -25,7 +25,7 @@ void Chunk::LoadMapChipCsv(const std::string& filePath)
 
 		std::istringstream line_stream(line);
 
-		for (uint32_t x = 0; y < kMaxWidth; x++)
+		for (uint32_t x = 0; x < kMaxWidth; x++)
 		{
 			std::string word;
 
