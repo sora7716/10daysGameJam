@@ -1,5 +1,6 @@
 #include "ChunkManager.h"
 
+//インスタンスのゲッター
 ChunkManager* ChunkManager::GetInstance()
 {
 	if (instance == nullptr)
@@ -10,12 +11,14 @@ ChunkManager* ChunkManager::GetInstance()
 	return instance;
 }
 
+//終了
 void ChunkManager::Finalize()
 {
 	delete instance;
 	instance = nullptr;
 }
 
+//Chunk読み込み
 void ChunkManager::LoadChunk(const std::string& filename)
 {
 	if (chunks_.contains(filename))
@@ -29,6 +32,7 @@ void ChunkManager::LoadChunk(const std::string& filename)
 	chunks_.insert(std::make_pair(filename, std::move(chunk)));
 }
 
+//Chunkの検索
 Chunk* ChunkManager::FindChunk(const std::string& filename)
 {
 	if (chunks_.contains(filename))

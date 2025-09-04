@@ -17,6 +17,7 @@ private://静的メンバ変数
 private://メンバ関数
 
 	ChunkManager() = default;
+	
 	~ChunkManager() = default;
 
 	ChunkManager(const ChunkManager&) = delete;
@@ -26,12 +27,28 @@ private://メンバ関数
 
 public://メンバ関数
 
+	/// <summary>
+	/// インスタンスのゲッター
+	/// </summary>
+	/// <returns>インスタンス</returns>
 	static ChunkManager* GetInstance();
 
+	/// <summary>
+	/// 終了
+	/// </summary>
 	void Finalize();
 
+	/// <summary>
+	/// Chunk読み込み
+	/// </summary>
+	/// <param name="filename">ファイル名(拡張子無し)</param>
 	void LoadChunk(const std::string& filename);
 
+	/// <summary>
+	/// Chunkの検索
+	/// </summary>
+	/// <param name="filename">検索するファイル名(拡張子無し)</param>
+	/// <returns></returns>
 	Chunk* FindChunk(const std::string& filename);
 
 };

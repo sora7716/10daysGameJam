@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cassert>
 
+//CSV読み込み
 void Chunk::LoadChunkCsv(const std::string& filePath)
 {
 	std::ifstream file;
