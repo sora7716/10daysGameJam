@@ -1,4 +1,5 @@
 #include <Novice.h>
+#include"gameObject/Player.h"
 #include <imgui.h>
 #include <cmath>
 #include <vector>
@@ -265,6 +266,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		}
 
+		player->Update();
 		///
 		/// ↑更新処理ここまで
 		///
@@ -364,6 +366,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		Novice::ScreenPrintf(1070, 400, "RightTop: map[%d][%d]", player.rightTop.y, player.rightTop.x);
 		Novice::ScreenPrintf(1070, 440, "RightBottom: map[%d][%d]", player.rightBottom.y, player.rightBottom.x);
 
+		player->Draw();
 		///
 		/// ↑描画処理ここまで
 		///
