@@ -3,11 +3,9 @@
 #include "Vector2.h"
 #include <array>
 #include "gameObject/ChunkManager.h"
+#include <vector>
 
 const char kWindowTitle[] = "MyGame";
-
-const int kMaxWidth = 5;
-const int kMaxHeight = 5;
 const int kBlockSize = 32;
 
 enum BlockType
@@ -16,13 +14,14 @@ enum BlockType
 	kBlock,
 };
 
-void DrowMap(std::array<std::array<int, kMaxWidth>, kMaxHeight>map, const Vector2& origin)
+void DrowMap(std::vector<std::vector<int>>map, const Vector2& origin)
 {
 
-	for (int y = 0; y < kMaxHeight; y++)
+	for (int y = 0; y < map.size(); y++)
 	{
-		for (int x = 0; x < kMaxWidth; x++)
+		for (int x = 0; x < map[y].size(); x++)
 		{
+
 			if (map[y][x] == kBlock)
 			{
 				Novice::DrawBox(
@@ -46,10 +45,38 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	Vector2 origin = {};
 
-	ChunkManager::GetInstance()->LoadChunk("map1");
-	ChunkManager::GetInstance()->LoadChunk("map2");
-	ChunkManager::GetInstance()->LoadChunk("map3");
-	Chunk* chunk = ChunkManager::GetInstance()->FindChunk("map1");
+	ChunkManager::GetInstance()->LoadChunk("chunk1");
+	ChunkManager::GetInstance()->LoadChunk("chunk2");
+	ChunkManager::GetInstance()->LoadChunk("chunk3");
+	Chunk* chunk1 = ChunkManager::GetInstance()->FindChunk("chunk1");
+	Chunk* chunk2 = ChunkManager::GetInstance()->FindChunk("chunk2");
+	Chunk* chunk3 = ChunkManager::GetInstance()->FindChunk("chunk3");
+
+	std::vector<std::vector<int>>map;
+	map.resize(Chunk::kMaxHeight);
+
+	for (int y = 0; y < Chunk::kMaxHeight; y++)
+	{
+		map[y].resize(Chunk::kMaxWidth * 3);
+
+		for (int x = 0; x < Chunk::kMaxWidth * 3; x++)
+		{
+			if (x < 5)
+			{
+				map[y][x] = chunk1->GetChunk()[y][x];
+			}
+			else if (x < 10)
+			{
+				map[y][x] = chunk2->GetChunk()[y][x - Chunk::kMaxWidth];
+			}
+			else
+			{
+				map[y][x] = chunk3->GetChunk()[y][x - Chunk::kMaxWidth * 2];
+			}
+		}
+	}
+
+
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
@@ -68,21 +95,21 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		ImGui::Begin("Chunk");
 		ImGui::DragFloat2("origin", &origin.x, 1.0f);
 
-		if (ImGui::Button("map1")) 
+		if (ImGui::Button("chunk1"))
 		{
-			chunk = ChunkManager::GetInstance()->FindChunk("map1");
+			chunk1 = ChunkManager::GetInstance()->FindChunk("chunk1");
 		}
-		else if (ImGui::Button("map2")) 
+		else if (ImGui::Button("chunk2"))
 		{
-			chunk = ChunkManager::GetInstance()->FindChunk("map2");
+			chunk1 = ChunkManager::GetInstance()->FindChunk("chunk2");
 		}
-		else if (ImGui::Button("map3")) 
+		else if (ImGui::Button("chunk3"))
 		{
-			chunk = ChunkManager::GetInstance()->FindChunk("map3");
+			chunk1 = ChunkManager::GetInstance()->FindChunk("chunk3");
 		}
 		ImGui::End();
 
-		
+
 
 
 
@@ -94,7 +121,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		/// ↓描画処理ここから
 		///
 
-		DrowMap(chunk->GetChunk(), origin);
+		DrowMap(map, origin);
 
 		///
 		/// ↑描画処理ここまで

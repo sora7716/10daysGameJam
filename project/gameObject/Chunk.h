@@ -4,7 +4,7 @@
 
 class Chunk
 {
-private://定数
+public://定数
 
 	static inline const int kMaxWidth = 5;
 	static inline const int kMaxHeight = 5;
@@ -25,7 +25,7 @@ public://メンバ関数
 	/// chunkのゲッター
 	/// </summary>
 	/// <returns>chunk</returns>
-	std::array<std::array<int, kMaxWidth>, kMaxHeight>GetChunk() { return chunk_; };
+	std::array<std::array<int, kMaxWidth>, kMaxHeight>GetChunk()const { return chunk_; };
 
 };
 

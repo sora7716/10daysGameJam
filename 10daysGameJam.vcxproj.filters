@@ -28,6 +28,15 @@
     <ClCompile Include="project\main.cpp">
       <Filter>KamataEngine\Source</Filter>
     </ClCompile>
+    <ClCompile Include="project\gameObject\Chunk.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="project\gameObject\ChunkManager.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="project\gameObject\Map.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -114,6 +123,10 @@
     <ClInclude Include="project\gameObject\Player.h">
       <Filter>KamataEngine\Source\gameObject</Filter>
     </ClInclude>
+    <ClInclude Include="project\gameObject\Chunk.h" />
+    <ClInclude Include="project\gameObject\ChunkManager.h" />
+    <ClInclude Include="project\Vector2.h" />
+    <ClInclude Include="project\gameObject\Map.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project\.editorconfig" />
