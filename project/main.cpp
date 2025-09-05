@@ -143,6 +143,63 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Vector2Int mapPos = { 0,0 };
 	Vector2Int mapSize = { 5,5 };
 
+	Player player;
+	player.pos = {0.0f,0.0f};
+	player.posOld = { 0.0f,0.0f };
+	player.width = 32.0f;
+	player.height = 32.0f;
+	player.velocity = { 4.0f,4.0f };
+	player.accelaration = { 0.0f,0.8f };
+	player.isGround = false;
+
+	player.rightTop = { 0,0 };
+	player.leftTop = { 0,0};
+	player.leftTop = { 0,0};
+	player.leftBottom = {0,0};
+
+
+
+	Field field;
+	field.pos = { 0.0f,540.0f };
+	field.width = 1280.0f;
+	field.height = 200.0f;
+	field.screenPos = { 0.0f,0.0f };
+	field.screenWidth = 1280.0f;
+	field.screenHidth = 720.0f;
+
+	/*Player* player=new Player();*/
+	
+	/*std::vector<std::vector<int>> map =
+	{
+		{0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,1,1,0,0,0,0,0,0,0,0,0,0},
+		{0,0,1,1,1,0,0,0,0,0,1,0,0,0,0},
+		{0,1,1,1,1,0,0,0,0,1,1,1,0,0,0},
+		{1,1,1,1,1,0,0,0,1,1,1,1,1,0,0}
+	};*/
+	int map[kMapHeight][kMapWidth] =
+	{
+
+		
+		{0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0},
+		{0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,0,0,0,0,0},
+		{0,0,0,1,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,0},
+		{2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+		{2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0},
+		{0,0,0,0,0,1,1,1,0,0,0,0,1,1,1,0,0,0,0,0},
+		{0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		
+	};
+	Vector2 origin = { 0.0f,0.0f };
+	Vector2Int mapPos = { 0,0 };
+	Vector2Int mapSize = { 5,5 };
+	
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
 	{
