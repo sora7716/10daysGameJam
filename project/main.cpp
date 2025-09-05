@@ -85,29 +85,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
 
-	PlayerData playerData;
-	playerData.pos = { 0.0f,0.0f };
-	playerData.posOld = { 0.0f,0.0f };
-	playerData.width = 32.0f;
-	playerData.height = 32.0f;
-	playerData.velocity = { 4.0f,4.0f };
-	playerData.accelaration = { 0.0f,0.8f };
-	playerData.isGround = false;
 
-	playerData.rightTop = { 0,0 };
-	playerData.leftTop = { 0,0 };
-	playerData.leftTop = { 0,0 };
-	playerData.leftBottom = { 0,0 };
-
-
-
-	Field field;
-	field.pos = { 0.0f,540.0f };
-	field.width = 1280.0f;
-	field.height = 200.0f;
-	field.screenPos = { 0.0f,0.0f };
-	field.screenWidth = 1280.0f;
-	field.screenHidth = 720.0f;
 
 	Player* player=new Player();
 	player->Initialize(keys, preKeys);
@@ -120,42 +98,21 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		{0,1,1,1,1,0,0,0,0,1,1,1,0,0,0},
 		{1,1,1,1,1,0,0,0,1,1,1,1,1,0,0}
 	};*/
-	int map[kMapHeight][kMapWidth] =
-	{
+	
 
+	PlayerData playerData;
+	playerData.pos = {0.0f,0.0f};
+	playerData.posOld = { 0.0f,0.0f };
+	playerData.width = 32.0f;
+	playerData.height = 32.0f;
+	playerData.velocity = { 4.0f,4.0f };
+	playerData.accelaration = { 0.0f,0.8f };
+	playerData.isGround = false;
 
-		{0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0},
-		{0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,0,0,0,0,0},
-		{0,0,0,1,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,0},
-		{2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
-		{2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0},
-		{0,0,0,0,0,1,1,1,0,0,0,0,1,1,1,0,0,0,0,0},
-		{0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-
-	};
-	Vector2 origin = { 0.0f,0.0f };
-	Vector2Int mapPos = { 0,0 };
-	Vector2Int mapSize = { 5,5 };
-
-	Player player;
-	player.pos = {0.0f,0.0f};
-	player.posOld = { 0.0f,0.0f };
-	player.width = 32.0f;
-	player.height = 32.0f;
-	player.velocity = { 4.0f,4.0f };
-	player.accelaration = { 0.0f,0.8f };
-	player.isGround = false;
-
-	player.rightTop = { 0,0 };
-	player.leftTop = { 0,0};
-	player.leftTop = { 0,0};
-	player.leftBottom = {0,0};
+	playerData.rightTop = { 0,0 };
+	playerData.leftTop = { 0,0};
+	playerData.leftTop = { 0,0};
+	playerData.leftBottom = {0,0};
 
 
 
