@@ -5,3 +5,9 @@ struct Vector2
 	float y;
 
 };
+
+struct Vector2Int
+{
+	int x;
+	int y;
+};

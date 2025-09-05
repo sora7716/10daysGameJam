@@ -1,5 +1,6 @@
 #include <Novice.h>
 #include"gameObject/Player.h"
+#include "gameObject/Vector2.h"
 #include <imgui.h>
 #include <cmath>
 #include <vector>
@@ -11,18 +12,7 @@ const int kMapWidth = 20;
 const int kMapHeight = 13;
 const int kMapSize = 32;
 
-
-struct Vector2 {
-	float x;
-	float y;
-};
-
-struct Vector2Int {
-	int x;
-	int y;
-};
-
-struct Player
+struct PlayerData
 {
 	Vector2 pos;
 	Vector2 posOld;
@@ -95,19 +85,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
 
-	Player player;
-	player.pos = { 0.0f,0.0f };
-	player.posOld = { 0.0f,0.0f };
-	player.width = 32.0f;
-	player.height = 32.0f;
-	player.velocity = { 4.0f,4.0f };
-	player.accelaration = { 0.0f,0.8f };
-	player.isGround = false;
+	PlayerData playerData;
+	playerData.pos = { 0.0f,0.0f };
+	playerData.posOld = { 0.0f,0.0f };
+	playerData.width = 32.0f;
+	playerData.height = 32.0f;
+	playerData.velocity = { 4.0f,4.0f };
+	playerData.accelaration = { 0.0f,0.8f };
+	playerData.isGround = false;
 
-	player.rightTop = { 0,0 };
-	player.leftTop = { 0,0 };
-	player.leftTop = { 0,0 };
-	player.leftBottom = { 0,0 };
+	playerData.rightTop = { 0,0 };
+	playerData.leftTop = { 0,0 };
+	playerData.leftTop = { 0,0 };
+	playerData.leftBottom = { 0,0 };
 
 
 
@@ -119,7 +109,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	field.screenWidth = 1280.0f;
 	field.screenHidth = 720.0f;
 
-	/*Player* player=new Player();*/
+	Player* player=new Player();
+	player->Initialize(keys, preKeys);
 
 	/*std::vector<std::vector<int>> map =
 	{
@@ -170,98 +161,98 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	// プレイヤーの下のチップ座標を計算
 
 	// 右上
-		player.rightTop.x = static_cast<int>(player.pos.x + player.width - 1.0f) / kMapSize;
-		player.rightTop.y = static_cast<int>(player.pos.y) / kMapSize;
+		playerData.rightTop.x = static_cast<int>(playerData.pos.x + playerData.width - 1.0f) / kMapSize;
+		playerData.rightTop.y = static_cast<int>(playerData.pos.y) / kMapSize;
 
 		// 右下
-		player.rightBottom.x = static_cast<int>(player.pos.x + player.width - 1.0f) / kMapSize;
-		player.rightBottom.y = static_cast<int>(player.pos.y + player.height - 1.0f) / kMapSize;
+		playerData.rightBottom.x = static_cast<int>(playerData.pos.x + playerData.width - 1.0f) / kMapSize;
+		playerData.rightBottom.y = static_cast<int>(playerData.pos.y + playerData.height - 1.0f) / kMapSize;
 
 		// 左上
-		player.leftTop.x = static_cast<int>(player.pos.x) / kMapSize;
-		player.leftTop.y = static_cast<int>(player.pos.y) / kMapSize;
+		playerData.leftTop.x = static_cast<int>(playerData.pos.x) / kMapSize;
+		playerData.leftTop.y = static_cast<int>(playerData.pos.y) / kMapSize;
 
 		// 左下
-		player.leftBottom.x = static_cast<int>(player.pos.x) / kMapSize;
-		player.leftBottom.y = static_cast<int>(player.pos.y + player.height - 1.0f) / kMapSize;
+		playerData.leftBottom.x = static_cast<int>(playerData.pos.x) / kMapSize;
+		playerData.leftBottom.y = static_cast<int>(playerData.pos.y + playerData.height - 1.0f) / kMapSize;
 
 		// --- 前フレーム座標 ---
-		player.posOld.x = player.pos.x;
-		player.posOld.y = player.pos.y;
+		playerData.posOld.x = playerData.pos.x;
+		playerData.posOld.y = playerData.pos.y;
 
 
 
 		// 上方向の移動
 		if (keys[DIK_W]) {
-			player.leftTop.y = static_cast<int>(player.pos.y - player.velocity.y) / kMapSize;
-			player.rightTop.y = static_cast<int>(player.pos.y - player.velocity.y) / kMapSize;
+			playerData.leftTop.y = static_cast<int>(playerData.pos.y - playerData.velocity.y) / kMapSize;
+			playerData.rightTop.y = static_cast<int>(playerData.pos.y - playerData.velocity.y) / kMapSize;
 
-			if (map[player.leftTop.y][player.leftTop.x] == 1) {
-				player.pos.x = player.posOld.x;
-				player.pos.y = player.posOld.y;
+			if (map[playerData.leftTop.y][playerData.leftTop.x] == 1) {
+				playerData.pos.x = playerData.posOld.x;
+				playerData.pos.y = playerData.posOld.y;
 
-			} else if (map[player.rightTop.y][player.rightTop.x] == 1) {
-				player.pos.x = player.posOld.x;
-				player.pos.y = player.posOld.y;
+			} else if (map[playerData.rightTop.y][playerData.rightTop.x] == 1) {
+				playerData.pos.x = playerData.posOld.x;
+				playerData.pos.y = playerData.posOld.y;
 
 			} else {
-				player.pos.y -= player.velocity.y;
+				playerData.pos.y -= playerData.velocity.y;
 			}
 
 		}
 
 		// 左方向の移動
 		if (keys[DIK_A]) {
-			player.leftTop.x = static_cast<int>(player.pos.x - player.velocity.x) / kMapSize;
-			player.leftBottom.x = static_cast<int>(player.pos.x - player.velocity.x) / kMapSize;
+			playerData.leftTop.x = static_cast<int>(playerData.pos.x - playerData.velocity.x) / kMapSize;
+			playerData.leftBottom.x = static_cast<int>(playerData.pos.x - playerData.velocity.x) / kMapSize;
 
-			if (map[player.leftTop.y][player.leftTop.x] == 1) {
-				player.pos.x = player.posOld.x;
-				player.pos.y = player.posOld.y;
+			if (map[playerData.leftTop.y][playerData.leftTop.x] == 1) {
+				playerData.pos.x = playerData.posOld.x;
+				playerData.pos.y = playerData.posOld.y;
 
-			} else if (map[player.leftBottom.y][player.leftBottom.x] == 1) {
-				player.pos.x = player.posOld.x;
-				player.pos.y = player.posOld.y;
+			} else if (map[playerData.leftBottom.y][playerData.leftBottom.x] == 1) {
+				playerData.pos.x = playerData.posOld.x;
+				playerData.pos.y = playerData.posOld.y;
 
 			} else {
-				player.pos.x -= player.velocity.x;
+				playerData.pos.x -= playerData.velocity.x;
 			}
 
 		}
 
 		// 下方向の移動
 		if (keys[DIK_S]) {
-			player.leftBottom.y = static_cast<int>(player.pos.y + player.height - 1.0f + player.velocity.y) / kMapSize;
-			player.rightBottom.y = static_cast<int>(player.pos.y + player.height - 1.0f + player.velocity.y) / kMapSize;
+			playerData.leftBottom.y = static_cast<int>(playerData.pos.y + playerData.height - 1.0f + playerData.velocity.y) / kMapSize;
+			playerData.rightBottom.y = static_cast<int>(playerData.pos.y + playerData.height - 1.0f + playerData.velocity.y) / kMapSize;
 
-			if (map[player.leftBottom.y][player.leftBottom.x] == 1) {
-				player.pos.x = player.posOld.x;
-				player.pos.y = player.posOld.y;
+			if (map[playerData.leftBottom.y][playerData.leftBottom.x] == 1) {
+				playerData.pos.x = playerData.posOld.x;
+				playerData.pos.y = playerData.posOld.y;
 
-			} else if (map[player.rightBottom.y][player.rightBottom.x] == 1) {
-				player.pos.x = player.posOld.x;
-				player.pos.y = player.posOld.y;
+			} else if (map[playerData.rightBottom.y][playerData.rightBottom.x] == 1) {
+				playerData.pos.x = playerData.posOld.x;
+				playerData.pos.y = playerData.posOld.y;
 
 			} else {
-				player.pos.y += player.velocity.y;
+				playerData.pos.y += playerData.velocity.y;
 			}
 
 		}
 		// 右方向の移動
 		if (keys[DIK_D]) {
-			player.rightTop.x = static_cast<int>(player.pos.x + player.width - 1.0f + player.velocity.x) / kMapSize;
-			player.rightBottom.x = static_cast<int>(player.pos.x + player.height - 1.0f + player.velocity.x) / kMapSize;
+			playerData.rightTop.x = static_cast<int>(playerData.pos.x + playerData.width - 1.0f + playerData.velocity.x) / kMapSize;
+			playerData.rightBottom.x = static_cast<int>(playerData.pos.x + playerData.height - 1.0f + playerData.velocity.x) / kMapSize;
 
-			if (map[player.rightTop.y][player.rightTop.x] == 1) {
-				player.pos.x = player.posOld.x;
-				player.pos.y = player.posOld.y;
+			if (map[playerData.rightTop.y][playerData.rightTop.x] == 1) {
+				playerData.pos.x = playerData.posOld.x;
+				playerData.pos.y = playerData.posOld.y;
 
-			} else if (map[player.rightBottom.y][player.rightBottom.x] == 1) {
-				player.pos.x = player.posOld.x;
-				player.pos.y = player.posOld.y;
+			} else if (map[playerData.rightBottom.y][playerData.rightBottom.x] == 1) {
+				playerData.pos.x = playerData.posOld.x;
+				playerData.pos.y = playerData.posOld.y;
 
 			} else {
-				player.pos.x += player.velocity.x;
+				playerData.pos.x += playerData.velocity.x;
 			}
 
 		}
@@ -277,7 +268,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 
 		//backGround
-		Novice::ScreenPrintf(100, 100, "%f", player.velocity.y);
+		Novice::ScreenPrintf(100, 100, "%f", playerData.velocity.y);
 
 
 		/*	Novice::DrawBox(static_cast<int>(field.screenPos.x),
@@ -353,18 +344,18 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			}
 		}
 
-		Novice::DrawBox(static_cast<int>(player.pos.x),
-			static_cast<int>(player.pos.y),
-			static_cast<int>(player.width),
-			static_cast<int>(player.height),
+		Novice::DrawBox(static_cast<int>(playerData.pos.x),
+			static_cast<int>(playerData.pos.y),
+			static_cast<int>(playerData.width),
+			static_cast<int>(playerData.height),
 			0.0f, RED, kFillModeSolid);
 
 
 
-		Novice::ScreenPrintf(820, 400, "LeftTop: map[%d][%d]", player.leftTop.y, player.leftTop.x);
-		Novice::ScreenPrintf(820, 440, "LeftBottom: map[%d][%d]", player.leftBottom.y, player.leftBottom.x);
-		Novice::ScreenPrintf(1070, 400, "RightTop: map[%d][%d]", player.rightTop.y, player.rightTop.x);
-		Novice::ScreenPrintf(1070, 440, "RightBottom: map[%d][%d]", player.rightBottom.y, player.rightBottom.x);
+		Novice::ScreenPrintf(820, 400, "LeftTop: map[%d][%d]", playerData.leftTop.y, playerData.leftTop.x);
+		Novice::ScreenPrintf(820, 440, "LeftBottom: map[%d][%d]", playerData.leftBottom.y, playerData.leftBottom.x);
+		Novice::ScreenPrintf(1070, 400, "RightTop: map[%d][%d]", playerData.rightTop.y, playerData.rightTop.x);
+		Novice::ScreenPrintf(1070, 440, "RightBottom: map[%d][%d]", playerData.rightBottom.y, playerData.rightBottom.x);
 
 		player->Draw();
 		///
