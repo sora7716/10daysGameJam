@@ -114,6 +114,9 @@
     <ClInclude Include="project\gameObject\Player.h">
       <Filter>KamataEngine\Source\gameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>KamataEngine\Source\gameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="project\.editorconfig" />
