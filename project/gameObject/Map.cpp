@@ -1,6 +1,20 @@
 #include "Map.h"
 #include <Novice.h>
 
+//初期化
+void Map::Initialize(const Vector2Int& mapSize)
+{
+	//マップの行の要素数を指定
+	map_.resize(mapSize.y);
+
+	//マップの列の要素数を指定
+	for (int y = 0; y < map_.size(); y++)
+	{
+		map_[y].resize(mapSize.x);
+	}
+}
+
+//描画
 void Map::Draw()
 {
 	for (int y = 0; y < map_.size(); y++)
@@ -18,18 +32,15 @@ void Map::Draw()
 	}
 }
 
-void Map::SetMap(const std::array<std::array<int, Chunk::kMaxWidth>, Chunk::kMaxHeight>& chunk)
+//セッター：map
+void Map::SetMap(const std::array<std::array<int, Chunk::kMaxWidth>, Chunk::kMaxHeight>& chunk, const Vector2Int& begin)
 {
+	for (int y = 0; y < Chunk::kMaxHeight; y++) {
 
-	map_.resize(map_.size()+Chunk::kMaxHeight);
-
-	for (int y = 0; y < Chunk::kMaxHeight; y++)
-	{
-		map_[y].resize(map_[y].size()+Chunk::kMaxWidth);
-
-		for (int x = 0; x < Chunk::kMaxWidth * 3; x++)
+		for (int x = 0; x < Chunk::kMaxWidth; x++)
 		{
-			if (x < 5)
+			map_[y + begin.y][x + begin.x] = chunk[y][x];
+			/*if (x < 5)
 			{
 				map_[y][x] = chunk1->GetChunk()[y][x];
 			}
@@ -40,7 +51,7 @@ void Map::SetMap(const std::array<std::array<int, Chunk::kMaxWidth>, Chunk::kMax
 			else
 			{
 				map_[y][x] = chunk3->GetChunk()[y][x - Chunk::kMaxWidth * 2];
-			}
+			}*/
 		}
 	}
 

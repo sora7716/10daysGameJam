@@ -21,14 +21,19 @@ void ChunkManager::Finalize()
 //Chunk読み込み
 void ChunkManager::LoadChunk(const std::string& filename)
 {
+	//チャンクの連想配列の中に存在するか
 	if (chunks_.contains(filename))
 	{
+		//存在していた場合は早期リターン
 		return;
 	}
 
+	//チャンクを生成
 	std::unique_ptr<Chunk>chunk = std::make_unique<Chunk>();
-	chunk->LoadChunkCsv("resource/" + filename +".csv");
+	//csvファイルの読み込み
+	chunk->LoadChunkCsv("resource/" + filename + ".csv");
 
+	//生成したチャンクを連想配列に挿入
 	chunks_.insert(std::make_pair(filename, std::move(chunk)));
 }
 

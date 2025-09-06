@@ -28,7 +28,7 @@ private://メンバ関数
 public://メンバ関数
 
 	/// <summary>
-	/// インスタンスのゲッター
+	/// ゲッター：インスタンス
 	/// </summary>
 	/// <returns>インスタンス</returns>
 	static ChunkManager* GetInstance();

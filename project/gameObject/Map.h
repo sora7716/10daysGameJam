@@ -22,10 +22,28 @@ private://メンバ変数
 
 public://メンバ関数
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="mapSize">マップのサイズ</param>
+	void Initialize(const Vector2Int& mapSize);
+
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
-	void SetMap(const std::array<std::array<int, Chunk::kMaxWidth>, Chunk::kMaxHeight>&chunk);
+	/// <summary>
+	/// セッター：map
+	/// </summary>
+	/// <param name="chunk">chunkの2次元配列</param>
+	/// <param name="begin">マップの読み込み開始位置</param>
+	void SetMap(const std::array<std::array<int, Chunk::kMaxWidth>, Chunk::kMaxHeight>& chunk, const Vector2Int& begin);
 
+	/// <summary>
+	/// セッター：mapの原点
+	/// </summary>
+	/// <param name="origin">原点</param>
 	void SetOrigin(const Vector2& origin) { origin_ = origin; };
 
 };

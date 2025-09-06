@@ -22,7 +22,7 @@ public://メンバ関数
 	void LoadChunkCsv(const std::string& filePath);
 
 	/// <summary>
-	/// chunkのゲッター
+	/// ゲッター：chunk
 	/// </summary>
 	/// <returns>chunk</returns>
 	std::array<std::array<int, kMaxWidth>, kMaxHeight>GetChunk()const { return chunk_; };
