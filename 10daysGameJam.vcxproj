@@ -163,6 +163,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="project\Collision.cpp" />
     <ClCompile Include="project\gameObject\Player.cpp" />
     <ClCompile Include="project\main.cpp" />
+    <ClCompile Include="project\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectXGame\3d\Camera.h" />
@@ -194,7 +195,8 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
     <ClInclude Include="project\Collision.h" />
     <ClInclude Include="project\gameObject\Player.h" />
-    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="project\gameObject\PlayerData.h" />
+    <ClInclude Include="project\Vector2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project\.editorconfig" />
