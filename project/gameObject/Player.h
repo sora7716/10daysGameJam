@@ -10,6 +10,7 @@ private://	メンバー変数
 	char* preKeys_ = {};
 	bool isMove_ = false;
 	bool isOnGround_ = false;
+	bool isJump_ = false;
 	int deadTimer_ = false;
 	int dead_ = false;
 
@@ -49,9 +50,11 @@ public://メンバー関数
 
 	void SetVelocity(const Vector2& velocity) { playerData_.gameObject.velocity = velocity; };
 
-	void SetIsOnGround(bool isJump) { isOnGround_ = isJump; };
+	void SetIsOnGround(bool isOnGround) { isOnGround_ = isOnGround; };
 
-	//void SetCenter(const Vector2& center) { center_ = center; };
+	void SetIsJump(bool isJump) { isJump_ = isJump; };
+
+
 private:
 
 	void CheackMapChipPosition();

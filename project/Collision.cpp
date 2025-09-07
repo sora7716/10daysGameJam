@@ -29,6 +29,7 @@ void Collision::Update()
 		//下方向の判定
 		leftBottom.y = static_cast<int>(center.y + radius.y + velocity.y) / kBlockSize;
 		rightBottom.y = static_cast<int>(center.y + radius.y + velocity.y) / kBlockSize;
+		rightBottom.x= static_cast<int>(center.x+10.0f) / kBlockSize;
 		if (map[leftBottom.y][leftBottom.x] == 1 ||
 			map[rightBottom.y][rightBottom.x] == 1)
 		{
@@ -43,7 +44,7 @@ void Collision::Update()
 			static_cast<int>(center.x) / kBlockSize,
 			static_cast<int>(center.y - radius.y + velocity.y) / kBlockSize
 		};
-		if (map[top.y][top.x] == 1)
+		if (map[top.y][top.x] == 1|| map[top.y][top.x] == 2)
 		{
 			newCenter = { center.x,static_cast<float>((top.y + 1) * kBlockSize) + radius.y };
 			player_->SetCenter(newCenter);
@@ -53,10 +54,13 @@ void Collision::Update()
 
 	//当たってないときの判定
 	if (map[leftBottom.y][leftBottom.x] == 1 ||
-		map[rightBottom.y][rightBottom.x] == 1)
+		map[rightBottom.y][rightBottom.x] == 1||
+		map[leftBottom.y][leftBottom.x] == 2 ||
+		map[rightBottom.y][rightBottom.x] == 2)
 	{
 
-	} else
+	} 
+	else
 	{
 		player_->SetIsOnGround(false);
 	}
@@ -69,8 +73,10 @@ void Collision::Update()
 	//横の判定
 	if (map[right.y][right.x] == 1)
 	{
+
 		velocity.x = 0.0f;
 		player_->SetVelocity(velocity);
+		player_->SetIsJump(true);
 	}
 
 #ifdef _DEBUG

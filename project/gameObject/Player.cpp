@@ -28,14 +28,16 @@ void Player::Update()
 	playerData_.gameObject.velocity += playerData_.gameObject.acceleration;//速度に加速度を足す
 	playerData_.gameObject.center += playerData_.gameObject.velocity;//位置に速度を足す
 
-	if (keys_[DIK_SPACE] && preKeys_[DIK_SPACE])
+
+	
+
+	if (isJump_&&isOnGround_)
 	{
-		if (isOnGround_)
-		{
-			isOnGround_ = false;
-			playerData_.gameObject.velocity.y = -10.0f;
-		}
+		playerData_.gameObject.velocity.y = -8.0f;
+		isOnGround_ = false;
+		isJump_ = false;
 	}
+
 
 	/*if (playerData_.gameObject.center.y > 352.0f + playerData_.gameObject.radius.y)
 	{
@@ -48,21 +50,13 @@ void Player::Update()
 		playerData_.gameObject.velocity.y = 0.0f;
 		playerData_.gameObject.acceleration.y = 0.0f;
 		//playerData_.pos.y = center_.y - (playerData_.height / 2.0f);
-	} else
+	}
+	else
 	{
 		playerData_.gameObject.acceleration.y = 0.8f;
 	}
+	playerData_.gameObject.velocity.x = 2.0f;
 
-	if (keys_[DIK_D])
-	{
-		playerData_.gameObject.velocity.x = 5.0f;
-	} else if (keys_[DIK_A])
-	{
-		playerData_.gameObject.velocity.x = -5.0f;
-	} else
-	{
-		playerData_.gameObject.velocity.x = 0.0f;
-	}
 
 #ifdef _DEBUG
 	ImGui::Begin("Player");
