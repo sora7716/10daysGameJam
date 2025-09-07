@@ -30,20 +30,20 @@ void Player::Update()
 
 	if (keys_[DIK_SPACE] && preKeys_[DIK_SPACE])
 	{
-		if (!isOnGround_)
+		if (isOnGround_)
 		{
-			isOnGround_ = true;
+			isOnGround_ = false;
 			playerData_.gameObject.velocity.y = -10.0f;
 		}
 	}
 
-	if (playerData_.gameObject.center.y > 352.0f + playerData_.gameObject.radius.y)
+	/*if (playerData_.gameObject.center.y > 352.0f + playerData_.gameObject.radius.y)
 	{
-		isOnGround_ = true;
 		playerData_.gameObject.center.y = 352.0f + playerData_.gameObject.radius.y;
-	}
+		isOnGround_ = true;
+	}*/
 
-	if (!isOnGround_)
+	if (isOnGround_)
 	{
 		playerData_.gameObject.velocity.y = 0.0f;
 		playerData_.gameObject.acceleration.y = 0.0f;
@@ -67,7 +67,7 @@ void Player::Update()
 #ifdef _DEBUG
 	ImGui::Begin("Player");
 	ImGui::DragFloat2("position", &playerData_.gameObject.center.x, 0.1f);
-	ImGui::Checkbox("isJump", &isOnGround_);
+	ImGui::Checkbox("isOnGround", &isOnGround_);
 	ImGui::DragInt2("leftTop", &playerData_.leftTop.x);
 	ImGui::DragInt2("rightTop", &playerData_.leftTop.x);
 	ImGui::DragInt2("leftBottom", &playerData_.leftBottom.x);
@@ -200,8 +200,8 @@ void Player::CheackMapChipPosition()
 	//右上
 	playerData_.rightTop =
 	{
-		static_cast<int>(playerData_.gameObject.center.x + playerData_.gameObject.radius.x) / kBlockSize,
-		static_cast<int>(playerData_.gameObject.center.y - playerData_.gameObject.radius.y) / kBlockSize
+		static_cast<int>(playerData_.gameObject.center.x + playerData_.gameObject.radius.x - 1.0f) / kBlockSize,
+		static_cast<int>(playerData_.gameObject.center.y - playerData_.gameObject.radius.y - 1.0f) / kBlockSize
 	};
 	//左下
 	playerData_.leftBottom =
@@ -212,8 +212,8 @@ void Player::CheackMapChipPosition()
 	//右下
 	playerData_.rightBottom =
 	{
-		static_cast<int>(playerData_.gameObject.center.x + playerData_.gameObject.radius.x) / kBlockSize,
-		static_cast<int>(playerData_.gameObject.center.y + playerData_.gameObject.radius.y) / kBlockSize
+		static_cast<int>(playerData_.gameObject.center.x + playerData_.gameObject.radius.x - 1.0f) / kBlockSize,
+		static_cast<int>(playerData_.gameObject.center.y + playerData_.gameObject.radius.y - 1.0f) / kBlockSize
 	};
 
 	//// 右上

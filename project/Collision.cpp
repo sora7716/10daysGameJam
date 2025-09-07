@@ -21,6 +21,72 @@ void Collision::Update()
 	player_->SetRightBottom(rightBottom);*/
 
 
+	Vector2Int leftTop = player_->GetPlayerData().leftTop;
+	Vector2Int rightTop = player_->GetPlayerData().rightTop;
+	Vector2Int leftBottom = player_->GetPlayerData().leftBottom;
+	Vector2Int rightBottom = player_->GetPlayerData().rightBottom;
+
+	Vector2 center = player_->GetPlayerData().gameObject.center;
+	Vector2 radius = player_->GetPlayerData().gameObject.radius;
+	Vector2 velocity = player_->GetPlayerData().gameObject.velocity;
+	static Vector2 newCenter = {};
+
+	
+	if (velocity.y > 0.0f)
+	{
+		//下方向の判定
+		leftBottom.y = static_cast<int>(center.y + radius.y + velocity.y) / kBlockSize;
+		rightBottom.y = static_cast<int>(center.y + radius.y + velocity.y) / kBlockSize;
+		if (map[leftBottom.y][leftBottom.x] == 1 ||
+			map[rightBottom.y][rightBottom.x] == 1)
+		{
+			player_->SetIsOnGround(true);
+			newCenter = { center.x,static_cast<float>((leftBottom.y) * kBlockSize) - radius.y - 1.0f };
+			player_->SetCenter(newCenter);
+		}
+	} else {
+		//上方向の判定
+		Vector2Int top =
+		{
+			static_cast<int>(center.x) / kBlockSize,
+			static_cast<int>(center.y - radius.y + velocity.y) / kBlockSize
+		};
+		if (map[top.y][top.x] == 1)
+		{
+			newCenter = { center.x,static_cast<float>((top.y + 1) * kBlockSize) + radius.y };
+			player_->SetCenter(newCenter);
+			player_->SetVelocity({ velocity.x,0.0f });
+		}
+	}
+
+	//当たってないときの判定
+	if (map[leftBottom.y][leftBottom.x] == 1 ||
+		map[rightBottom.y][rightBottom.x] == 1)
+	{
+
+	} else
+	{
+		player_->SetIsOnGround(false);
+	}
+
+	//横の判定
+	if (map[rightTop.y][rightTop.x] == 1 ||
+		map[rightBottom.y][rightBottom.x] == 1)
+	{
+		velocity.x = 0.0f;
+		player_->SetVelocity(velocity);
+	}
+
+#ifdef _DEBUG
+	ImGui::Begin("map");
+	ImGui::Text("leftTop:%d", map[leftTop.y][leftTop.x]);
+	ImGui::Text("rightTop:%d", map[rightTop.y][rightTop.x]);
+	ImGui::Text("leftBottom:%d", map[leftBottom.y][leftBottom.x]);
+	ImGui::Text("rightBottom:%d", map[rightBottom.y][rightBottom.x]);
+	ImGui::DragFloat2("newCenter", &newCenter.x);
+#endif // _DEBUG
+
+
 	// 上方向の移動
 
 		/*playerData_.leftTop.y = static_cast<int>(playerData_.pos.y - playerData_.velocity.y) / kMapSize;
@@ -160,8 +226,7 @@ void Collision::Draw()
 					static_cast<int>(origin.y) + y * kBlockSize,
 					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
 				);
-			}
-			else if (map[y][x] == 2)
+			} else if (map[y][x] == 2)
 			{
 				Novice::DrawBox(
 					static_cast<int>(origin.x) + x * kBlockSize,
@@ -173,8 +238,7 @@ void Collision::Draw()
 					static_cast<int>(origin.y) + y * kBlockSize,
 					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
 				);
-			}
-			else if (map[y][x] == 0)
+			} else if (map[y][x] == 0)
 			{
 				Novice::DrawBox(
 					static_cast<int>(origin.x) + x * kBlockSize,
