@@ -21,7 +21,11 @@ struct Field
 	float screenHidth;
 };
 
-
+struct Line
+{
+	Vector2Int stratPos;
+	Vector2Int endPos;
+};
 
 
 //void RotateBlock180(std::vector<std::vector<int>>& mapList,
@@ -82,9 +86,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	field.screenWidth = 1280.0f;
 	field.screenHidth = 720.0f;
 
-
-
-
+	Line line1;
+	line1.stratPos = { 160,0 };
+	line1.endPos = { 160,416 };
+	
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
 	{
@@ -113,14 +118,20 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		///
 
 
-		//backGround
-
-
 
 
 
 		collision->Draw();
 		player->Draw();
+
+		for (int i = 0; i < 6; i++)
+		{
+			Novice::DrawLine(line1.stratPos.x+(i*32*5),
+				line1.stratPos.y,
+				line1.endPos.x+(i * 32*5),
+				line1.endPos.y,
+				RED);
+		}
 		///
 		/// ↑描画処理ここまで
 		///

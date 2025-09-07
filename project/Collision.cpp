@@ -29,7 +29,7 @@ void Collision::Update()
 		//下方向の判定
 		leftBottom.y = static_cast<int>(center.y + radius.y + velocity.y) / kBlockSize;
 		rightBottom.y = static_cast<int>(center.y + radius.y + velocity.y) / kBlockSize;
-		rightBottom.x= static_cast<int>(center.x+10.0f) / kBlockSize;
+		
 		if (map[leftBottom.y][leftBottom.x] == 1 ||
 			map[rightBottom.y][rightBottom.x] == 1)
 		{

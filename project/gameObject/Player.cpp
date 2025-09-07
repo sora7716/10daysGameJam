@@ -16,7 +16,7 @@ void Player::Initialize(char* keys, char* preKeys)//初期化
 	playerData_.gameObject.size = { 32.0f,32.0f };
 	playerData_.gameObject.radius = playerData_.gameObject.size / 2.0f;
 	playerData_.gameObject.acceleration = { 0.0f,0.8f };
-	playerData_.gameObject.center = { playerData_.gameObject.radius.x,352.0f + playerData_.gameObject.radius.y };
+	playerData_.gameObject.center = { playerData_.gameObject.radius.x+64.0f,288.0f + playerData_.gameObject.radius.y };
 }
 
 void Player::Update()
@@ -29,13 +29,16 @@ void Player::Update()
 	playerData_.gameObject.center += playerData_.gameObject.velocity;//位置に速度を足す
 
 
-	
+	if (keys_[DIK_SPACE] && !preKeys_[DIK_SPACE])
+	{
+		isMove_ = true;
+	}
 
 	if (isJump_&&isOnGround_)
 	{
-		playerData_.gameObject.velocity.y = -8.0f;
 		isOnGround_ = false;
 		isJump_ = false;
+		playerData_.gameObject.velocity.y = -8.0f;
 	}
 
 
@@ -55,8 +58,11 @@ void Player::Update()
 	{
 		playerData_.gameObject.acceleration.y = 0.8f;
 	}
-	playerData_.gameObject.velocity.x = 2.0f;
 
+	if (isMove_)
+	{
+		playerData_.gameObject.velocity.x = 2.0f;
+	}
 
 #ifdef _DEBUG
 	ImGui::Begin("Player");
