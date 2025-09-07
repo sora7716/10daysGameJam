@@ -47,10 +47,10 @@ public://メンバ関数
 	void SetOrigin(const Vector2& origin) { origin_ = origin; };
 
 	/// <summary>
-	/// 逆転」
+	/// 逆転
 	/// </summary>
 	/// <param name="pos">読み込む位置</param>
-	void Flip(const Vector2Int& pos);
+	void FlipChunk(const Vector2Int& pos);
 
 	/// <summary>
 	/// 切り替え
@@ -58,7 +58,7 @@ public://メンバ関数
 	/// <param name="under">下のチャンク</param>
 	/// <param name="top">上のチャンク</param>
 	/// <param name="underChunkPos">下のチャンクの位置</param>
-	void Swap(Chunk* under,Chunk* top,const Vector2Int& underChunkPos);
+	void SwapChunk(Chunk* under,Chunk* top,const Vector2Int& underChunkPos);
 
 };
 

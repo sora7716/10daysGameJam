@@ -84,24 +84,24 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		if (ImGui::Button("SetMap"))
 		{
-			map->Swap(chunk2, chunk1,{ 0,5 });
+			map->SwapChunk(chunk2, chunk1,{ 0,5 });
 		}
 
 		if (ImGui::Button("map1"))
 		{
-			map->Flip({0,0});
+			map->FlipChunk({0,0});
 		}
 		if (ImGui::Button("map2"))
 		{
-			map->Flip({ 5,0 });
+			map->FlipChunk({ 5,0 });
 		}
 		if (ImGui::Button("map3"))
 		{
-			map->Flip({ 10,0 });
+			map->FlipChunk({ 10,0 });
 		}
 		if (ImGui::Button("map1-2"))
 		{
-			map->Flip({ 0,5 });
+			map->FlipChunk({ 0,5 });
 		}
 		/*else if (ImGui::Button("chunk2"))
 		{

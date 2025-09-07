@@ -47,7 +47,7 @@ void Map::SetMap(const std::array<std::array<int, Chunk::kMaxWidth>, Chunk::kMax
 }
 
 //逆転
-void Map::Flip(const Vector2Int& pos)
+void Map::FlipChunk(const Vector2Int& pos)
 {
 	int tmp = {};
 	for (int y = 0; y < Chunk::kMaxHeight; y++)
@@ -67,7 +67,7 @@ void Map::Flip(const Vector2Int& pos)
 }
 
 //切り替え
-void Map::Swap(Chunk* under, Chunk* top, const Vector2Int& underChunkPos)
+void Map::SwapChunk(Chunk* under, Chunk* top, const Vector2Int& underChunkPos)
 {
 
 	SetMap(top->GetChunk(), underChunkPos);
