@@ -52,7 +52,13 @@ public://メンバ関数
 	/// <param name="pos">読み込む位置</param>
 	void Flip(const Vector2Int& pos);
 
-	void Swap(Chunk* under,Chunk* top,const Vector2Int& pos);
+	/// <summary>
+	/// 切り替え
+	/// </summary>
+	/// <param name="under">下のチャンク</param>
+	/// <param name="top">上のチャンク</param>
+	/// <param name="underChunkPos">下のチャンクの位置</param>
+	void Swap(Chunk* under,Chunk* top,const Vector2Int& underChunkPos);
 
 };
 

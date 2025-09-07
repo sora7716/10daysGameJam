@@ -66,11 +66,12 @@ void Map::Flip(const Vector2Int& pos)
 	}
 }
 
-void Map::Swap(Chunk* under, Chunk* top, const Vector2Int& pos)
+//切り替え
+void Map::Swap(Chunk* under, Chunk* top, const Vector2Int& underChunkPos)
 {
 
-	SetMap(top->GetChunk(), pos);
-	SetMap(under->GetChunk(), { pos.x,pos.y - Chunk::kMaxHeight });
+	SetMap(top->GetChunk(), underChunkPos);
+	SetMap(under->GetChunk(), { underChunkPos.x,underChunkPos.y - Chunk::kMaxHeight });
 
 }
 
