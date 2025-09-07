@@ -46,5 +46,7 @@ public://メンバ関数
 	/// <param name="origin">原点</param>
 	void SetOrigin(const Vector2& origin) { origin_ = origin; };
 
+	void Flip(const Vector2Int& pos);
+
 };
 

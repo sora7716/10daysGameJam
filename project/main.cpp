@@ -87,6 +87,23 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			map->SetMap(chunk2->GetChunk(), { 0,0 });
 
 		}
+
+		if (ImGui::Button("map1"))
+		{
+			map->Flip({0,0});
+		}
+		if (ImGui::Button("map2"))
+		{
+			map->Flip({ 5,0 });
+		}
+		if (ImGui::Button("map3"))
+		{
+			map->Flip({ 10,0 });
+		}
+		if (ImGui::Button("map1-2"))
+		{
+			map->Flip({ 0,5 });
+		}
 		/*else if (ImGui::Button("chunk2"))
 		{
 			chunk1 = ChunkManager::GetInstance()->FindChunk("chunk2");

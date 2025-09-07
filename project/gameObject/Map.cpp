@@ -35,24 +35,27 @@ void Map::Draw()
 //セッター：map
 void Map::SetMap(const std::array<std::array<int, Chunk::kMaxWidth>, Chunk::kMaxHeight>& chunk, const Vector2Int& begin)
 {
-	for (int y = 0; y < Chunk::kMaxHeight; y++) {
+	for (int y = 0; y < Chunk::kMaxHeight; y++)
+	{
 
 		for (int x = 0; x < Chunk::kMaxWidth; x++)
 		{
 			map_[y + begin.y][x + begin.x] = chunk[y][x];
-			/*if (x < 5)
-			{
-				map_[y][x] = chunk1->GetChunk()[y][x];
-			}
-			else if (x < 10)
-			{
-				map_[y][x] = chunk2->GetChunk()[y][x - Chunk::kMaxWidth];
-			}
-			else
-			{
-				map_[y][x] = chunk3->GetChunk()[y][x - Chunk::kMaxWidth * 2];
-			}*/
 		}
 	}
 
+}
+
+void Map::Flip(const Vector2Int& pos)
+{
+	int tmp = {};
+	for (int y = 0; y < (Chunk::kMaxHeight + 1) / 2; y++)
+	{
+		for (int x = 0; x < Chunk::kMaxWidth; x++)
+		{
+			tmp = map_[pos.y + y][pos.x + x];
+			map_[pos.y + y][pos.x + x] = map_[pos.y + (Chunk::kMaxHeight - 1) - y][pos.x + (Chunk::kMaxWidth - 1) - x];
+			map_[pos.y + (Chunk::kMaxHeight - 1) - y][pos.x + (Chunk::kMaxWidth - 1) - x] = tmp;
+		}
+	}
 }
