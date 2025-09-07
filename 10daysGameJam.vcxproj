@@ -163,8 +163,10 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="project\gameObject\Chunk.cpp" />
     <ClCompile Include="project\gameObject\ChunkManager.cpp" />
     <ClCompile Include="project\gameObject\Map.cpp" />
+    <ClCompile Include="project\Collision.cpp" />
     <ClCompile Include="project\gameObject\Player.cpp" />
     <ClCompile Include="project\main.cpp" />
+    <ClCompile Include="project\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectXGame\3d\Camera.h" />
@@ -197,7 +199,9 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="project\gameObject\Chunk.h" />
     <ClInclude Include="project\gameObject\ChunkManager.h" />
     <ClInclude Include="project\gameObject\Map.h" />
+    <ClInclude Include="project\Collision.h" />
     <ClInclude Include="project\gameObject\Player.h" />
+    <ClInclude Include="project\gameObject\ResourceData.h" />
     <ClInclude Include="project\Vector2.h" />
   </ItemGroup>
   <ItemGroup>

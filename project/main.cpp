@@ -1,30 +1,66 @@
 #include <Novice.h>
+#include"gameObject/Player.h"
 #include <imgui.h>
-#include "gameObject/ChunkManager.h"
-#include "gameObject/Map.h"
-
+#include <cmath>
+#include <vector>
+#include "Vector2.h"
+#include "Collision.h"
+//#include "gameObject/Player.h"
 const char kWindowTitle[] = "MyGame";
 const int kBlockSize = 32;
 
 
-//void DrowMap(std::vector<std::vector<int>>map, const Vector2& origin)
-//{
+
+
+struct Field
+{
+	Vector2 pos;
+	Vector2 screenPos;
+	float width;
+	float height;
+	float screenWidth;
+	float screenHidth;
+};
+
+struct Line
+{
+	Vector2Int stratPos;
+	Vector2Int endPos;
+};
+
+
+//void RotateBlock180(std::vector<std::vector<int>>& mapList,
+//	int xIndex, int yIndex, int width, int height) {
 //
-//	for (int y = 0; y < map.size(); y++)
-//	{
-//		for (int x = 0; x < map[y].size(); x++)
-//		{
-//
-//			if (map[y][x] == kBlock)
-//			{
-//				Novice::DrawBox(
-//					static_cast<int>(origin.x) + x * kBlockSize,
-//					static_cast<int>(origin.y) + y * kBlockSize, kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeWireFrame);
-//			}
+//	// 指定した位置を保存
+//	std::vector<std::vector<int>> temp(height, std::vector<int>(width));
+//	for (int y = 0; y < height; y++) {
+//		for (int x = 0; x < width; x++) {
+//			temp[y][x] = mapList[yIndex + y][xIndex + x];
 //		}
 //	}
-//};
+//
+//	// 180°回転して書き戻し
+//	for (int y = 0; y < height; y++) {
+//		for (int x = 0; x < width; x++) {
+//			int newX = width - 1 - x;
+//			int newY = height - 1 - y;
+//			mapList[yIndex + y][xIndex + x] = temp[newY][newX];
+//		}
+//	}
+//}
 
+
+
+
+/// <summary>
+/// 座標変換
+/// </summary>
+/// <param name="y">Y座標</param>
+/// <returns>座標変換されたY座標</returns>
+float ConversionPosY(float y, float origin) {
+	return (y - origin) * -1.0f;
+}
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -36,35 +72,25 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
 
-	Vector2 origin = {};
 
-	//チャンクの読み込み
-	ChunkManager::GetInstance()->LoadChunk("chunk1");
-	ChunkManager::GetInstance()->LoadChunk("chunk2");
-	ChunkManager::GetInstance()->LoadChunk("chunk3");
 
-	//検索したチャンクを変数にする
-	Chunk* chunk1 = ChunkManager::GetInstance()->FindChunk("chunk1");
-	Chunk* chunk2 = ChunkManager::GetInstance()->FindChunk("chunk2");
-	Chunk* chunk3 = ChunkManager::GetInstance()->FindChunk("chunk3");
+	Player* player = new Player();
+	Collision* collision = new Collision();
+	player->Initialize(keys, preKeys);
+	collision->Initialize(player, keys, preKeys);
 
-	//マップの生成
-	std::unique_ptr<Map>map = std::make_unique<Map>();
+	Field field;
+	field.pos = { 0.0f,540.0f };
+	field.width = 1280.0f;
+	field.height = 200.0f;
+	field.screenPos = { 0.0f,0.0f };
+	field.screenWidth = 1280.0f;
+	field.screenHidth = 720.0f;
 
-	//マップの初期化
-	map->Initialize({ Chunk::kMaxWidth * 3,Chunk::kMaxHeight * 3 });
+	Line line1;
+	line1.stratPos = { 160,0 };
+	line1.endPos = { 160,416 };
 	
-	//マップの原点の設定
-	map->SetOrigin({ 0.0f, 0.0f });
-
-	//横に配置
-	map->SetMap(chunk1->GetChunk(), { 0,0 });
-	map->SetMap(chunk2->GetChunk(), { 5,0 });
-	map->SetMap(chunk3->GetChunk(), { 10,0 });
-	//縦に配置する
-	map->SetMap(chunk2->GetChunk(), { 0,5 });
-	map->SetMap(chunk3->GetChunk(), { 0,10 });
-
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
 	{
@@ -79,46 +105,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		/// ↓更新処理ここから
 		///
 
-		ImGui::Begin("Chunk");
-		ImGui::DragFloat2("origin", &origin.x, 1.0f);
-
-		if (ImGui::Button("SetMap"))
-		{
-			map->SwapChunk(chunk2, chunk1,{ 0,5 });
-		}
-
-		if (ImGui::Button("map1"))
-		{
-			map->FlipChunk({0,0});
-		}
-		if (ImGui::Button("map2"))
-		{
-			map->FlipChunk({ 5,0 });
-		}
-		if (ImGui::Button("map3"))
-		{
-			map->FlipChunk({ 10,0 });
-		}
-		if (ImGui::Button("map1-2"))
-		{
-			map->FlipChunk({ 0,5 });
-		}
-		/*else if (ImGui::Button("chunk2"))
-		{
-			chunk1 = ChunkManager::GetInstance()->FindChunk("chunk2");
-		}
-		else if (ImGui::Button("chunk3"))
-		{
-			chunk1 = ChunkManager::GetInstance()->FindChunk("chunk3");
-		}*/
-		ImGui::End();
-
-		
-		
 
 
 
-
+		player->Update();
+		collision->Update();
 		///
 		/// ↑更新処理ここまで
 		///
@@ -127,9 +118,21 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		/// ↓描画処理ここから
 		///
 
-		//DrowMap(map, origin);
-		map->Draw();
 
+
+
+
+		collision->Draw();
+		player->Draw();
+
+		for (int i = 0; i < 6; i++)
+		{
+			Novice::DrawLine(line1.stratPos.x+(i*32*5),
+				line1.stratPos.y,
+				line1.endPos.x+(i * 32*5),
+				line1.endPos.y,
+				RED);
+		}
 		///
 		/// ↑描画処理ここまで
 		///
