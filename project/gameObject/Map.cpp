@@ -46,16 +46,32 @@ void Map::SetMap(const std::array<std::array<int, Chunk::kMaxWidth>, Chunk::kMax
 
 }
 
+//逆転
 void Map::Flip(const Vector2Int& pos)
 {
 	int tmp = {};
-	for (int y = 0; y < (Chunk::kMaxHeight + 1) / 2; y++)
+	for (int y = 0; y < Chunk::kMaxHeight; y++)
 	{
 		for (int x = 0; x < Chunk::kMaxWidth; x++)
 		{
-			tmp = map_[pos.y + y][pos.x + x];
-			map_[pos.y + y][pos.x + x] = map_[pos.y + (Chunk::kMaxHeight - 1) - y][pos.x + (Chunk::kMaxWidth - 1) - x];
-			map_[pos.y + (Chunk::kMaxHeight - 1) - y][pos.x + (Chunk::kMaxWidth - 1) - x] = tmp;
+			Vector2Int inverse = { (Chunk::kMaxWidth - 1) - x,(Chunk::kMaxHeight - 1) - y };
+
+			if (y < inverse.y || (y == inverse.y && x < inverse.x))
+			{
+				tmp = map_[pos.y + y][pos.x + x];
+				map_[pos.y + y][pos.x + x] = map_[pos.y + inverse.y][pos.x + inverse.x];
+				map_[pos.y + inverse.y][pos.x + inverse.x] = tmp;
+			}
 		}
 	}
 }
+
+void Map::Swap(Chunk* under, Chunk* top, const Vector2Int& pos)
+{
+
+	SetMap(top->GetChunk(), pos);
+	SetMap(under->GetChunk(), { pos.x,pos.y - Chunk::kMaxHeight });
+
+}
+
+

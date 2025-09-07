@@ -82,10 +82,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		ImGui::Begin("Chunk");
 		ImGui::DragFloat2("origin", &origin.x, 1.0f);
 
-		if (ImGui::Button("chunk2"))
+		if (ImGui::Button("SetMap"))
 		{
-			map->SetMap(chunk2->GetChunk(), { 0,0 });
-
+			map->Swap(chunk2, chunk1,{ 0,5 });
 		}
 
 		if (ImGui::Button("map1"))

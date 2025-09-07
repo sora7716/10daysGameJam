@@ -46,7 +46,13 @@ public://メンバ関数
 	/// <param name="origin">原点</param>
 	void SetOrigin(const Vector2& origin) { origin_ = origin; };
 
+	/// <summary>
+	/// 逆転」
+	/// </summary>
+	/// <param name="pos">読み込む位置</param>
 	void Flip(const Vector2Int& pos);
+
+	void Swap(Chunk* under,Chunk* top,const Vector2Int& pos);
 
 };
 
