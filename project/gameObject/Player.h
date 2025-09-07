@@ -1,5 +1,5 @@
 #pragma once
-#include "gameObject/PlayerData.h"
+#include "gameObject/ResourceData.h"
 class Player
 {
 private://	メンバー変数
@@ -14,7 +14,6 @@ private://	メンバー変数
 	int dead_ = false;
 
 	PlayerData playerData_ = {};
-	Vector2 center_ = {};
 
 public://メンバー関数
 
@@ -41,18 +40,18 @@ public://メンバー関数
 
 	bool IsOnGround() { return isOnGround_; };
 
-	void SetLeftTop(const Vector2Int& leftTop);
-	void SetLeftBottom(const Vector2Int& leftBottom);
-	void SetRightTop(const Vector2Int& rightTop);
-	void SetRightBottom(const Vector2Int& rightBottom);
+	void SetLeftTop(const Vector2Int& leftTop) { playerData_.leftTop = leftTop; };
+	void SetLeftBottom(const Vector2Int& leftBottom) { playerData_.leftBottom = leftBottom; };;
+	void SetRightTop(const Vector2Int& rightTop) { playerData_.rightTop = rightTop; };;
+	void SetRightBottom(const Vector2Int& rightBottom) { playerData_.rightBottom = rightBottom; };;
 
-	void SetPosition(const Vector2& pos);
+	void SetCenter(const Vector2& center) { playerData_.gameObject.center = center; };
 
-	void SetVelocity(const Vector2& velocity);
+	void SetVelocity(const Vector2& velocity) { playerData_.gameObject.velocity = velocity; };
 
 	void SetIsOnGround(bool isJump) { isOnGround_ = isJump; };
 
-	void SetCenter(const Vector2& center) { center_ = center; };
+	//void SetCenter(const Vector2& center) { center_ = center; };
 private:
 
 	void CheackMapChipPosition();

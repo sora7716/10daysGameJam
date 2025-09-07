@@ -12,13 +12,13 @@ void Collision::Initialize(Player* player, char* keys, char* preKeys)
 
 void Collision::Update()
 {
-	Vector2 radius = { player_->GetPlayerData().width / 2.0f ,player_->GetPlayerData().height / 2.0f };
+	/*Vector2 radius = { player_->GetPlayerData().width / 2.0f ,player_->GetPlayerData().height / 2.0f };
 	Vector2 center = player_->GetPlayerData().pos + radius;
 	Vector2Int leftBottom = { static_cast<int>(center.x - radius.x) / kBlockSize,static_cast<int>(center.y + radius.y) / kBlockSize };
 	Vector2Int rightBottom = { static_cast<int>(center.x + radius.x) / kBlockSize,static_cast<int>(center.y + radius.y) / kBlockSize };
 	player_->SetCenter(center);
 	player_->SetLeftBottom(leftBottom);
-	player_->SetRightBottom(rightBottom);
+	player_->SetRightBottom(rightBottom);*/
 
 
 	// 上方向の移動
@@ -42,14 +42,14 @@ void Collision::Update()
 
 		// 左方向の移動
 
-	Vector2Int leftTop = { static_cast<int>(center.x - radius.x) / kBlockSize, static_cast<int>(center.y - radius.y) / kBlockSize };
+	/*Vector2Int leftTop = { static_cast<int>(center.x - radius.x) / kBlockSize, static_cast<int>(center.y - radius.y) / kBlockSize };
 
 	bool isHit = false;
 	if (map[leftTop.y][leftTop.x] == 1)
 	{
 		isHit = true;
 		player_->SetPosition({ center.x,player_->GetPlayerData().pos.y });
-	}
+	}*/
 	/*else if (map[leftBottom.y][leftBottom.x] == 1)
 	{
 		player_->SetPosition(player_->GetPlayerData().posOld);
@@ -80,17 +80,17 @@ player_->SetRightBottom
 //	}
 //}
 
-	if (map[rightBottom.y][rightBottom.x] == 1 || map[leftBottom.y][leftBottom.x] == 1)
-	{
-		player_->SetIsOnGround(false);
-		//player_->SetPosition({ player_->GetPlayerData().pos.x,center.y - radius.y });
-	}
-	else
-	{
-		player_->SetIsOnGround(true);
-	}
+	//if (map[rightBottom.y][rightBottom.x] == 1 || map[leftBottom.y][leftBottom.x] == 1)
+	//{
+	//	player_->SetIsOnGround(false);
+	//	//player_->SetPosition({ player_->GetPlayerData().pos.x,center.y - radius.y });
+	//}
+	//else
+	//{
+	//	player_->SetIsOnGround(true);
+	//}
 
-	ImGui::Begin("map");
+	/*ImGui::Begin("map");
 	ImGui::DragFloat2("center", &center.x);
 	ImGui::DragFloat2("radius", &radius.x);
 	ImGui::DragInt2("leftBottom", &leftBottom.x);
@@ -99,7 +99,7 @@ player_->SetRightBottom
 	ImGui::Text("mapLeftBottom:%d", map[leftBottom.y][leftBottom.x]);
 	ImGui::Text("mapRightBottom:%d", map[rightBottom.y][rightBottom.x]);
 	ImGui::Checkbox("isHit", &isHit);
-	ImGui::End();
+	ImGui::End();*/
 	//playerData_.leftBottom.y = static_cast<int>(playerData_.pos.y + playerData_.height - 1.0f + playerData_.velocity.y) / kMapSize;
 //playerData_.rightBottom.y = static_cast<int>(playerData_.pos.y + playerData_.height - 1.0f + playerData_.velocity.y) / kMapSize;
 

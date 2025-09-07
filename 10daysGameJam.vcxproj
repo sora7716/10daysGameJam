@@ -195,7 +195,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
     <ClInclude Include="project\Collision.h" />
     <ClInclude Include="project\gameObject\Player.h" />
-    <ClInclude Include="project\gameObject\PlayerData.h" />
+    <ClInclude Include="project\gameObject\ResourceData.h" />
     <ClInclude Include="project\Vector2.h" />
   </ItemGroup>
   <ItemGroup>

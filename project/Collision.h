@@ -1,6 +1,5 @@
 #pragma once
-#include "gameObject/PlayerData.h"
-
+#include "Vector2.h"
 class Player;
 
 const int kMapWidth = 20;

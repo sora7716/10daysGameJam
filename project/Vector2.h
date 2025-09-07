@@ -11,6 +11,9 @@ struct Vector2
 
 	//加算
 	Vector2 operator+(const Vector2& v);
+
+	//除算
+	Vector2 operator/(float n);
 };
 
 struct Vector2Int 

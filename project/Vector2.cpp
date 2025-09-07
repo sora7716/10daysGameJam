@@ -29,3 +29,13 @@ Vector2 Vector2::operator+(const Vector2& v)
 	};
 	return result;
 }
+
+//除算
+Vector2 Vector2::operator/(float n)
+{
+	Vector2 result = {
+		result.x = x / n,
+		result.y = y / n,
+	};
+	return result;
+}
