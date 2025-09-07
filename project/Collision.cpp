@@ -8,19 +8,11 @@ void Collision::Initialize(Player* player, char* keys, char* preKeys)
 	keys_ = keys;
 	preKeys_ = preKeys;
 	player_ = player;
+	Vector2 playerPos = player_->GetPlayerData().gameObject.center;
 }
 
 void Collision::Update()
 {
-	/*Vector2 radius = { player_->GetPlayerData().width / 2.0f ,player_->GetPlayerData().height / 2.0f };
-	Vector2 center = player_->GetPlayerData().pos + radius;
-	Vector2Int leftBottom = { static_cast<int>(center.x - radius.x) / kBlockSize,static_cast<int>(center.y + radius.y) / kBlockSize };
-	Vector2Int rightBottom = { static_cast<int>(center.x + radius.x) / kBlockSize,static_cast<int>(center.y + radius.y) / kBlockSize };
-	player_->SetCenter(center);
-	player_->SetLeftBottom(leftBottom);
-	player_->SetRightBottom(rightBottom);*/
-
-
 	Vector2Int leftTop = player_->GetPlayerData().leftTop;
 	Vector2Int rightTop = player_->GetPlayerData().rightTop;
 	Vector2Int leftBottom = player_->GetPlayerData().leftBottom;
@@ -31,7 +23,7 @@ void Collision::Update()
 	Vector2 velocity = player_->GetPlayerData().gameObject.velocity;
 	static Vector2 newCenter = {};
 
-	
+
 	if (velocity.y > 0.0f)
 	{
 		//下方向の判定
@@ -69,9 +61,13 @@ void Collision::Update()
 		player_->SetIsOnGround(false);
 	}
 
+	Vector2Int right =
+	{
+		static_cast<int>(center.x + radius.x + velocity.x) / kBlockSize,
+		static_cast<int>(center.y) / kBlockSize
+	};
 	//横の判定
-	if (map[rightTop.y][rightTop.x] == 1 ||
-		map[rightBottom.y][rightBottom.x] == 1)
+	if (map[right.y][right.x] == 1)
 	{
 		velocity.x = 0.0f;
 		player_->SetVelocity(velocity);
@@ -79,6 +75,7 @@ void Collision::Update()
 
 #ifdef _DEBUG
 	ImGui::Begin("map");
+	ImGui::DragFloat2("origin", &origin.x);
 	ImGui::Text("leftTop:%d", map[leftTop.y][leftTop.x]);
 	ImGui::Text("rightTop:%d", map[rightTop.y][rightTop.x]);
 	ImGui::Text("leftBottom:%d", map[leftBottom.y][leftBottom.x]);
