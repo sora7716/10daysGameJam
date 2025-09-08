@@ -17,6 +17,9 @@ public://定数
 	//ブロックサイズ
 	static inline const int kBlockSize = 32;
 
+	//マップの最大サイズ
+	static inline const Vector2Int kMaxMapSize = { 40,23 };
+
 private://メンバ変数
 
 	//マップ
@@ -27,8 +30,7 @@ public://メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="mapSize">マップのサイズ</param>
-	void Initialize(const Vector2Int& mapSize);
+	void Initialize();
 
 	/// <summary>
 	/// 描画

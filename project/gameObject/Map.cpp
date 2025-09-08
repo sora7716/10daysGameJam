@@ -2,15 +2,15 @@
 #include <Novice.h>
 
 //初期化
-void Map::Initialize(const Vector2Int& mapSize)
+void Map::Initialize()
 {
 	//マップの行の要素数を指定
-	map_.resize(mapSize.y);
+	map_.resize(kMaxMapSize.y);
 
 	//マップの列の要素数を指定
 	for (int y = 0; y < map_.size(); y++)
 	{
-		map_[y].resize(mapSize.x);
+		map_[y].resize(kMaxMapSize.x);
 	}
 }
 
@@ -70,10 +70,10 @@ void Map::FlipChunk(const Vector2Int& pos)
 //切り替え
 void Map::SwapChunk(Chunk* under, Chunk* top, const Vector2Int& underChunkPos)
 {
-
+	//下のチャンクを上のチャンクに変更
 	SetMap(top->GetChunk(), underChunkPos);
+	//上のチャンクを下のチャンクに変更
 	SetMap(under->GetChunk(), { underChunkPos.x,underChunkPos.y - Chunk::kMaxHeight });
-
 }
 
 
