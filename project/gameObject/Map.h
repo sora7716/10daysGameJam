@@ -22,6 +22,12 @@ public://定数
 
 private://メンバ変数
 
+	//ブロックの向きを逆転するかのフラグ
+	bool isReversal = false;
+
+	//ブロックの向きを入れ替えるようのフラグ
+	bool isReplacement = false;
+
 	//マップ
 	std::vector<std::vector<int>>map_;
 

@@ -11,6 +11,7 @@ struct GameObject
 	Vector2 radius;
 };
 
+
 //プレイヤーデータ
 struct PlayerData
 {
@@ -20,3 +21,16 @@ struct PlayerData
 	Vector2Int rightBottom;
 	Vector2Int leftBottom;
 };
+
+struct  Line
+{
+	Vector2Int startPos;
+	Vector2Int endPos;
+};
+
+//AABB
+struct AABB {
+	Vector2 min;
+	Vector2 max;
+};
+

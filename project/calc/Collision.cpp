@@ -30,7 +30,8 @@ void Collision::IsMapChip()
 			newCenter = { center.x,static_cast<float>((leftBottom.y) * kBlockSize) - radius.y - 1.0f };
 			player_->SetCenter(newCenter);
 		}
-	} else {
+	}
+	else {
 		//上方向の判定
 		Vector2Int top =
 		{
@@ -52,7 +53,8 @@ void Collision::IsMapChip()
 		map_[rightBottom.y][rightBottom.x] == 2)
 	{
 
-	} else
+	}
+	else
 	{
 		player_->SetIsOnGround(false);
 	}
@@ -82,6 +84,26 @@ void Collision::IsMapChip()
 #endif // _DEBUG
 
 }
+
+bool Collision::IsMouseOverRect(AABB aabb)
+{
+	//マウスの座標を取得
+	Vector2Int mousePos = {};
+	Novice::GetMousePosition(&mousePos.x, &mousePos.y);
+
+	//マウスの座標とSTARTボタンの当たり判定
+	if (aabb.min.x < static_cast<float>(mousePos.x) && aabb.max.x>static_cast<float>(mousePos.x))
+	{
+		if (aabb.min.y < static_cast<float>(mousePos.y) && aabb.max.y>static_cast<float>(mousePos.y))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
 
 //void Collision::Draw()
 //{

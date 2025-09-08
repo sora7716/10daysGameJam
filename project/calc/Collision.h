@@ -1,5 +1,5 @@
 #pragma once
-#include "Vector2.h"
+#include "gameObject/ResourceData.h"
 #include <vector>
 class Player;
 
@@ -36,12 +36,12 @@ public://メンバ関数
 	void SetMap(std::vector<std::vector<int>> map) { map_ = map; };
 
 	/// <summary>
-	/// 描画>
+	/// AABBとマウスカーソルの当たり判定
 	/// </summary>
-	//void Draw();
+	/// <param name="aabb">aabb</param>
+	/// <returns>当たり判定</returns>
+	static bool IsMouseOverRect(AABB aabb);
 };
-
-
 
 
 
