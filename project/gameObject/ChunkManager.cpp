@@ -40,6 +40,7 @@ void ChunkManager::LoadChunk(const std::string& filename)
 //Chunkの検索
 Chunk* ChunkManager::FindChunk(const std::string& filename)
 {
+	//チャンクの連想配列の中に存在するか
 	if (chunks_.contains(filename))
 	{
 		return chunks_.at(filename).get();

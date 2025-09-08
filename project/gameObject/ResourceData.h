@@ -1,7 +1,9 @@
 #pragma once
-#include "Vector2.h"
+#include "calc/Vector2.h"
 
-struct GameObject {
+//ゲームオブジェクト
+struct GameObject 
+{
 	Vector2 center;
 	Vector2 velocity;
 	Vector2 acceleration;
@@ -9,6 +11,7 @@ struct GameObject {
 	Vector2 radius;
 };
 
+//プレイヤーデータ
 struct PlayerData
 {
 	GameObject gameObject;

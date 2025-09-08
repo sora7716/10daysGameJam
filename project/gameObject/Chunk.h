@@ -6,11 +6,13 @@ class Chunk
 {
 public://定数
 
+	//チャンクのサイズ
 	static inline const int kMaxWidth = 5;
 	static inline const int kMaxHeight = 5;
 
 private://メンバ変数
 
+	//チャンクの二次元配列
 	std::array<std::array<int, kMaxWidth>, kMaxHeight> chunk_ ={};
 
 public://メンバ関数

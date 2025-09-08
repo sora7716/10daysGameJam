@@ -1,29 +1,28 @@
 #include "Player.h"
 #include"Novice.h"
-#include "Collision.h"
+#include "calc/Collision.h"
 #ifdef _DEBUG
 #include <imgui.h>
 #endif // _DEBUG
 
-float boxPosX[2] = { 250.0f,750.0f };
-float boxPosY[2] = { 550.0f,350.0f };
-float boxSide[2] = { 100.0f,300.0f };
-
+//初期化
 void Player::Initialize(char* keys, char* preKeys)//初期化
 {
+	//キーの受け取り
 	keys_ = keys;
 	preKeys_ = preKeys;
+
+	//プレイヤーデータの初期化
 	playerData_.gameObject.size = { 32.0f,32.0f };
 	playerData_.gameObject.radius = playerData_.gameObject.size / 2.0f;
 	playerData_.gameObject.acceleration = { 0.0f,0.8f };
 	playerData_.gameObject.center = { playerData_.gameObject.radius.x+64.0f,288.0f + playerData_.gameObject.radius.y };
 }
 
+//更新
 void Player::Update()
 {
-	CheackMapChipPosition();
-
-	//playerData_.pos.x += playerData_.velocity.x;//プレイヤー前進前スピード
+	CheckMapChipIndex();
 
 	playerData_.gameObject.velocity += playerData_.gameObject.acceleration;//速度に加速度を足す
 	playerData_.gameObject.center += playerData_.gameObject.velocity;//位置に速度を足す
@@ -52,7 +51,6 @@ void Player::Update()
 	{
 		playerData_.gameObject.velocity.y = 0.0f;
 		playerData_.gameObject.acceleration.y = 0.0f;
-		//playerData_.pos.y = center_.y - (playerData_.height / 2.0f);
 	}
 	else
 	{
@@ -74,35 +72,6 @@ void Player::Update()
 	ImGui::DragInt2("rightBottom", &playerData_.rightBottom.x);
 	ImGui::End();
 #endif // _DEBUG
-
-	//if (keys_[DIK_SPACE])//プレイヤー前進
-	//{
-	//	isMove = true;
-	//}
-
-	//if (isMove)//プレイヤー前進後スピード
-	//{
-	//	playerData_.velocity.x = 5.0f;
-	//} else
-	//{
-	//	playerData_.velocity.x = 0.0f;
-	//}
-
-
-
-	/*if (isMove)
-	{*/
-
-	//if (playerData_.velocity.x <= 0.0f)//ジャンプキー
-	//{
-	//	if (!isJump)
-	//	{
-	//		isJump = true;
-	//		playerData_.velocity.x = -15.0f;
-	//	}
-
-	//}
-
 
 	//if (!dead)//死亡条件
 	//{
@@ -148,6 +117,8 @@ void Player::Update()
 //	}
 //}
 }
+
+//描画
 void Player::Draw()
 {
 	//if (!dead)//生きていたら表示
@@ -171,11 +142,6 @@ void Player::Draw()
 	//		BLACK, //円の色
 	//		kFillModeSolid);//塗りつぶすか否か
 	//}
-	//Novice::DrawBox(static_cast<int>(playerData_.pos.x),
-	//	static_cast<int>(playerData_.pos.y),
-	//	static_cast<int>(playerData_.width),
-	//	static_cast<int>(playerData_.height),
-	//	0.0f, RED, kFillModeSolid);
 
 	Novice::DrawBox
 	(
@@ -187,10 +153,10 @@ void Player::Draw()
 	);
 }
 
-void Player::CheackMapChipPosition()
+//マップチップ番号を検索
+void Player::CheckMapChipIndex()
 {
 	// プレイヤーの下のチップ座標を計算
-
 	//左上
 	playerData_.leftTop =
 	{
@@ -215,24 +181,6 @@ void Player::CheackMapChipPosition()
 		static_cast<int>(playerData_.gameObject.center.x + playerData_.gameObject.radius.x - 1.0f) / kBlockSize,
 		static_cast<int>(playerData_.gameObject.center.y + playerData_.gameObject.radius.y - 1.0f) / kBlockSize
 	};
-
-	//// 右上
-	//playerData_.rightTop.x = static_cast<int>(playerData_.pos.x + playerData_.width - 1.0f) / kBlockSize;
-	//playerData_.rightTop.y = static_cast<int>(playerData_.pos.y) / kBlockSize;
-
-	//// 右下
-	//playerData_.rightBottom.x = static_cast<int>(playerData_.pos.x + playerData_.width - 1.0f) / kBlockSize;
-	//playerData_.rightBottom.y = static_cast<int>(playerData_.pos.y + playerData_.height - 1.0f) / kBlockSize;
-
-	//// 左上
-	//playerData_.leftTop.x = static_cast<int>(playerData_.pos.x) / kBlockSize;
-	//playerData_.leftTop.y = static_cast<int>(playerData_.pos.y) / kBlockSize;
-
-	//// 左下
-	//playerData_.leftBottom.x = static_cast<int>(playerData_.pos.x) / kBlockSize;
-	//playerData_.leftBottom.y = static_cast<int>(playerData_.pos.y + playerData_.height - 1.0f) / kBlockSize;
-
-
 }
 
 

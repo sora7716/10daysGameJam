@@ -4,16 +4,23 @@ class Player
 {
 private://	メンバー変数
 
-
 	float timer = 0.0f;
-	char* keys_ = {};
-	char* preKeys_ = {};
-	bool isMove_ = false;
-	bool isOnGround_ = false;
-	bool isJump_ = false;
 	int deadTimer_ = false;
 	int dead_ = false;
+	//キー
+	char* keys_ = {};
+	char* preKeys_ = {};
 
+	//地面の上にいるかのフラグ
+	bool isOnGround_ = false;
+
+	//ジャンプするかのフラグ
+	bool isJump_ = false;
+
+	//移動するかのフラグK
+	bool isMove_ = false;
+	
+	//プレイヤーのデータ
 	PlayerData playerData_ = {};
 
 public://メンバー関数
@@ -35,29 +42,72 @@ public://メンバー関数
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// プレイヤーデータのゲッター
+	/// </summary>
+	/// <returns></returns>
 	PlayerData GetPlayerData()const { return playerData_; };
 
-	void SetPlayerData(const PlayerData& playerData) { playerData_ = playerData; };
-
+	/// <summary>
+	/// オブジェクトが地面にいるかどうかを判定します。
+	/// </summary>
+	/// <returns>地面にいる場合は true、そうでない場合は false を返します。</returns>
 	bool IsOnGround() { return isOnGround_; };
 
+	/// <summary>
+	/// 左上のマップチップ番号のセッター
+	/// </summary>
+	/// <param name="leftTop">左上</param>
 	void SetLeftTop(const Vector2Int& leftTop) { playerData_.leftTop = leftTop; };
-	void SetLeftBottom(const Vector2Int& leftBottom) { playerData_.leftBottom = leftBottom; };;
-	void SetRightTop(const Vector2Int& rightTop) { playerData_.rightTop = rightTop; };;
-	void SetRightBottom(const Vector2Int& rightBottom) { playerData_.rightBottom = rightBottom; };;
 
+	/// <summary>
+	/// 左下のマップチップ番号のセッター
+	/// </summary>
+	/// <param name="leftBottom">左下</param>
+	void SetLeftBottom(const Vector2Int& leftBottom) { playerData_.leftBottom = leftBottom; };
+
+	/// <summary>
+	/// 右上のマップチップ番号のセッター
+	/// </summary>
+	/// <param name="rightTop">右上</param>
+	void SetRightTop(const Vector2Int& rightTop) { playerData_.rightTop = rightTop; };
+
+	/// <summary>
+	/// 右下のマップチップ番号のセッター
+	/// </summary>
+	/// <param name="rightBottom">右下</param>
+	void SetRightBottom(const Vector2Int& rightBottom) { playerData_.rightBottom = rightBottom; };
+
+	/// <summary>
+	/// 中心座標のセッター
+	/// </summary>
+	/// <param name="center">中心座標</param>
 	void SetCenter(const Vector2& center) { playerData_.gameObject.center = center; };
 
+	/// <summary>
+	/// 速度のセッター
+	/// </summary>
+	/// <param name="velocity">速度</param>
 	void SetVelocity(const Vector2& velocity) { playerData_.gameObject.velocity = velocity; };
 
+	/// <summary>
+	/// オブジェクトが地面にいるかどうかを判定するフラグのセッター
+	/// </summary>
+	/// <param name="isOnGround">地面にいるフラグ</param>
 	void SetIsOnGround(bool isOnGround) { isOnGround_ = isOnGround; };
 
+	/// <summary>
+	/// ジャンプぐラグのセッター
+	/// </summary>
+	/// <param name="isJump">ジャンプフラグ</param>
 	void SetIsJump(bool isJump) { isJump_ = isJump; };
-
 
 private:
 
-	void CheackMapChipPosition();
+	/// <summary>
+	/// マップチップ番号を検索
+	/// </summary>
+	void CheckMapChipIndex();
 };
 
 

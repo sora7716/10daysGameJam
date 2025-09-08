@@ -25,14 +25,15 @@ void Map::Draw()
 			if (map_[y][x] == static_cast<int>(BlockType::kBlock))
 			{
 				Novice::DrawBox(
-					static_cast<int>(origin_.x) + x * kBlockSize,
-					static_cast<int>(origin_.y) + y * kBlockSize, kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeWireFrame);
+					x * kBlockSize,
+					y * kBlockSize, kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeWireFrame
+				);
 			}
 		}
 	}
 }
 
-//セッター：map
+//mapのセッター
 void Map::SetMap(const std::array<std::array<int, Chunk::kMaxWidth>, Chunk::kMaxHeight>& chunk, const Vector2Int& begin)
 {
 	for (int y = 0; y < Chunk::kMaxHeight; y++)

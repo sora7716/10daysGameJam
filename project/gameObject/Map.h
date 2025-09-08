@@ -1,8 +1,9 @@
 #pragma once
 #include <vector>
-#include "Vector2.h"
+#include "calc/Vector2.h"
 #include "Chunk.h"
 
+//ブロックタイプ
 enum class BlockType
 {
 	kBlank,
@@ -13,11 +14,12 @@ class Map
 {
 public://定数
 
+	//ブロックサイズ
 	static inline const int kBlockSize = 32;
 
 private://メンバ変数
 
-	Vector2 origin_ = {};
+	//マップ
 	std::vector<std::vector<int>>map_;
 
 public://メンバ関数
@@ -34,17 +36,11 @@ public://メンバ関数
 	void Draw();
 
 	/// <summary>
-	/// セッター：map
+	/// mapのセッター
 	/// </summary>
 	/// <param name="chunk">chunkの2次元配列</param>
 	/// <param name="begin">マップの読み込み開始位置</param>
 	void SetMap(const std::array<std::array<int, Chunk::kMaxWidth>, Chunk::kMaxHeight>& chunk, const Vector2Int& begin);
-
-	/// <summary>
-	/// セッター：mapの原点
-	/// </summary>
-	/// <param name="origin">原点</param>
-	void SetOrigin(const Vector2& origin) { origin_ = origin; };
 
 	/// <summary>
 	/// 逆転

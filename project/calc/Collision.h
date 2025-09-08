@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector2.h"
+#include <vector>
 class Player;
 
 const int kMapWidth = 35;
@@ -13,9 +14,7 @@ private:
 
 	//	メンバー変数
 	Player* player_ = nullptr;
-	char* keys_ = {};
-	char* preKeys_ = {};
-	int map[kMapHeight][kMapWidth] =
+	std::vector<std::vector<int>> map =
 	{
 
 
@@ -30,22 +29,17 @@ private:
 		{1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,1,1,1,0,0,0,0,0,1,1,0,0,1,0,0,1},
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		
+
 
 	};
-	Vector2 origin = { 0.0f,0.0f };
-	Vector2Int mapPos = { 0,0 };
-	Vector2Int mapSize = { 5,5 };
-
 public:
 	//メンバー関数
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="keys">現在のキー</param>
-	/// <param name="preKeys">過去のキー</param>
-	void Initialize(Player* player, char* keys, char* preKeys);
+	/// <param name="player">プレイヤー</param>
+	void Initialize(Player* player);
 
 	/// <summary>
 	/// 更新

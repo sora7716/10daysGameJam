@@ -4,15 +4,15 @@ struct Vector2
 	float x;
 	float y;
 
-	//‰ÁZ
+	//åŠ ç®—
 	Vector2& operator+=(const Vector2& v);
-	//Œ¸Z
+	//æ¸›ç®—
 	Vector2 operator-(const Vector2& v);
 
-	//‰ÁZ
+	//åŠ ç®—
 	Vector2 operator+(const Vector2& v);
 
-	//œZ
+	//é™¤ç®—
 	Vector2 operator/(float n);
 };
 

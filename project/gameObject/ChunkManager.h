@@ -8,27 +8,32 @@ class ChunkManager
 {
 private://メンバ変数
 
+	//チャンクのクラスの連想配列
 	std::map<std::string, std::unique_ptr<Chunk>>chunks_;
 
 private://静的メンバ変数
 
+	//インスタンス
 	static inline ChunkManager* instance = nullptr;
 
 private://メンバ関数
 
+	//コンストラクタを封印
 	ChunkManager() = default;
 	
+	//デストラクタの封印
 	~ChunkManager() = default;
 
+	//コピーコンストラクタの禁止
 	ChunkManager(const ChunkManager&) = delete;
 
+	//代入演算子の禁止
 	ChunkManager operator= (const ChunkManager&) = delete;
 	
-
 public://メンバ関数
 
 	/// <summary>
-	/// ゲッター：インスタンス
+	///　インスタスのゲッター
 	/// </summary>
 	/// <returns>インスタンス</returns>
 	static ChunkManager* GetInstance();
