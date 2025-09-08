@@ -6,7 +6,7 @@
 #endif // _DEBUG
 
 //初期化
-void Player::Initialize(char* keys, char* preKeys)//初期化
+void Player::Initialize(char* keys, char* preKeys, std::vector<std::vector<int>>map)
 {
 	//キーの受け取り
 	keys_ = keys;
@@ -16,7 +16,22 @@ void Player::Initialize(char* keys, char* preKeys)//初期化
 	playerData_.gameObject.size = { 32.0f,32.0f };
 	playerData_.gameObject.radius = playerData_.gameObject.size / 2.0f;
 	playerData_.gameObject.acceleration = { 0.0f,0.8f };
-	playerData_.gameObject.center = { playerData_.gameObject.radius.x+64.0f,288.0f + playerData_.gameObject.radius.y };
+
+	//プレイヤーの位置を探索
+	for (int y = 0; y < map.size(); y++)
+	{
+		for (int x = 0; x < map[y].size(); x++)
+		{
+			if (map[y][x] == static_cast<int>(BlockType::kPlayer)) {
+				playerData_.gameObject.center =
+				{
+					static_cast<float>(x * kBlockSize) - playerData_.gameObject.radius.x,
+					static_cast<float>(y * kBlockSize) - playerData_.gameObject.radius.y,
+				};
+			}
+		}
+	}
+
 }
 
 //更新
@@ -27,38 +42,46 @@ void Player::Update()
 	playerData_.gameObject.velocity += playerData_.gameObject.acceleration;//速度に加速度を足す
 	playerData_.gameObject.center += playerData_.gameObject.velocity;//位置に速度を足す
 
-
+	//スペースを押したら移動開始
 	if (keys_[DIK_SPACE] && !preKeys_[DIK_SPACE])
 	{
 		isMove_ = true;
 	}
 
-	if (isJump_&&isOnGround_)
+	//ジャンプできるかどうか
+	if (isJump_ && isOnGround_)
 	{
-		isOnGround_ = false;
-		isJump_ = false;
-		playerData_.gameObject.velocity.y = -8.0f;
+		isOnGround_ = false;//地面から離れる
+		playerData_.gameObject.velocity.y = -8.0f;//ジャンプ力を設定
+		isJump_ = false;//ジャンプフラグをfalse
 	}
 
-
+	//下に行き過ぎないように
 	if (playerData_.gameObject.center.y > 600.0f)
 	{
-		playerData_.gameObject.center.y = 600.0f;
-		isOnGround_ = true;
+		playerData_.gameObject.center.y = 600.0f;//Y軸の位置を固定
+		isOnGround_ = true;//地面にくっつく
+		isMove_ = false;//移動を止める
+		playerData_.gameObject.velocity = {};//速度を0にする
 	}
 
+	//地面にいるかどうか
 	if (isOnGround_)
 	{
+		//速度を0にする　
 		playerData_.gameObject.velocity.y = 0.0f;
+		//加速度を0にする
 		playerData_.gameObject.acceleration.y = 0.0f;
-	}
-	else
+	} else
 	{
+		//加速度を元に戻す
 		playerData_.gameObject.acceleration.y = 0.8f;
 	}
 
+	//移動するかどうか
 	if (isMove_)
 	{
+		//速度を設定
 		playerData_.gameObject.velocity.x = 2.0f;
 	}
 

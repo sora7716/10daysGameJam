@@ -31,7 +31,7 @@ public://メンバー関数
 	/// </summary>
 	/// <param name="keys">現在のキー</param>
 	/// <param name="preKeys">過去のキー</param>
-	void Initialize(char* keys, char* preKeys);
+	void Initialize(char* keys, char* preKeys,std::vector<std::vector<int>>map);
 
 	/// <summary>
 	/// 更新
@@ -46,14 +46,20 @@ public://メンバー関数
 	/// <summary>
 	/// プレイヤーデータのゲッター
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>プレイヤーデータ</returns>
 	PlayerData GetPlayerData()const { return playerData_; };
 
 	/// <summary>
 	/// オブジェクトが地面にいるかどうかを判定します。
 	/// </summary>
-	/// <returns>地面にいる場合は true、そうでない場合は false を返します。</returns>
+	/// <returns>オブジェクトが地面にいるかどうか</returns>
 	bool IsOnGround() { return isOnGround_; };
+
+	/// <summary>
+	/// 移動しているかどうかのゲッター
+	/// </summary>
+	/// <returns> 移動しているかどうか</returns>
+	bool IsMove() { return isMove_; };
 
 	/// <summary>
 	/// 左上のマップチップ番号のセッター

@@ -69,7 +69,12 @@ void Collision::IsMapChip()
 
 		velocity.x = 0.0f;
 		player_->SetVelocity(velocity);
-		player_->SetIsJump(true);
+		if (player_->IsMove()) {
+			player_->SetIsJump(true);
+		} else {
+			velocity.y = 0.0f;
+			player_->SetVelocity(velocity);
+		}
 	}
 
 #ifdef _DEBUG

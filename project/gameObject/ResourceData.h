@@ -20,3 +20,12 @@ struct PlayerData
 	Vector2Int rightBottom;
 	Vector2Int leftBottom;
 };
+
+//ブロックタイプ
+enum class BlockType
+{
+	kBlank,
+	kBlock,
+	kPlayer
+};
+

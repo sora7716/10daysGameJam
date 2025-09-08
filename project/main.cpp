@@ -30,7 +30,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	Player* player = new Player();
 	Collision* collision = new Collision();
-	player->Initialize(keys, preKeys);
 	collision->SetPlayer(player);
 
 	Line line1;
@@ -48,6 +47,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	map->SetMap(ChunkManager::GetInstance()->FindChunk("chunk2")->GetChunk(), { 0,7 });
 	collision->SetMap(map->GetMap());
 
+	player->Initialize(keys, preKeys,map->GetMap());
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
 	{

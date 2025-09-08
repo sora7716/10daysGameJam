@@ -1,14 +1,7 @@
 #pragma once
 #include <vector>
-#include "calc/Vector2.h"
+#include "gameObject/ResourceData.h"
 #include "Chunk.h"
-
-//ブロックタイプ
-enum class BlockType
-{
-	kBlank,
-	kBlock,
-};
 
 class Map
 {
