@@ -20,7 +20,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
 
 	// ライブラリの初期化
-	Novice::Initialize(kWindowTitle, 1280, 720);
+	Novice::Initialize(kWindowTitle, 1312, 720);
 
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };
@@ -36,18 +36,52 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	line1.startPos = { 160,0 };
 	line1.endPos = { 160,416 };*/
 
+	//ブロックテクスチャの読み込み
+	int blockTextures[2] =
+	{
+		Novice::LoadTexture("./resources/tile_1.png"),
+		Novice::LoadTexture("./resources/tile_2.png")
+	};
+
+	int playerTexture = Novice::LoadTexture("./resources/player.png");
+
 	//チャンクの生成
-	ChunkManager::GetInstance()->LoadChunk("chunk1");
-	ChunkManager::GetInstance()->LoadChunk("chunk2");
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-1", "up_0-1", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-2", "up_0-2", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-3", "up_0-3", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-4", "up_0-4", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-5", "up_0-5", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-6", "up_0-6", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-7", "up_0-7", blockTextures[1]);
+
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-1", "under_0-1", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-2", "under_0-2", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-3", "under_0-3", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-4", "under_0-4", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-5", "under_0-5", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-6", "under_0-6", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-7", "under_0-7", blockTextures[0]);
 
 	//マップの生成
 	std::unique_ptr<Map>map = std::make_unique<Map>();
 	map->Initialize();
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("chunk1")->GetChunk(), { 0,0 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("chunk2")->GetChunk(), { 0,7 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-1"), { 3 ,3 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-2"), { 8 ,3 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-3"), { 13,3 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-4"), { 18,3 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-5"), { 23,3 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-6"), { 28,3 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-7"), { 33,3 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-1"), { 3,9 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-2"), { 8,9 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-3"), { 13,9 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-4"), { 18,9 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-5"), { 23,9 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-6"), { 28,9 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-7"), { 33,9 });
 	collision->SetMap(map->GetMap());
 
-	player->Initialize(keys, preKeys,map->GetMap());
+	player->Initialize(keys, preKeys, map->GetMap(),playerTexture);
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
 	{
@@ -64,6 +98,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		player->Update();
 		collision->IsMapChipCollision();
+
 		///
 		/// ↑更新処理ここまで
 		///
@@ -72,9 +107,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		/// ↓描画処理ここから
 		///
 
+		map->Draw();
 		player->Draw();
 
-		map->Draw();
 
 		/*for (int i = 0; i < 6; i++)
 		{

@@ -3,6 +3,15 @@
 #include <sstream>
 #include <cassert>
 
+//初期化
+void Chunk::Initialize(const std::string& filePath, int textureHandle)
+{
+	//csvファイルの読み込み
+	LoadChunkCsv(filePath);
+	//テクスチャハンドルを受け取る
+	textureHandle_ = textureHandle;
+}
+
 //CSV読み込み
 void Chunk::LoadChunkCsv(const std::string& filePath)
 {

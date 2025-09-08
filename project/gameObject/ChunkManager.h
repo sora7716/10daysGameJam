@@ -43,18 +43,21 @@ public://メンバ関数
 	/// </summary>
 	void Finalize();
 
+
 	/// <summary>
 	/// Chunk読み込み
 	/// </summary>
 	/// <param name="filename">ファイル名(拡張子無し)</param>
-	void LoadChunk(const std::string& filename);
+	/// <param name="name">ファイル名(拡張子無し)</param>
+	/// <param name="textureHandle">テクスチャハンドル</param>
+	void LoadChunk(const std::string& filename,const std::string& name,int textureHandle);
 
 	/// <summary>
 	/// Chunkの検索
 	/// </summary>
-	/// <param name="filename">検索するファイル名(拡張子無し)</param>
+	/// <param name="name">検索する名前</param>
 	/// <returns></returns>
-	Chunk* FindChunk(const std::string& filename);
+	Chunk* FindChunk(const std::string& name);
 
 };
 

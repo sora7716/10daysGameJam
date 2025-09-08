@@ -15,6 +15,7 @@ struct GameObject
 struct PlayerData
 {
 	GameObject gameObject;
+	int textureHandle;
 	Vector2Int rightTop;
 	Vector2Int leftTop;
 	Vector2Int rightBottom;

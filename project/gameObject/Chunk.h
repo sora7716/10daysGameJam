@@ -13,21 +13,44 @@ public://定数
 private://メンバ変数
 
 	//チャンクの二次元配列
-	std::array<std::array<int, kMaxWidth>, kMaxHeight> chunk_ ={};
+	std::array<std::array<int, kMaxWidth>, kMaxHeight> chunk_ = {};
+	//テクスチャハンドル
+	int textureHandle_ = -1;
 
 public://メンバ関数
 
 	/// <summary>
-	/// CSV読み込み
+	/// 初期化
 	/// </summary>
 	/// <param name="filePath">ファイルパス</param>
-	void LoadChunkCsv(const std::string& filePath);
+	/// <param name="textureHandle">テクスチャハンドル</param>
+	void Initialize(const std::string& filePath, int textureHandle);
 
 	/// <summary>
 	/// ゲッター：chunk
 	/// </summary>
 	/// <returns>chunk</returns>
 	std::array<std::array<int, kMaxWidth>, kMaxHeight>GetChunk()const { return chunk_; };
+
+	/// <summary>
+	/// テクスチャハンドルのセッター
+	/// </summary>
+	/// <param name="textureHandle">テクスチャハンドル</param>
+	void SetTextureHandle(int textureHandle) { textureHandle_ = textureHandle; };
+
+	/// <summary>
+	/// テクスチャハンドルのゲッター
+	/// </summary>
+	/// <returns>テクスチャハンドル</returns>
+	int GetTextureHandle()const { return textureHandle_; };
+
+private://メンバ関数
+
+	/// <summary>
+	/// CSV読み込み
+	/// </summary>
+	/// <param name="filePath">ファイルパス</param>
+	void LoadChunkCsv(const std::string& filePath);
 
 };
 

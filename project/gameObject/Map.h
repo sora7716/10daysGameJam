@@ -3,6 +3,14 @@
 #include "gameObject/ResourceData.h"
 #include "Chunk.h"
 
+//描画用データ
+struct MapDrawData 
+{
+	Vector2Int begin;
+	int textureHandle;
+};
+
+//マップ
 class Map
 {
 public://定数
@@ -11,12 +19,15 @@ public://定数
 	static inline const int kBlockSize = 32;
 
 	//マップの最大サイズ
-	static inline const Vector2Int kMaxMapSize = { 40,23 };
+	static inline const Vector2Int kMaxMapSize = { 41,23 };
 
 private://メンバ変数
 
 	//マップ
 	std::vector<std::vector<int>>map_;
+
+	//テクスチャ
+	std::vector<MapDrawData>mapDrawData_;
 
 public://メンバ関数
 
@@ -33,9 +44,9 @@ public://メンバ関数
 	/// <summary>
 	/// mapのセッター
 	/// </summary>
-	/// <param name="chunk">chunkの2次元配列</param>
+	/// <param name="chunk">chunkのクラス</param>
 	/// <param name="begin">マップの読み込み開始位置</param>
-	void SetMap(const std::array<std::array<int, Chunk::kMaxWidth>, Chunk::kMaxHeight>& chunk, const Vector2Int& begin);
+	void SetMap(const Chunk* chunk, const Vector2Int& begin);
 
 	/// <summary>
 	/// 逆転

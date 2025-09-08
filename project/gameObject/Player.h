@@ -31,7 +31,9 @@ public://メンバー関数
 	/// </summary>
 	/// <param name="keys">現在のキー</param>
 	/// <param name="preKeys">過去のキー</param>
-	void Initialize(char* keys, char* preKeys,std::vector<std::vector<int>>map);
+	/// <param name="map">マップ</param>
+	/// <param name="textureHandle">テクスチャハンドル</param>
+	void Initialize(char* keys, char* preKeys,std::vector<std::vector<int>>map,int textureHandle);
 
 	/// <summary>
 	/// 更新

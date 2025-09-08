@@ -6,7 +6,7 @@
 #endif // _DEBUG
 
 //初期化
-void Player::Initialize(char* keys, char* preKeys, std::vector<std::vector<int>>map)
+void Player::Initialize(char* keys, char* preKeys, std::vector<std::vector<int>>map, int textureHandle)
 {
 	//キーの受け取り
 	keys_ = keys;
@@ -16,13 +16,15 @@ void Player::Initialize(char* keys, char* preKeys, std::vector<std::vector<int>>
 	playerData_.gameObject.size = { 32.0f,32.0f };
 	playerData_.gameObject.radius = playerData_.gameObject.size / 2.0f;
 	playerData_.gameObject.acceleration = { 0.0f,0.8f };
+	playerData_.textureHandle = textureHandle;
 
 	//プレイヤーの位置を探索
 	for (int y = 0; y < map.size(); y++)
 	{
 		for (int x = 0; x < map[y].size(); x++)
 		{
-			if (map[y][x] == static_cast<int>(BlockType::kPlayer)) {
+			if (map[y][x] == static_cast<int>(BlockType::kPlayer))
+			{
 				playerData_.gameObject.center =
 				{
 					static_cast<float>(x * kBlockSize) - playerData_.gameObject.radius.x,
@@ -166,13 +168,20 @@ void Player::Draw()
 	//		kFillModeSolid);//塗りつぶすか否か
 	//}
 
-	Novice::DrawBox
+	/*Novice::DrawBox
 	(
 		static_cast<int>(playerData_.gameObject.center.x - playerData_.gameObject.radius.x),
 		static_cast<int>(playerData_.gameObject.center.y - playerData_.gameObject.radius.y),
 		static_cast<int>(playerData_.gameObject.size.x),
 		static_cast<int>(playerData_.gameObject.size.y),
 		0.0f, BLUE, kFillModeSolid
+	);*/
+
+	Novice::DrawSprite(
+		static_cast<int>(playerData_.gameObject.center.x - playerData_.gameObject.radius.x),
+		static_cast<int>(playerData_.gameObject.center.y - playerData_.gameObject.radius.y),
+		playerData_.textureHandle,
+		1.0f, 1.0f, 0.0f, WHITE
 	);
 }
 

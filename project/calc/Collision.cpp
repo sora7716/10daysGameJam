@@ -16,7 +16,6 @@ void Collision::IsMapChipCollision()
 	Vector2 velocity = player_->GetPlayerData().gameObject.velocity;
 	static Vector2 newCenter = {};
 
-
 	if (velocity.y > 0.0f)
 	{
 		//下方向の判定
@@ -27,10 +26,19 @@ void Collision::IsMapChipCollision()
 			map_[rightBottom.y][rightBottom.x] == 1)
 		{
 			player_->SetIsOnGround(true);
-			newCenter = { center.x,static_cast<float>((leftBottom.y) * kBlockSize) - radius.y - 1.0f };
+			newCenter = { center.x,static_cast<float>((leftBottom.y) * kBlockSize) - radius.y - 1.7f };
 			player_->SetCenter(newCenter);
 		}
-	} else {
+	} 
+	else
+	{
+		//当たってないときの判定
+		if (map_[leftBottom.y][leftBottom.x] != 1 &&
+			map_[rightBottom.y][rightBottom.x] != 1)
+		{
+			player_->SetIsOnGround(false);
+		}
+
 		//上方向の判定
 		Vector2Int top =
 		{
@@ -45,33 +53,25 @@ void Collision::IsMapChipCollision()
 		}
 	}
 
-	//当たってないときの判定
-	if (map_[leftBottom.y][leftBottom.x] == 1 ||
-		map_[rightBottom.y][rightBottom.x] == 1 ||
-		map_[leftBottom.y][leftBottom.x] == 2 ||
-		map_[rightBottom.y][rightBottom.x] == 2)
-	{
-
-	} else
-	{
-		player_->SetIsOnGround(false);
-	}
-
+	//右の判定
 	Vector2Int right =
 	{
 		static_cast<int>(center.x + radius.x + velocity.x) / kBlockSize,
 		static_cast<int>(center.y) / kBlockSize
 	};
 
-	//横の判定
 	if (map_[right.y][right.x] == 1)
 	{
 
 		velocity.x = 0.0f;
 		player_->SetVelocity(velocity);
-		if (player_->IsMove()) {
+		if (player_->IsMove()) 
+		{
 			player_->SetIsJump(true);
-		} else {
+		} 
+		else
+		{
+			player_->SetIsOnGround(false);
 			velocity.y = 0.0f;
 			player_->SetVelocity(velocity);
 		}

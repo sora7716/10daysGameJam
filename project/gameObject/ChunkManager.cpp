@@ -19,10 +19,10 @@ void ChunkManager::Finalize()
 }
 
 //Chunk読み込み
-void ChunkManager::LoadChunk(const std::string& filename)
+void ChunkManager::LoadChunk(const std::string& filename, const std::string& name, int textureHandle)
 {
 	//チャンクの連想配列の中に存在するか
-	if (chunks_.contains(filename))
+	if (chunks_.contains(name))
 	{
 		//存在していた場合は早期リターン
 		return;
@@ -31,19 +31,19 @@ void ChunkManager::LoadChunk(const std::string& filename)
 	//チャンクを生成
 	std::unique_ptr<Chunk>chunk = std::make_unique<Chunk>();
 	//csvファイルの読み込み
-	chunk->LoadChunkCsv("resources/" + filename + ".csv");
+	chunk->Initialize("resources/" + filename + ".csv", textureHandle);
 
 	//生成したチャンクを連想配列に挿入
-	chunks_.insert(std::make_pair(filename, std::move(chunk)));
+	chunks_.insert(std::make_pair(name, std::move(chunk)));
 }
 
 //Chunkの検索
-Chunk* ChunkManager::FindChunk(const std::string& filename)
+Chunk* ChunkManager::FindChunk(const std::string& name)
 {
 	//チャンクの連想配列の中に存在するか
-	if (chunks_.contains(filename))
+	if (chunks_.contains(name))
 	{
-		return chunks_.at(filename).get();
+		return chunks_.at(name).get();
 	}
 	return nullptr;
 }
