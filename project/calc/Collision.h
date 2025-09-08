@@ -21,7 +21,7 @@ public://メンバ関数
 	/// <summary>
 	/// マップチップの衝突判定
 	/// </summary>
-	void IsMapChip();
+	void IsMapChipCollision();
 
 	/// <summary>
 	/// プレイヤーのセッター
@@ -34,11 +34,6 @@ public://メンバ関数
 	/// </summary>
 	/// <param name="map">マップ</param>
 	void SetMap(std::vector<std::vector<int>> map) { map_ = map; };
-
-	/// <summary>
-	/// 描画>
-	/// </summary>
-	//void Draw();
 };
 
 

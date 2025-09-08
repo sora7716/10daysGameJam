@@ -29,6 +29,17 @@ void Map::Draw()
 					y * kBlockSize, kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeWireFrame
 				);
 			}
+
+#ifdef _DEBUG
+			if (map_[y][x] == static_cast<int>(BlockType::kBlank))
+			{
+				Novice::DrawBox(
+					x * kBlockSize,
+					y * kBlockSize, kBlockSize, kBlockSize, 0.0f, 0x00000055, kFillModeWireFrame
+				);
+			}
+#endif // _DEBUG
+
 		}
 	}
 }

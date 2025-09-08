@@ -32,9 +32,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Collision* collision = new Collision();
 	collision->SetPlayer(player);
 
-	Line line1;
+	/*Line line1;
 	line1.startPos = { 160,0 };
-	line1.endPos = { 160,416 };
+	line1.endPos = { 160,416 };*/
 
 	//チャンクの生成
 	ChunkManager::GetInstance()->LoadChunk("chunk1");
@@ -63,7 +63,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		///
 
 		player->Update();
-		collision->IsMapChip();
+		collision->IsMapChipCollision();
 		///
 		/// ↑更新処理ここまで
 		///
@@ -72,23 +72,18 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		/// ↓描画処理ここから
 		///
 
-
-
-
-
-		//collision->Draw();
 		player->Draw();
 
 		map->Draw();
 
-		for (int i = 0; i < 6; i++)
+		/*for (int i = 0; i < 6; i++)
 		{
 			Novice::DrawLine(line1.startPos.x + (i * 32 * 5),
 				line1.startPos.y,
 				line1.endPos.x + (i * 32 * 5),
 				line1.endPos.y,
 				RED);
-		}
+		}*/
 		///
 		/// ↑描画処理ここまで
 		///

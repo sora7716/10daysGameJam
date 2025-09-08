@@ -4,7 +4,7 @@
 #include<Novice.h>
 
 //マップチップの衝突判定
-void Collision::IsMapChip()
+void Collision::IsMapChipCollision()
 {
 	Vector2Int leftTop = player_->GetPlayerData().leftTop;
 	Vector2Int rightTop = player_->GetPlayerData().rightTop;
@@ -87,48 +87,3 @@ void Collision::IsMapChip()
 #endif // _DEBUG
 
 }
-
-//void Collision::Draw()
-//{
-//	//ブロック
-//	for (int y = 0; y < kmap_Height; ++y) {
-//		for (int x = 0; x < kmap_Width; ++x) {
-//			if (map_[y][x] == 1) {
-//				Novice::DrawBox(
-//					x * kBlockSize,
-//					y * kBlockSize,
-//					kBlockSize, kBlockSize, 0.0f, 0Xa9a9a9FF, kFillModeSolid
-//				);
-//				Novice::DrawBox(
-//					x * kBlockSize,
-//					y * kBlockSize,
-//					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
-//				);
-//			} else if (map_[y][x] == 2)
-//			{
-//				Novice::DrawBox(
-//					x * kBlockSize,
-//					y * kBlockSize,
-//					kBlockSize, kBlockSize, 0.0f, RED, kFillModeSolid
-//				);
-//				Novice::DrawBox(
-//					x * kBlockSize,
-//					y * kBlockSize,
-//					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
-//				);
-//			} else if (map_[y][x] == 0)
-//			{
-//				Novice::DrawBox(
-//					x * kBlockSize,
-//					y * kBlockSize,
-//					kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeSolid
-//				);
-//				Novice::DrawBox(
-//					x * kBlockSize,
-//					y * kBlockSize,
-//					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
-//				);
-//			}
-//		}
-//	}
-//}
