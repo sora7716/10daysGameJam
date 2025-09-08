@@ -9,9 +9,6 @@
 #include "gameObject/ChunkManager.h"
 const char kWindowTitle[] = "MyGame";
 
-
-
-
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -43,8 +40,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	int playerTexture = Novice::LoadTexture("./resources/player.png");
 
 	//チャンクの生成
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-1", "up_0-1", blockTextures[1]);
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-2", "up_0-2", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("under_0-1", "under_0-1", blockTextures[1]);
+	/*ChunkManager::GetInstance()->LoadChunk("map/up_0-2", "up_0-2", blockTextures[1]);
 	ChunkManager::GetInstance()->LoadChunk("map/up_0-3", "up_0-3", blockTextures[1]);
 	ChunkManager::GetInstance()->LoadChunk("map/up_0-4", "up_0-4", blockTextures[1]);
 	ChunkManager::GetInstance()->LoadChunk("map/up_0-5", "up_0-5", blockTextures[1]);
@@ -57,13 +54,13 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	ChunkManager::GetInstance()->LoadChunk("map/under_0-4", "under_0-4", blockTextures[0]);
 	ChunkManager::GetInstance()->LoadChunk("map/under_0-5", "under_0-5", blockTextures[0]);
 	ChunkManager::GetInstance()->LoadChunk("map/under_0-6", "under_0-6", blockTextures[0]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-7", "under_0-7", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-7", "under_0-7", blockTextures[0]);*/
 
 	//マップの生成
 	std::unique_ptr<Map>map = std::make_unique<Map>();
 	map->Initialize();
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-1"), { 3 ,3 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-2"), { 8 ,3 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-1"), { 3 ,3 });
+	/*map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-2"), { 8 ,3 });
 	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-3"), { 13,3 });
 	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-4"), { 18,3 });
 	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-5"), { 23,3 });
@@ -75,7 +72,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-4"), { 18,9 });
 	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-5"), { 23,9 });
 	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-6"), { 28,9 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-7"), { 33,9 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-7"), { 33,9 });*/
 	collision->SetMap(map->GetMap());
 
 	AABB startButton{
@@ -114,7 +111,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		///
 
 		player->Update();
-		collision->IsMapChip();
 
 		if (Collision::IsMouseOverRect(startButton))
 		{
@@ -163,18 +159,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		map->Draw();
 		player->Draw();
 
-
-
-
-
-		for (int i = 0; i < 6; i++)
+		/*for (int i = 0; i < 6; i++)
 		{
 			Novice::DrawLine(line1.startPos.x + (i * 32 * 5),
 				line1.startPos.y,
 				line1.endPos.x + (i * 32 * 5),
 				line1.endPos.y,
 				RED);
-		}
+		}*/
 
 		Novice::DrawBox(
 			static_cast<int>(startButton.min.x),

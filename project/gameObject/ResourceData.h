@@ -11,7 +11,6 @@ struct GameObject
 	Vector2 radius;
 };
 
-
 //プレイヤーデータ
 struct PlayerData
 {
@@ -29,8 +28,6 @@ enum class BlockType
 	kBlank,
 	kBlock,
 	kPlayer
-};
-
 };
 
 struct  Line

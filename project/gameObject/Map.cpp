@@ -23,16 +23,7 @@ void Map::Draw()
 		{
 			if (map_[y][x] == static_cast<int>(BlockType::kBlock))
 			{
-				/*Novice::DrawBox(
-					x * kBlockSize,
-					y * kBlockSize, kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeWireFrame
-				);*/
-				/*static int i = 0;
-				if (y > mapDrawData_[i].begin.y + Chunk::kMaxHeight)
-				{
-					i++;
-				}*/
-
+				//衝突判定
 				int useTex = -1;
 				for (MapDrawData& mData : mapDrawData_)
 				{
@@ -51,6 +42,13 @@ void Map::Draw()
 					y * kBlockSize,
 					useTex,
 					1.0f, 1.0f, 0.0f, WHITE
+				);
+			}
+			else if (map_[y][x] == 3)
+			{
+				Novice::DrawBox(
+					x * kBlockSize,
+					y * kBlockSize, kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeWireFrame
 				);
 			}
 
