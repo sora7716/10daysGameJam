@@ -87,3 +87,68 @@ void Collision::IsMapChipCollision()
 #endif // _DEBUG
 
 }
+
+bool Collision::IsMouseOverRect(AABB aabb)
+{
+	//マウスの座標を取得
+	Vector2Int mousePos = {};
+	Novice::GetMousePosition(&mousePos.x, &mousePos.y);
+
+	//マウスの座標とSTARTボタンの当たり判定
+	if (aabb.min.x < static_cast<float>(mousePos.x) && aabb.max.x>static_cast<float>(mousePos.x))
+	{
+		if (aabb.min.y < static_cast<float>(mousePos.y) && aabb.max.y>static_cast<float>(mousePos.y))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+
+//void Collision::Draw()
+//{
+//	//ブロック
+//	for (int y = 0; y < kmap_Height; ++y) {
+//		for (int x = 0; x < kmap_Width; ++x) {
+//			if (map_[y][x] == 1) {
+//				Novice::DrawBox(
+//					x * kBlockSize,
+//					y * kBlockSize,
+//					kBlockSize, kBlockSize, 0.0f, 0Xa9a9a9FF, kFillModeSolid
+//				);
+//				Novice::DrawBox(
+//					x * kBlockSize,
+//					y * kBlockSize,
+//					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
+//				);
+//			} else if (map_[y][x] == 2)
+//			{
+//				Novice::DrawBox(
+//					x * kBlockSize,
+//					y * kBlockSize,
+//					kBlockSize, kBlockSize, 0.0f, RED, kFillModeSolid
+//				);
+//				Novice::DrawBox(
+//					x * kBlockSize,
+//					y * kBlockSize,
+//					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
+//				);
+//			} else if (map_[y][x] == 0)
+//			{
+//				Novice::DrawBox(
+//					x * kBlockSize,
+//					y * kBlockSize,
+//					kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeSolid
+//				);
+//				Novice::DrawBox(
+//					x * kBlockSize,
+//					y * kBlockSize,
+//					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
+//				);
+//			}
+//		}
+//	}
+//}

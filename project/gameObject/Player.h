@@ -21,8 +21,12 @@ private://	メンバー変数
 	//移動するかのフラグK
 	bool isMove_ = false;
 
+	
+
+
 	//プレイヤーのデータ
 	PlayerData playerData_ = {};
+
 
 public://メンバー関数
 
@@ -110,6 +114,13 @@ public://メンバー関数
 	/// </summary>
 	/// <param name="isJump">ジャンプフラグ</param>
 	void SetIsJump(bool isJump) { isJump_ = isJump; };
+
+	/// <summary>
+	/// 移動フラグのセッター
+	/// </summary>
+	/// <param name="isMove">移動フラグ</param>
+	void SetIsMove(bool isMove) { isMove_ = isMove; };
+
 
 private:
 

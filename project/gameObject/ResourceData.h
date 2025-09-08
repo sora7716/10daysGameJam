@@ -11,6 +11,7 @@ struct GameObject
 	Vector2 radius;
 };
 
+
 //プレイヤーデータ
 struct PlayerData
 {
@@ -28,5 +29,19 @@ enum class BlockType
 	kBlank,
 	kBlock,
 	kPlayer
+};
+
+};
+
+struct  Line
+{
+	Vector2Int startPos;
+	Vector2Int endPos;
+};
+
+//AABB
+struct AABB {
+	Vector2 min;
+	Vector2 max;
 };
 
