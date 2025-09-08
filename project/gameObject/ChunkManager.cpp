@@ -31,7 +31,7 @@ void ChunkManager::LoadChunk(const std::string& filename)
 	//チャンクを生成
 	std::unique_ptr<Chunk>chunk = std::make_unique<Chunk>();
 	//csvファイルの読み込み
-	chunk->LoadChunkCsv("resource/" + filename + ".csv");
+	chunk->LoadChunkCsv("resources/" + filename + ".csv");
 
 	//生成したチャンクを連想配列に挿入
 	chunks_.insert(std::make_pair(filename, std::move(chunk)));

@@ -1,5 +1,6 @@
 #pragma once
 #include "gameObject/ResourceData.h"
+#include <vector>
 class Player
 {
 private://	メンバー変数
@@ -19,7 +20,7 @@ private://	メンバー変数
 
 	//移動するかのフラグK
 	bool isMove_ = false;
-	
+
 	//プレイヤーのデータ
 	PlayerData playerData_ = {};
 

@@ -56,7 +56,13 @@ public://メンバ関数
 	/// <param name="under">下のチャンク</param>
 	/// <param name="top">上のチャンク</param>
 	/// <param name="underChunkPos">下のチャンクの位置</param>
-	void SwapChunk(Chunk* under,Chunk* top,const Vector2Int& underChunkPos);
+	void SwapChunk(Chunk* under, Chunk* top, const Vector2Int& underChunkPos);
+
+	/// <summary>
+	/// マップのゲッター
+	/// </summary>
+	/// <returns>map</returns>
+	std::vector<std::vector<int>> GetMap() { return map_; };
 
 };
 

@@ -3,12 +3,8 @@
 #include "gameObject/Player.h"
 #include<Novice.h>
 
-void Collision::Initialize(Player* player)
-{
-	player_ = player;
-}
-
-void Collision::Update()
+//マップチップの衝突判定
+void Collision::IsMapChip()
 {
 	Vector2Int leftTop = player_->GetPlayerData().leftTop;
 	Vector2Int rightTop = player_->GetPlayerData().rightTop;
@@ -27,8 +23,8 @@ void Collision::Update()
 		leftBottom.y = static_cast<int>(center.y + radius.y + velocity.y) / kBlockSize;
 		rightBottom.y = static_cast<int>(center.y + radius.y + velocity.y) / kBlockSize;
 
-		if (map[leftBottom.y][leftBottom.x] == 1 ||
-			map[rightBottom.y][rightBottom.x] == 1)
+		if (map_[leftBottom.y][leftBottom.x] == 1 ||
+			map_[rightBottom.y][rightBottom.x] == 1)
 		{
 			player_->SetIsOnGround(true);
 			newCenter = { center.x,static_cast<float>((leftBottom.y) * kBlockSize) - radius.y - 1.0f };
@@ -41,7 +37,7 @@ void Collision::Update()
 			static_cast<int>(center.x) / kBlockSize,
 			static_cast<int>(center.y - radius.y + velocity.y) / kBlockSize
 		};
-		if (map[top.y][top.x] == 1 || map[top.y][top.x] == 2)
+		if (map_[top.y][top.x] == 1 || map_[top.y][top.x] == 2)
 		{
 			newCenter = { center.x,static_cast<float>((top.y + 1) * kBlockSize) + radius.y };
 			player_->SetCenter(newCenter);
@@ -50,10 +46,10 @@ void Collision::Update()
 	}
 
 	//当たってないときの判定
-	if (map[leftBottom.y][leftBottom.x] == 1 ||
-		map[rightBottom.y][rightBottom.x] == 1 ||
-		map[leftBottom.y][leftBottom.x] == 2 ||
-		map[rightBottom.y][rightBottom.x] == 2)
+	if (map_[leftBottom.y][leftBottom.x] == 1 ||
+		map_[rightBottom.y][rightBottom.x] == 1 ||
+		map_[leftBottom.y][leftBottom.x] == 2 ||
+		map_[rightBottom.y][rightBottom.x] == 2)
 	{
 
 	} else
@@ -68,7 +64,7 @@ void Collision::Update()
 	};
 
 	//横の判定
-	if (map[right.y][right.x] == 1)
+	if (map_[right.y][right.x] == 1)
 	{
 
 		velocity.x = 0.0f;
@@ -77,57 +73,57 @@ void Collision::Update()
 	}
 
 #ifdef _DEBUG
-	ImGui::Begin("map");
-	ImGui::Text("leftTop:%d", map[leftTop.y][leftTop.x]);
-	ImGui::Text("rightTop:%d", map[rightTop.y][rightTop.x]);
-	ImGui::Text("leftBottom:%d", map[leftBottom.y][leftBottom.x]);
-	ImGui::Text("rightBottom:%d", map[rightBottom.y][rightBottom.x]);
+	ImGui::Begin("map_");
+	ImGui::Text("leftTop:%d", map_[leftTop.y][leftTop.x]);
+	ImGui::Text("rightTop:%d", map_[rightTop.y][rightTop.x]);
+	ImGui::Text("leftBottom:%d", map_[leftBottom.y][leftBottom.x]);
+	ImGui::Text("rightBottom:%d", map_[rightBottom.y][rightBottom.x]);
 	ImGui::DragFloat2("newCenter", &newCenter.x);
 #endif // _DEBUG
 
 }
 
-void Collision::Draw()
-{
-	//ブロック
-	for (int y = 0; y < kMapHeight; ++y) {
-		for (int x = 0; x < kMapWidth; ++x) {
-			if (map[y][x] == 1) {
-				Novice::DrawBox(
-					x * kBlockSize,
-					y * kBlockSize,
-					kBlockSize, kBlockSize, 0.0f, 0Xa9a9a9FF, kFillModeSolid
-				);
-				Novice::DrawBox(
-					x * kBlockSize,
-					y * kBlockSize,
-					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
-				);
-			} else if (map[y][x] == 2)
-			{
-				Novice::DrawBox(
-					x * kBlockSize,
-					y * kBlockSize,
-					kBlockSize, kBlockSize, 0.0f, RED, kFillModeSolid
-				);
-				Novice::DrawBox(
-					x * kBlockSize,
-					y * kBlockSize,
-					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
-				);
-			} else if (map[y][x] == 0)
-			{
-				Novice::DrawBox(
-					x * kBlockSize,
-					y * kBlockSize,
-					kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeSolid
-				);
-				Novice::DrawBox(
-					x * kBlockSize,
-					y * kBlockSize,
-					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
-				);
-			}
-		}
-	}
-}
+//void Collision::Draw()
+//{
+//	//ブロック
+//	for (int y = 0; y < kmap_Height; ++y) {
+//		for (int x = 0; x < kmap_Width; ++x) {
+//			if (map_[y][x] == 1) {
+//				Novice::DrawBox(
+//					x * kBlockSize,
+//					y * kBlockSize,
+//					kBlockSize, kBlockSize, 0.0f, 0Xa9a9a9FF, kFillModeSolid
+//				);
+//				Novice::DrawBox(
+//					x * kBlockSize,
+//					y * kBlockSize,
+//					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
+//				);
+//			} else if (map_[y][x] == 2)
+//			{
+//				Novice::DrawBox(
+//					x * kBlockSize,
+//					y * kBlockSize,
+//					kBlockSize, kBlockSize, 0.0f, RED, kFillModeSolid
+//				);
+//				Novice::DrawBox(
+//					x * kBlockSize,
+//					y * kBlockSize,
+//					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
+//				);
+//			} else if (map_[y][x] == 0)
+//			{
+//				Novice::DrawBox(
+//					x * kBlockSize,
+//					y * kBlockSize,
+//					kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeSolid
+//				);
+//				Novice::DrawBox(
+//					x * kBlockSize,
+//					y * kBlockSize,
+//					kBlockSize, kBlockSize, 0.0f, BLACK, kFillModeWireFrame
+//				);
+//			}
+//		}
+//	}
+//}

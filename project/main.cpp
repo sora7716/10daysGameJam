@@ -1,10 +1,10 @@
 #include <Novice.h>
-#include"gameObject/Player.h"
 #include <imgui.h>
 #include <cmath>
 #include <vector>
 #include "calc/Vector2.h"
 #include "calc/Collision.h"
+#include"gameObject/Player.h"
 #include "gameObject/Map.h"
 #include "gameObject/ChunkManager.h"
 const char kWindowTitle[] = "MyGame";
@@ -31,11 +31,22 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Player* player = new Player();
 	Collision* collision = new Collision();
 	player->Initialize(keys, preKeys);
-	collision->Initialize(player);
+	collision->SetPlayer(player);
 
 	Line line1;
 	line1.startPos = { 160,0 };
 	line1.endPos = { 160,416 };
+
+	//チャンクの生成
+	ChunkManager::GetInstance()->LoadChunk("chunk1");
+	ChunkManager::GetInstance()->LoadChunk("chunk2");
+
+	//マップの生成
+	std::unique_ptr<Map>map = std::make_unique<Map>();
+	map->Initialize();
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("chunk1")->GetChunk(), { 0,0 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("chunk2")->GetChunk(), { 0,7 });
+	collision->SetMap(map->GetMap());
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
@@ -51,11 +62,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		/// ↓更新処理ここから
 		///
 
-
-
-
 		player->Update();
-		collision->Update();
+		collision->IsMapChip();
 		///
 		/// ↑更新処理ここまで
 		///
@@ -68,8 +76,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 
 
-		collision->Draw();
+		//collision->Draw();
 		player->Draw();
+
+		map->Draw();
 
 		for (int i = 0; i < 6; i++)
 		{

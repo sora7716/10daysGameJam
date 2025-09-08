@@ -41,11 +41,11 @@ void Player::Update()
 	}
 
 
-	/*if (playerData_.gameObject.center.y > 352.0f + playerData_.gameObject.radius.y)
+	if (playerData_.gameObject.center.y > 600.0f)
 	{
-		playerData_.gameObject.center.y = 352.0f + playerData_.gameObject.radius.y;
+		playerData_.gameObject.center.y = 600.0f;
 		isOnGround_ = true;
-	}*/
+	}
 
 	if (isOnGround_)
 	{
