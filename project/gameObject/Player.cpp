@@ -3,7 +3,7 @@
 #include "calc/Collision.h"
 #ifdef _DEBUG
 #include <imgui.h>
-#include "ChunkChangeSwitch.h"
+#include "GameSwitch.h"
 #endif // _DEBUG
 
 //初期化

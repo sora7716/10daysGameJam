@@ -25,10 +25,11 @@ void Map::Initialize(const Vector2Int* mousePos, Player* player)
 //更新
 void Map::Update()
 {
-	for (std::list<ChunkTransitionData>::iterator it = chunkChangeSwitchList_.begin(); it != chunkChangeSwitchList_.end(); it++)
+	for (std::list<ChunkTransitionData>::iterator it = chunkTransitionSwitchList_.begin(); it != chunkTransitionSwitchList_.end(); it++)
 	{
 		//マウスを設定
 		it->switchResource->SetMousePos(*mousePos_);
+
 		//更新
 		it->switchResource->Update();
 
@@ -43,6 +44,29 @@ void Map::Update()
 		else
 		{
 			it->isTransitionChunk = it->switchResource->IsPressSwitch();
+		}
+	}
+
+	for (std::list<ChunkInvertData>::iterator it = chunkInvertSwitchList_.begin(); it != chunkInvertSwitchList_.end(); it++)
+	{
+		//マウスを設定
+		it->switchResource->SetMousePos(*mousePos_);
+
+		//更新
+		it->switchResource->Update();
+
+		//移動しているかどうか
+		if (player_->IsMove())
+		{
+			if (it->isInvertChunk)
+			{
+				InvertChunk(it->begin);
+				it->isInvertChunk = false;
+			}
+		}
+		else
+		{
+			it->isInvertChunk = it->switchResource->IsPressSwitch();
 		}
 	}
 }
@@ -104,10 +128,20 @@ void Map::Draw()
 		}
 	}
 
-	//チャンクの切り替えようスイッチ
-	for (std::list<ChunkTransitionData>::iterator it = chunkChangeSwitchList_.begin(); it != chunkChangeSwitchList_.end(); it++)
+	//チャンクの切り替え用スイッチ
+	for (std::list<ChunkTransitionData>::iterator it = chunkTransitionSwitchList_.begin(); it != chunkTransitionSwitchList_.end(); it++)
 	{
-		if (!player_->IsMove()) {
+		if (!player_->IsMove()) 
+		{
+			it->switchResource->Draw();
+		}
+	}
+
+	//チャンクの反転用スイッチ
+	for (std::list<ChunkInvertData>::iterator it = chunkInvertSwitchList_.begin(); it != chunkInvertSwitchList_.end(); it++)
+	{
+		if (!player_->IsMove())
+		{
 			it->switchResource->Draw();
 		}
 	}
@@ -116,35 +150,63 @@ void Map::Draw()
 //終了
 void Map::Finalize()
 {
-	for (std::list<ChunkTransitionData>::iterator it = chunkChangeSwitchList_.begin(); it != chunkChangeSwitchList_.end(); it++)
+	for (std::list<ChunkTransitionData>::iterator it = chunkTransitionSwitchList_.begin(); it != chunkTransitionSwitchList_.end(); it++)
 	{
 		delete it->switchResource;
 		it->switchResource = nullptr;
 	}
-	chunkChangeSwitchList_.clear();
+	chunkTransitionSwitchList_.clear();
 }
 
 //チャンク切り替えスイッチの生成
-void Map::CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, const Vector2Int& begin)
+void Map::CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, const Vector2Int& begin,int* textureHandles)
 {
 	//上のチャンクの読み込み
 	SetMap(upperChunk, begin);
+
 	//下のチャンクの読み込み
 	SetMap(underChunk, { begin.x,begin.y + Chunk::kMaxHeight + 1 });
-	ChunkChangeSwitch* chunkChangeSwitch = new ChunkChangeSwitch();
+
+	//反転スイッチの生成
+	InitializeInvertSwitch({ begin.x,begin.y + Chunk::kMaxHeight + 1 }, textureHandles[static_cast<int>(SwitchTex::kInvert)]);
+
+	//スイッチの生成と初期化
+	GameSwitch* chunkChangeSwitch = new GameSwitch();
 	chunkChangeSwitch->Initialize
 	({
 		static_cast<float>((begin.x + 2) * kBlockSize),
 		static_cast<float>(begin.y * kBlockSize + Chunk::kMaxHeight * kBlockSize)
-	});
 
-	chunkChangeSwitchList_.push_back(ChunkTransitionData(chunkChangeSwitch, upperChunk, underChunk, begin, false));
+	 }, textureHandles[static_cast<int>(SwitchTex::kTransition)]
+	);
+
+	//リストに追加
+	chunkTransitionSwitchList_.push_back(ChunkTransitionData(chunkChangeSwitch, upperChunk, underChunk, begin, false));
 }
 
 //チャンクの反転スイッチの生成
-void Map::CreateInvertSwitch(const Vector2Int& begin)
+void Map::CreateChunkInvertSwitch(Chunk* chunk, const Vector2Int& begin, int textureHandle)
 {
-	
+	//チャンクの読み込み
+	SetMap(chunk, begin);
+
+	//初期化
+	InitializeInvertSwitch(begin,textureHandle);
+}
+
+//チャンクの反転スイッチの生成
+void Map::InitializeInvertSwitch(const Vector2Int& begin, int textureHandle)
+{
+	//スイッチの生成と初期化
+	GameSwitch* chunkInvertSwitch = new GameSwitch();
+	chunkInvertSwitch->Initialize
+	({
+		static_cast<float>((begin.x + Chunk::kMaxWidth - 2) * kBlockSize),
+		static_cast<float>((begin.y + Chunk::kMaxHeight + 1) * kBlockSize)
+	}, textureHandle);
+
+	//リストの追加
+	chunkInvertSwitchList_.push_back(ChunkInvertData(chunkInvertSwitch, begin));
 }
 
 //mapのセッター

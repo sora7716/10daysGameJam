@@ -1,18 +1,20 @@
-#include "ChunkChangeSwitch.h"
+#include "GameSwitch.h"
 #include "calc/Collision.h"
 #include <Novice.h>
 
 //初期化
-void ChunkChangeSwitch::Initialize(const Vector2& position)
+void GameSwitch::Initialize(const Vector2& position, int textureHandle)
 {
 	//座標を受け取る
 	position_ = position;
 	//サイズを設定
 	size_ = { 32.0f,32.0f };
+	//テクスチャハンドル
+	textureHandle_ = textureHandle;
 }
 
 //更新
-void ChunkChangeSwitch::Update()
+void GameSwitch::Update()
 {
 	//スイッチの座標でaabbを作成
 	AABB aabb =
@@ -24,7 +26,7 @@ void ChunkChangeSwitch::Update()
 	//スイッチに重なったか
 	if (Collision::IsPointInRect(aabb, mousePos_)) 
 	{
-		color_ = RED;
+		color_ = WHITE;
 		//スイッチをクリックしたか
 		if (Novice::IsTriggerMouse(0)) 
 		{
@@ -33,24 +35,22 @@ void ChunkChangeSwitch::Update()
 	}
 	else
 	{
-		color_ = BLUE;
+		color_ = 0xFFFFFF55;
 	}
 
 	if (isPressSwitch_) 
 	{
-		color_ = GREEN;
+		color_ = 0xFDFF81FF;
 	}
 }
 
 //描画
-void ChunkChangeSwitch::Draw() 
+void GameSwitch::Draw() 
 {
-	Novice::DrawBox
+	Novice::DrawSprite
 	(
 		static_cast<int>(position_.x),
 		static_cast<int>(position_.y),
-		static_cast<int>(size_.x),
-		static_cast<int>(size_.y),
-		0.0f, color_, kFillModeWireFrame
+		textureHandle_, 1.0f, 1.0f, 0.0f, color_
 	);
 }

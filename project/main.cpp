@@ -9,7 +9,7 @@
 #include"gameObject/Player.h"
 #include "gameObject/Map.h"
 #include "gameObject/ChunkManager.h"
-#include "gameObject/ChunkChangeSwitch.h"
+#include "gameObject/GameSwitch.h"
 const char kWindowTitle[] = "MyGame";
 
 // Windowsアプリでのエントリーポイント(main関数)
@@ -34,30 +34,37 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	line1.endPos = { 160,416 };*/
 
 	//ブロックテクスチャの読み込み
-	int blockTextures[2] =
+	int blockTextures[static_cast<int>(TileTex::kCount)] =
 	{
-		Novice::LoadTexture("./resources/tile_1.png"),
-		Novice::LoadTexture("./resources/tile_2.png")
+		Novice::LoadTexture("./resources/upperTile.png"),
+		Novice::LoadTexture("./resources/underTile.png")
+	};
+
+	//ボタンのテクスチャ
+	int switchTextures[static_cast<int>(SwitchTex::kCount)]
+	{
+		Novice::LoadTexture("./resources/transitionSwitch.png"),
+		Novice::LoadTexture("./resources/invertSwitch.png"),
 	};
 
 	int playerTexture = Novice::LoadTexture("./resources/player.png");
 
 	//チャンクの生成
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-1", "up_0-1", blockTextures[0]);
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-2", "up_0-2", blockTextures[0]);
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-3", "up_0-3", blockTextures[0]);
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-4", "up_0-4", blockTextures[0]);
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-5", "up_0-5", blockTextures[0]);
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-6", "up_0-6", blockTextures[0]);
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-7", "up_0-7", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-1", "up_0-1", blockTextures[static_cast<int>(TileTex::kUpper)]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-2", "up_0-2", blockTextures[static_cast<int>(TileTex::kUpper)]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-3", "up_0-3", blockTextures[static_cast<int>(TileTex::kUpper)]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-4", "up_0-4", blockTextures[static_cast<int>(TileTex::kUpper)]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-5", "up_0-5", blockTextures[static_cast<int>(TileTex::kUpper)]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-6", "up_0-6", blockTextures[static_cast<int>(TileTex::kUpper)]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-7", "up_0-7", blockTextures[static_cast<int>(TileTex::kUpper)]);
 
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-1", "under_0-1", blockTextures[1]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-2", "under_0-2", blockTextures[1]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-3", "under_0-3", blockTextures[1]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-4", "under_0-4", blockTextures[1]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-5", "under_0-5", blockTextures[1]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-6", "under_0-6", blockTextures[1]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-7", "under_0-7", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-1", "under_0-1", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-2", "under_0-2", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-3", "under_0-3", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-4", "under_0-4", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-5", "under_0-5", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-6", "under_0-6", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-7", "under_0-7", blockTextures[static_cast<int>(TileTex::kUnder)]);
 
 	//マップの生成
 	std::unique_ptr<Map>map = std::make_unique<Map>();
@@ -77,39 +84,26 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Chunk* underChunk6 = ChunkManager::GetInstance()->FindChunk("under_0-6");
 	Chunk* underChunk7 = ChunkManager::GetInstance()->FindChunk("under_0-7");
 
-	map->CreateChunkTransitionSwitch(upperChunk1, underChunk1, { 3,3 });
-	map->CreateChunkTransitionSwitch(upperChunk2, underChunk2, { 8,3 });
-	map->CreateChunkTransitionSwitch(upperChunk3, underChunk3, { 13,3 });
-	map->CreateChunkTransitionSwitch(upperChunk4, underChunk4, { 18,3 });
-	map->CreateChunkTransitionSwitch(upperChunk5, underChunk5, { 23,3 });
-	map->CreateChunkTransitionSwitch(upperChunk6, underChunk6, { 28,3 });
-	map->CreateChunkTransitionSwitch(upperChunk7, underChunk7, { 33,3 });
-	collision->SetMap(map->GetMap());
+	//map->CreateChunkInvertSwitch(underChunk1, { 3,9 }, switchTexture[static_cast<int>(SwitchTex::kInvert)]);
+	//map->CreateChunkInvertSwitch(underChunk2, { 8,9 }, switchTexture[static_cast<int>(SwitchTex::kInvert)]);
+	map->CreateChunkTransitionSwitch(upperChunk1, underChunk1, { 3,3 }, switchTextures);
+	map->CreateChunkTransitionSwitch(upperChunk2, underChunk2, { 8,3 }, switchTextures);
+	map->CreateChunkTransitionSwitch(upperChunk3, underChunk3, { 13,3 }, switchTextures);
+	map->CreateChunkTransitionSwitch(upperChunk4, underChunk4, { 18,3 }, switchTextures);
+	map->CreateChunkTransitionSwitch(upperChunk5, underChunk5, { 23,3 }, switchTextures);
+	map->CreateChunkTransitionSwitch(upperChunk6, underChunk6, { 28,3 }, switchTextures);
+	map->CreateChunkTransitionSwitch(upperChunk7, underChunk7, { 33,3 }, switchTextures);
 
-	AABB startButton{
-		.min{200.0f,500.0f},
-		.max{232.0f,532.0f}
+	AABB startButton
+	{
+		.min{100.0f,600.0f},
+		.max{132.0f,632.0f}
 	};
-
-	int color = BLUE;
-
-	AABB swapButton{
-		.min{300.0f,500.0f},
-		.max{350.0f,550.0f}
-	};
-
-	AABB flipButton{
-		.min{500.0f,500.0f},
-		.max{550.0f,550.0f}
-	};
-
-	bool isSwap = false;
-	bool isFlip = false;
 
 	player->Initialize(keys, preKeys, map->GetMap(), playerTexture);
 
-	std::unique_ptr<ChunkChangeSwitch> chunkChangeSwitch = std::make_unique<ChunkChangeSwitch>();
-	chunkChangeSwitch->Initialize(startButton.min);
+	std::unique_ptr<GameSwitch> gameSwitch = std::make_unique<GameSwitch>();
+	gameSwitch->Initialize(startButton.min, switchTextures[0]);
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
 	{
@@ -124,45 +118,13 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		///
 		/// ↓更新処理ここから
 		///
-
+		collision->SetMap(map->GetMap());
 		map->Update();
 		player->Update();
-		chunkChangeSwitch->SetMousePos(mousePos);
-		chunkChangeSwitch->Update();
-		player->SetIsMove(chunkChangeSwitch->IsPressSwitch());
+		gameSwitch->SetMousePos(mousePos);
+		gameSwitch->Update();
+		player->SetIsMove(gameSwitch->IsPressSwitch());
 
-		if (Collision::IsPointInRect(startButton, Vector2(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))))
-		{
-			color = RED;
-
-		}
-		else
-		{
-			color = BLUE;
-		}
-
-
-		if (Collision::IsPointInRect(swapButton, Vector2(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))))
-		{
-			if (Novice::IsTriggerMouse(0))
-			{
-				isSwap = !isSwap;
-			}
-
-		}
-
-		if (Collision::IsPointInRect(flipButton, Vector2(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))))
-		{
-			if (Novice::IsTriggerMouse(0))
-			{
-				isFlip = !isFlip;
-			}
-
-		}
-#ifdef _DEBUG
-		ImGui::Checkbox("isSwap", &isSwap);
-		ImGui::Checkbox("isFlip", &isFlip);
-#endif // _DEBUG
 		collision->IsMapChipCollision();
 
 		///
@@ -185,29 +147,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 				RED);
 		}*/
 
-		Novice::DrawBox(
-			static_cast<int>(startButton.min.x),
-			static_cast<int>(startButton.min.y),
-			static_cast<int>(startButton.max.x - startButton.min.x),
-			static_cast<int>(startButton.max.y - startButton.min.y),
-			0.0f, color, kFillModeWireFrame
-		);
-
-		Novice::DrawBox(
-			static_cast<int>(swapButton.min.x),
-			static_cast<int>(swapButton.min.y),
-			static_cast<int>(swapButton.max.x - swapButton.min.x),
-			static_cast<int>(swapButton.max.y - swapButton.min.y),
-			0.0f, RED, kFillModeWireFrame
-		);
-
-		Novice::DrawBox(
-			static_cast<int>(flipButton.min.x),
-			static_cast<int>(flipButton.min.y),
-			static_cast<int>(flipButton.max.x - flipButton.min.x),
-			static_cast<int>(flipButton.max.y - flipButton.min.y),
-			0.0f, RED, kFillModeWireFrame
-		);
+		gameSwitch->Draw();
 
 		///
 		/// ↑描画処理ここまで

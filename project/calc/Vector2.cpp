@@ -39,3 +39,9 @@ Vector2 Vector2::operator/(float n)
 	};
 	return result;
 }
+
+//クロス積
+float Vector2::Cross(const Vector2& v)
+{
+	return x * v.y - y * v.x;
+}

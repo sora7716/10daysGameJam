@@ -4,7 +4,7 @@
 /// <summary>
 /// チャンクの切り替えスイッチ
 /// </summary>
-class ChunkChangeSwitch
+class GameSwitch
 {
 public://メンバ関数
 
@@ -12,7 +12,8 @@ public://メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="position">表示する座標</param>
-	void Initialize(const Vector2& position);
+	/// <param name="textureHandle">テクスチャハンドル</param>
+	void Initialize(const Vector2& position,int textureHandle);
 
 	/// <summary>
 	/// 更新
@@ -50,4 +51,6 @@ private://メンバ変数
 	bool isPressSwitch_ = false;
 	//色
 	unsigned int color_ = 0;
+	//テクスチャ
+	int textureHandle_ = 0;
 };

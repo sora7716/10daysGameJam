@@ -163,7 +163,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="project\calc\Collision.cpp" />
     <ClCompile Include="project\calc\Vector2.cpp" />
     <ClCompile Include="project\gameObject\Chunk.cpp" />
-    <ClCompile Include="project\gameObject\ChunkChangeSwitch.cpp" />
+    <ClCompile Include="project\gameObject\GameSwitch.cpp" />
     <ClCompile Include="project\gameObject\ChunkManager.cpp" />
     <ClCompile Include="project\gameObject\Map.cpp" />
     <ClCompile Include="project\gameObject\Player.cpp" />
@@ -200,7 +200,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="project\calc\Collision.h" />
     <ClInclude Include="project\calc\Vector2.h" />
     <ClInclude Include="project\gameObject\Chunk.h" />
-    <ClInclude Include="project\gameObject\ChunkChangeSwitch.h" />
+    <ClInclude Include="project\gameObject\GameSwitch.h" />
     <ClInclude Include="project\gameObject\ChunkManager.h" />
     <ClInclude Include="project\gameObject\Map.h" />
     <ClInclude Include="project\gameObject\Player.h" />

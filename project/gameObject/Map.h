@@ -4,7 +4,7 @@
 #include <list>
 #include "ResourceData.h"
 #include "Chunk.h"
-#include "ChunkChangeSwitch.h"
+#include "GameSwitch.h"
 
 //前方宣言
 class Player;
@@ -19,7 +19,7 @@ struct MapDrawData
 //入れ替えようのスイッチに使うデータ
 struct ChunkTransitionData
 {
-	ChunkChangeSwitch* switchResource;
+	GameSwitch* switchResource;
 	Chunk* upperChunk;
 	Chunk* underChunk;
 	Vector2Int begin;
@@ -29,10 +29,19 @@ struct ChunkTransitionData
 //反転用のスイッチに使うデータ
 struct ChunkInvertData 
 {
-	ChunkChangeSwitch* switchResource;
+	GameSwitch* switchResource;
 	Vector2Int begin;
 	bool isInvertChunk;
 };
+
+//線分
+struct Segment 
+{
+	Vector2 origin;
+	Vector2 diff;
+};
+
+//境界線
 
 //マップ
 class Map
@@ -47,12 +56,6 @@ public://定数
 
 private://メンバ変数
 
-	//ブロックの向きを逆転するかのフラグ
-	bool isReversal = false;
-
-	//ブロックの向きを入れ替えるようのフラグ
-	bool isReplacement = false;
-
 	//マップ
 	std::vector<std::vector<int>>map_;
 
@@ -60,7 +63,10 @@ private://メンバ変数
 	std::vector<MapDrawData>mapDrawData_;
 
 	//チャンクの切り替えスイッチのリスト
-	std::list<ChunkTransitionData>chunkChangeSwitchList_;
+	std::list<ChunkTransitionData>chunkTransitionSwitchList_;
+
+	//チャンクの反転スイッチのリスト
+	std::list<ChunkInvertData>chunkInvertSwitchList_;
 
 	//マウスの座標
 	const Vector2Int* mousePos_ = {};
@@ -93,18 +99,28 @@ public://メンバ関数
 	void Finalize();
 
 	/// <summary>
-	/// チャンク切り替えスイッチの生成
-	/// </summary>
-	/// <param name="upperChunk">上のチャンク</param>
-	/// <param name="underChunk">下のチャンク</param>
-	/// <param name="begin">読み込み開始位置</param>
-	void CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, const Vector2Int& begin);
+    /// チャンク切り替えスイッチの生成
+    /// </summary>
+    /// <param name="upperChunk">上のチャンク</param>
+    /// <param name="underChunk">下のチャンク</param>
+    /// <param name="begin">読み込み開始位置</param>
+	/// <param name="textureHandles">テクスチャハンドル達</param>
+	void CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, const Vector2Int& begin, int* textureHandles);
 
 	/// <summary>
 	/// チャンクの反転スイッチの生成
 	/// </summary>
-	/// <param name="begin"></param>
-	void CreateInvertSwitch(const Vector2Int& begin);
+	/// <param name="chunk">チャンク</param>
+	/// <param name="begin">読み込み開始位置</param>
+	/// <param name="textureHandle">テクスチャハンドル</param>
+	void CreateChunkInvertSwitch(Chunk* chunk, const Vector2Int& begin, int textureHandle);
+
+	/// <summary>
+	/// チャンクの反転スイッチの初期化
+	/// </summary>
+	/// <param name="begin">読み込み開始位置</param>
+	/// <param name="textureHandle">テクスチャハンドル</param>
+	void InitializeInvertSwitch(const Vector2Int& begin,int textureHandle);
 
 	/// <summary>
     /// マップのゲッター

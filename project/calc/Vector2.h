@@ -14,6 +14,13 @@ struct Vector2
 
 	//除算
 	Vector2 operator/(float n);
+
+	/// <summary>
+	/// クロス積
+	/// </summary>
+	/// <param name="v">ベクトル</param>
+	/// <returns>クロス積</returns>
+	float Cross(const Vector2& v);
 };
 
 struct Vector2Int 

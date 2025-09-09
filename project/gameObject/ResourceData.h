@@ -30,6 +30,22 @@ enum class BlockType
 	kPlayer
 };
 
+//スイッチのテクスチャ
+enum class SwitchTex 
+{
+	kTransition,
+	kInvert,
+	kCount
+};
+
+//タイルのテクスチャ
+enum class TileTex 
+{
+	kUpper,
+	kUnder,
+	kCount
+};
+
 struct  Line
 {
 	Vector2Int startPos;
