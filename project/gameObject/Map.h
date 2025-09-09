@@ -42,6 +42,13 @@ struct Segment
 };
 
 //境界線
+struct BorderLine 
+{
+	Segment segment;
+	Vector2 beginToEnd;
+	Vector2 beginToPlayer;
+	bool isCrossed;
+};
 
 //マップ
 class Map
@@ -73,6 +80,9 @@ private://メンバ変数
 
 	//プレイヤー
 	Player* player_ = nullptr;
+
+	//ボーダーライン
+	std::vector<BorderLine>underBorderLines_;
 
 public://メンバ関数
 
@@ -123,6 +133,11 @@ public://メンバ関数
 	void InitializeInvertSwitch(const Vector2Int& begin,int textureHandle);
 
 	/// <summary>
+	/// 下の境界線の設定
+	/// </summary>
+	void SettingUnderBorderLine();
+
+	/// <summary>
     /// マップのゲッター
     /// </summary>
     /// <returns>map</returns>
@@ -150,6 +165,17 @@ private:
 	/// <param name="upper">上のチャンク</param>
 	/// <param name="begin">開始位置(upperのorigin)</param>
 	void SwapChunk(Chunk* under, Chunk* upper, const Vector2Int& begin);
+
+	/// <summary>
+	/// ボーダーラインの生成
+	/// </summary>
+	/// <param name="begin">表示する開始位置</param>
+	void CreateUnderBorderLine(const Vector2Int& begin);
+
+	/// <summary>
+	/// 線がプレイヤーと重なったら
+	/// </summary>
+	void CrossPlayerOfLine();
 
 };
 

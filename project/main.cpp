@@ -93,6 +93,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	map->CreateChunkTransitionSwitch(upperChunk5, underChunk5, { 23,3 }, switchTextures);
 	map->CreateChunkTransitionSwitch(upperChunk6, underChunk6, { 28,3 }, switchTextures);
 	map->CreateChunkTransitionSwitch(upperChunk7, underChunk7, { 33,3 }, switchTextures);
+	map->SettingUnderBorderLine();
 
 	AABB startButton
 	{

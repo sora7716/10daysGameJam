@@ -25,6 +25,9 @@ void Map::Initialize(const Vector2Int* mousePos, Player* player)
 //更新
 void Map::Update()
 {
+	//線にプレイヤーが重なったかどうか
+	CrossPlayerOfLine();
+
 	for (std::list<ChunkTransitionData>::iterator it = chunkTransitionSwitchList_.begin(); it != chunkTransitionSwitchList_.end(); it++)
 	{
 		//マウスを設定
@@ -131,7 +134,7 @@ void Map::Draw()
 	//チャンクの切り替え用スイッチ
 	for (std::list<ChunkTransitionData>::iterator it = chunkTransitionSwitchList_.begin(); it != chunkTransitionSwitchList_.end(); it++)
 	{
-		if (!player_->IsMove()) 
+		if (!player_->IsMove())
 		{
 			it->switchResource->Draw();
 		}
@@ -145,6 +148,19 @@ void Map::Draw()
 			it->switchResource->Draw();
 		}
 	}
+
+	//下の境界線
+	for (int i = 1; i < underBorderLines_.size(); i++)
+	{
+		Novice::DrawLine
+		(
+			static_cast<int>(underBorderLines_[i].segment.origin.x),
+			static_cast<int>(underBorderLines_[i].segment.origin.y),
+			static_cast<int>(underBorderLines_[i].segment.origin.x + underBorderLines_[i].segment.diff.x),
+			static_cast<int>(underBorderLines_[i].segment.origin.y + underBorderLines_[i].segment.diff.y),
+			RED
+		);
+	}
 }
 
 //終了
@@ -156,10 +172,17 @@ void Map::Finalize()
 		it->switchResource = nullptr;
 	}
 	chunkTransitionSwitchList_.clear();
+
+	for (std::list<ChunkInvertData>::iterator it = chunkInvertSwitchList_.begin(); it != chunkInvertSwitchList_.end(); it++)
+	{
+		delete it->switchResource;
+		it->switchResource = nullptr;
+	}
+	chunkInvertSwitchList_.clear();
 }
 
 //チャンク切り替えスイッチの生成
-void Map::CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, const Vector2Int& begin,int* textureHandles)
+void Map::CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, const Vector2Int& begin, int* textureHandles)
 {
 	//上のチャンクの読み込み
 	SetMap(upperChunk, begin);
@@ -177,10 +200,10 @@ void Map::CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, cons
 		static_cast<float>((begin.x + 2) * kBlockSize),
 		static_cast<float>(begin.y * kBlockSize + Chunk::kMaxHeight * kBlockSize)
 
-	 }, textureHandles[static_cast<int>(SwitchTex::kTransition)]
+		}, textureHandles[static_cast<int>(SwitchTex::kTransition)]
 	);
 
-	//リストに追加
+	//切り替えスイッチのリストに追加
 	chunkTransitionSwitchList_.push_back(ChunkTransitionData(chunkChangeSwitch, upperChunk, underChunk, begin, false));
 }
 
@@ -191,7 +214,7 @@ void Map::CreateChunkInvertSwitch(Chunk* chunk, const Vector2Int& begin, int tex
 	SetMap(chunk, begin);
 
 	//初期化
-	InitializeInvertSwitch(begin,textureHandle);
+	InitializeInvertSwitch(begin, textureHandle);
 }
 
 //チャンクの反転スイッチの生成
@@ -201,12 +224,21 @@ void Map::InitializeInvertSwitch(const Vector2Int& begin, int textureHandle)
 	GameSwitch* chunkInvertSwitch = new GameSwitch();
 	chunkInvertSwitch->Initialize
 	({
-		static_cast<float>((begin.x + Chunk::kMaxWidth - 2) * kBlockSize),
-		static_cast<float>((begin.y + Chunk::kMaxHeight + 1) * kBlockSize)
-	}, textureHandle);
+		  static_cast<float>((begin.x + Chunk::kMaxWidth - 1) * kBlockSize),
+		  static_cast<float>((begin.y + Chunk::kMaxHeight + 1) * kBlockSize - kBlockSize / 2)
+		}, textureHandle);
 
 	//リストの追加
 	chunkInvertSwitchList_.push_back(ChunkInvertData(chunkInvertSwitch, begin));
+}
+
+//下の境界線の設定
+void Map::SettingUnderBorderLine()
+{
+	for (std::list<ChunkInvertData>::iterator it = chunkInvertSwitchList_.begin(); it != chunkInvertSwitchList_.end(); it++)
+	{
+		CreateUnderBorderLine(it->begin);
+	}
 }
 
 //mapのセッター
@@ -249,4 +281,40 @@ void Map::SwapChunk(Chunk* under, Chunk* upper, const Vector2Int& begin)
 	SetMap(under, begin);
 	//上のチャンクを下のチャンクに変更
 	SetMap(upper, { begin.x,begin.y + Chunk::kMaxHeight + 1 });
+}
+
+//ボーダーラインの生成
+void Map::CreateUnderBorderLine(const Vector2Int& begin)
+{
+	//下の境界線
+	BorderLine underBorderline =
+	{
+		.segment
+		{
+			.origin =
+			 {
+			   static_cast<float>((begin.x) * kBlockSize) - kBlockSize / 2,
+			   static_cast<float>(begin.y * kBlockSize)
+			 },
+			.diff = {0.0f,static_cast<float>(Chunk::kMaxHeight * kBlockSize)}
+		},
+		.isCrossed = false
+	};
+
+	//下のボーダーラインのリストに追加
+	underBorderLines_.push_back(underBorderline);
+}
+
+//線がプレイヤーと重なったら
+void Map::CrossPlayerOfLine()
+{
+	for (BorderLine& borderLine : underBorderLines_) 
+	{
+		borderLine.beginToEnd = borderLine.segment.origin + borderLine.segment.diff - borderLine.segment.origin;
+		borderLine.beginToPlayer = player_->GetPlayerData().gameObject.center - borderLine.segment.origin;
+		float cross = 0.0f;
+		if (borderLine.beginToEnd.Cross(borderLine.beginToPlayer) < 0.0f) {
+			borderLine.isCrossed = true;
+		}
+	}
 }
