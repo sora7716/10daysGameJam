@@ -1,5 +1,7 @@
 #include <Novice.h>
+#ifdef _DEBUG
 #include <imgui.h>
+#endif // _DEBUG
 #include <cmath>
 #include <vector>
 #include "calc/Vector2.h"
@@ -21,7 +23,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
 
-
+	Vector2Int mousePos = {};
 
 	Player* player = new Player();
 	Collision* collision = new Collision();
@@ -59,22 +61,29 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	//マップの生成
 	std::unique_ptr<Map>map = std::make_unique<Map>();
-	map->Initialize();
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-1"), { 3 ,3 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-2"), { 8 ,3 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-3"), { 13,3 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-4"), { 18,3 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-5"), { 23,3 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-6"), { 28,3 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-7"), { 33,3 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-1"), { 3,9 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-2"), { 8,9 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-3"), { 13,9 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-4"), { 18,9 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-5"), { 23,9 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-6"), { 28,9 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-7"), { 33,9 });
-	map->CreateChunkChangeSwitch();
+	map->Initialize(&mousePos, player);
+	Chunk* upperChunk1 = ChunkManager::GetInstance()->FindChunk("up_0-1");
+	Chunk* upperChunk2 = ChunkManager::GetInstance()->FindChunk("up_0-2");
+	Chunk* upperChunk3 = ChunkManager::GetInstance()->FindChunk("up_0-3");
+	Chunk* upperChunk4 = ChunkManager::GetInstance()->FindChunk("up_0-4");
+	Chunk* upperChunk5 = ChunkManager::GetInstance()->FindChunk("up_0-5");
+	Chunk* upperChunk6 = ChunkManager::GetInstance()->FindChunk("up_0-6");
+	Chunk* upperChunk7 = ChunkManager::GetInstance()->FindChunk("up_0-7");
+	Chunk* underChunk1 = ChunkManager::GetInstance()->FindChunk("under_0-1");
+	Chunk* underChunk2 = ChunkManager::GetInstance()->FindChunk("under_0-2");
+	Chunk* underChunk3 = ChunkManager::GetInstance()->FindChunk("under_0-3");
+	Chunk* underChunk4 = ChunkManager::GetInstance()->FindChunk("under_0-4");
+	Chunk* underChunk5 = ChunkManager::GetInstance()->FindChunk("under_0-5");
+	Chunk* underChunk6 = ChunkManager::GetInstance()->FindChunk("under_0-6");
+	Chunk* underChunk7 = ChunkManager::GetInstance()->FindChunk("under_0-7");
+
+	map->CreateChunkTransitionSwitch(upperChunk1, underChunk1, { 3,3 });
+	map->CreateChunkTransitionSwitch(upperChunk2, underChunk2, { 8,3 });
+	map->CreateChunkTransitionSwitch(upperChunk3, underChunk3, { 13,3 });
+	map->CreateChunkTransitionSwitch(upperChunk4, underChunk4, { 18,3 });
+	map->CreateChunkTransitionSwitch(upperChunk5, underChunk5, { 23,3 });
+	map->CreateChunkTransitionSwitch(upperChunk6, underChunk6, { 28,3 });
+	map->CreateChunkTransitionSwitch(upperChunk7, underChunk7, { 33,3 });
 	collision->SetMap(map->GetMap());
 
 	AABB startButton{
@@ -99,8 +108,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	player->Initialize(keys, preKeys, map->GetMap(), playerTexture);
 
-	Vector2Int mousePos = {};
-
 	std::unique_ptr<ChunkChangeSwitch> chunkChangeSwitch = std::make_unique<ChunkChangeSwitch>();
 	chunkChangeSwitch->Initialize(startButton.min);
 	// ウィンドウの×ボタンが押されるまでループ
@@ -118,6 +125,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		/// ↓更新処理ここから
 		///
 
+		map->Update();
 		player->Update();
 		chunkChangeSwitch->SetMousePos(mousePos);
 		chunkChangeSwitch->Update();
@@ -151,9 +159,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			}
 
 		}
-
+#ifdef _DEBUG
 		ImGui::Checkbox("isSwap", &isSwap);
 		ImGui::Checkbox("isFlip", &isFlip);
+#endif // _DEBUG
 		collision->IsMapChipCollision();
 
 		///
@@ -216,6 +225,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	// ライブラリの終了
 	Novice::Finalize();
-	//ChunkManager::GetInstance()->Finalize();
+	//マップの終了
+	map->Finalize();
+	//チャンクマネージャーの終了
+	ChunkManager::GetInstance()->Finalize();
 	return 0;
 }

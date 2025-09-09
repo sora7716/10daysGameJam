@@ -1,6 +1,10 @@
 #pragma once
 #include "gameObject/ResourceData.h"
 #include <vector>
+
+/// <summary>
+/// プレイヤー
+/// </summary>
 class Player
 {
 private://	メンバー変数

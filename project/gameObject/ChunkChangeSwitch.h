@@ -48,4 +48,6 @@ private://メンバ変数
 	Vector2 mousePos_ = {};
 	//当たったかのフラグ
 	bool isPressSwitch_ = false;
+	//色
+	unsigned int color_ = 0;
 };

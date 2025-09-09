@@ -43,7 +43,6 @@ public://メンバ関数
 	/// </summary>
 	void Finalize();
 
-
 	/// <summary>
 	/// Chunk読み込み
 	/// </summary>

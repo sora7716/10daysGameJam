@@ -1,5 +1,7 @@
 #include "Collision.h"
+#ifdef _DEBUG
 #include <imgui.h>
+#endif // _DEBUG
 #include "gameObject/Player.h"
 #include<Novice.h>
 

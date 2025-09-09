@@ -22,10 +22,15 @@ void ChunkChangeSwitch::Update()
 
 	//スイッチに重なったか
 	if (Collision::IsPointInRect(aabb, mousePos_)) {
+		color_ = RED;
 		//スイッチをクリックしたか
 		if (Novice::IsTriggerMouse(0)) {
  			isPressSwitch_ = !isPressSwitch_;
 		}
+	}
+	else
+	{
+		color_ = BLUE;
 	}
 }
 
@@ -38,6 +43,6 @@ void ChunkChangeSwitch::Draw()
 		static_cast<int>(position_.y),
 		static_cast<int>(size_.x),
 		static_cast<int>(size_.y),
-		0.0f, RED, kFillModeWireFrame
+		0.0f, color_, kFillModeWireFrame
 	);
 }

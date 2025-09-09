@@ -42,3 +42,6 @@ struct AABB {
 	Vector2 max;
 };
 
+//ブロックサイズ
+const int kBlockSize = 32;
+

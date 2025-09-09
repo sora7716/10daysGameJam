@@ -1,10 +1,10 @@
 #include "Map.h"
 #include "calc/Collision.h"
-#include "ChunkChangeSwitch.h"
+#include "Player.h"
 #include <Novice.h>
 
 //初期化
-void Map::Initialize()
+void Map::Initialize(const Vector2Int* mousePos, Player* player)
 {
 	//マップの行の要素数を指定
 	map_.resize(kMaxMapSize.y);
@@ -13,6 +13,37 @@ void Map::Initialize()
 	for (int y = 0; y < map_.size(); y++)
 	{
 		map_[y].resize(kMaxMapSize.x);
+	}
+
+	//マウスの座標
+	mousePos_ = mousePos;
+
+	//プレイヤーを受け取る
+	player_ = player;
+}
+
+//更新
+void Map::Update()
+{
+	for (std::list<ChunkTransitionData>::iterator it = chunkChangeSwitchList_.begin(); it != chunkChangeSwitchList_.end(); it++) 
+	{
+		//マウスを設定
+		it->switchResource->SetMousePos(*mousePos_);
+		//更新
+		it->switchResource->Update();	
+
+		//移動しているかどうか
+		if (player_->IsMove()) 
+		{
+			if (it->isChunkChange) 
+			{
+				SwapChunk(it->underChunk, it->upperChunk, it->begin);
+			}
+		}
+		else 
+		{
+			it->isChunkChange = it->switchResource->IsPressSwitch();
+		}
 	}
 }
 
@@ -41,16 +72,14 @@ void Map::Draw()
 						},
 
 					};
-					if (Collision::IsPointInRect(aabb, Vector2(static_cast<float>(x), static_cast<float>(y)))) {
-						useTex = mData.textureHandle;
-					}
-					/*if (y >= mData.begin.y && y < mData.begin.y + Chunk::kMaxHeight)
+
+					if (y >= mData.begin.y && y < mData.begin.y + Chunk::kMaxHeight)
 					{
 						if (x >= mData.begin.x && x < mData.begin.x + Chunk::kMaxWidth)
 						{
-
+							useTex = mData.textureHandle;
 						}
-					}*/
+					}
 				}
 
 				Novice::DrawSprite
@@ -61,14 +90,6 @@ void Map::Draw()
 					1.0f, 1.0f, 0.0f, WHITE
 				);
 			}
-			/*else if (map_[y][x] == 3)
-			{
-				Novice::DrawBox(
-					x * kBlockSize,
-					y * kBlockSize,
-					kBlockSize, kBlockSize, 0.0f, RED, kFillModeSolid
-				);
-			}*/
 
 #ifdef _DEBUG
 			if (map_[y][x] == static_cast<int>(BlockType::kBlank))
@@ -83,15 +104,46 @@ void Map::Draw()
 		}
 	}
 
-	for (std::list<ChunkChangeSwitch*>::iterator it = chunkChangeSwitchList_.begin(); it != chunkChangeSwitchList_.end(); it++) {
-		(*it)->Draw();
+	//チャンクの切り替えようスイッチ
+	for (std::list<ChunkTransitionData>::iterator it = chunkChangeSwitchList_.begin(); it != chunkChangeSwitchList_.end(); it++) 
+	{
+		it->switchResource->Draw();
 	}
+}
+
+//終了
+void Map::Finalize()
+{
+	for (std::list<ChunkTransitionData>::iterator it = chunkChangeSwitchList_.begin(); it != chunkChangeSwitchList_.end(); it++)
+	{
+		delete it->switchResource;
+		it->switchResource = nullptr;
+	}
+	chunkChangeSwitchList_.clear();
+}
+
+//チャンク切り替えスイッチの生成
+void Map::CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, const Vector2Int& begin)
+{
+	//上のチャンクの読み込み
+	SetMap(upperChunk, begin);
+	//下のチャンクの読み込み
+	SetMap(underChunk, { begin.x,begin.y + Chunk::kMaxHeight + 1 });
+	ChunkChangeSwitch* chunkChangeSwitch = new ChunkChangeSwitch();
+	chunkChangeSwitch->Initialize
+	({
+		static_cast<float>((begin.x + 2) * kBlockSize),
+		static_cast<float>(begin.y * kBlockSize + Chunk::kMaxHeight * kBlockSize)
+	});
+
+	chunkChangeSwitchList_.push_back(ChunkTransitionData(chunkChangeSwitch, upperChunk, underChunk, begin, false));
+
+	chunkCount_++;
 }
 
 //mapのセッター
 void Map::SetMap(const Chunk* chunk, const Vector2Int& begin)
 {
-	chunkCount_++;
 	for (int y = 0; y < Chunk::kMaxHeight; y++)
 	{
 		for (int x = 0; x < Chunk::kMaxWidth; x++)
@@ -123,28 +175,10 @@ void Map::FlipChunk(const Vector2Int& pos)
 }
 
 //切り替え
-void Map::SwapChunk(Chunk* under, Chunk* top, const Vector2Int& underChunkPos)
+void Map::SwapChunk(Chunk* under, Chunk* upper, const Vector2Int& begin)
 {
 	//下のチャンクを上のチャンクに変更
-	SetMap(top, underChunkPos);
+	SetMap(under, begin);
 	//上のチャンクを下のチャンクに変更
-	SetMap(under, { underChunkPos.x,underChunkPos.y - Chunk::kMaxHeight });
+	SetMap(upper, { begin.x,begin.y + Chunk::kMaxHeight + 1 });
 }
-
-//チャンク切り替えスイッチの生成
-void Map::CreateChunkChangeSwitch()
-{
-	for (int x = 1; x < chunkCount_ - 1; x++)
-	{
-		ChunkChangeSwitch* chunkChangeSwitch = new ChunkChangeSwitch();
-		chunkChangeSwitch->Initialize
-		({
-			static_cast<float>((mapDrawData_[x].begin.x + 2) * kBlockSize),
-			static_cast<float>(mapDrawData_[0].begin.y * kBlockSize + Chunk::kMaxHeight * kBlockSize)
-			});
-
-		chunkChangeSwitchList_.push_back(chunkChangeSwitch);
-	}
-}
-
-

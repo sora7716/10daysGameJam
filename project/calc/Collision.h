@@ -3,11 +3,9 @@
 #include <vector>
 class Player;
 
-const int kMapWidth = 35;
-const int kMapHeight = 11;
-const int kBlockSize = 32;
-
-
+/// <summary>
+/// 衝突判定
+/// </summary>
 class Collision
 {
 private://メンバ変数

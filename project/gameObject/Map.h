@@ -1,16 +1,29 @@
 #pragma once
+#include <memory>
 #include <vector>
 #include <list>
 #include "ResourceData.h"
 #include "Chunk.h"
+#include "ChunkChangeSwitch.h"
+
 //前方宣言
-class ChunkChangeSwitch;
+class Player;
 
 //描画用データ
-struct MapDrawData 
+struct MapDrawData
 {
 	Vector2Int begin;
 	int textureHandle;
+};
+
+//スイッチに必要なデータ
+struct ChunkTransitionData
+{
+	ChunkChangeSwitch* switchResource;
+	Chunk* upperChunk;
+	Chunk* underChunk;
+	Vector2Int begin;
+	bool isChunkChange;
 };
 
 //マップ
@@ -39,22 +52,56 @@ private://メンバ変数
 	std::vector<MapDrawData>mapDrawData_;
 
 	//チャンクの切り替えスイッチのリスト
-	std::list<ChunkChangeSwitch*>chunkChangeSwitchList_;
+	std::list<ChunkTransitionData>chunkChangeSwitchList_;
 
 	//チャンクの数
 	int chunkCount_ = 0;
+
+	//マウスの座標
+	const Vector2Int* mousePos_ = {};
+
+	//プレイヤー
+	Player* player_ = nullptr;
 
 public://メンバ関数
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	/// <param name="mousePos">マウスの座標</param>
+	/// <param name="player">プレイヤー</param>
+	void Initialize(const Vector2Int* mousePos,Player*player);
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update();
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw();
+
+	/// <summary>
+	/// 終了
+	/// </summary>
+	void Finalize();
+
+	/// <summary>
+	/// チャンク切り替えスイッチの生成
+	/// </summary>
+	/// <param name="upperChunk">上のチャンク</param>
+	/// <param name="underChunk">下のチャンク</param>
+	/// <param name="begin">読み込み開始位置</param>
+	void CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, const Vector2Int& begin);
+
+	/// <summary>
+    /// マップのゲッター
+    /// </summary>
+    /// <returns>map</returns>
+	std::vector<std::vector<int>> GetMap() { return map_; };
+
+private:
 
 	/// <summary>
 	/// mapのセッター
@@ -73,20 +120,9 @@ public://メンバ関数
 	/// 切り替え
 	/// </summary>
 	/// <param name="under">下のチャンク</param>
-	/// <param name="top">上のチャンク</param>
-	/// <param name="underChunkPos">下のチャンクの位置</param>
-	void SwapChunk(Chunk* under, Chunk* top, const Vector2Int& underChunkPos);
-
-	/// <summary>
-	/// マップのゲッター
-	/// </summary>
-	/// <returns>map</returns>
-	std::vector<std::vector<int>> GetMap() { return map_; };
-
-	/// <summary>
-	/// チャンク切り替えスイッチの生成
-	/// </summary>
-	void CreateChunkChangeSwitch();
+	/// <param name="upper">上のチャンク</param>
+	/// <param name="begin">開始位置(upperのorigin)</param>
+	void SwapChunk(Chunk* under, Chunk* upper, const Vector2Int& begin);
 
 };
 
