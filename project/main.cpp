@@ -7,6 +7,7 @@
 #include"gameObject/Player.h"
 #include "gameObject/Map.h"
 #include "gameObject/ChunkManager.h"
+#include "gameObject/ChunkChangeSwitch.h"
 const char kWindowTitle[] = "MyGame";
 
 // Windowsアプリでのエントリーポイント(main関数)
@@ -40,27 +41,27 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	int playerTexture = Novice::LoadTexture("./resources/player.png");
 
 	//チャンクの生成
-	ChunkManager::GetInstance()->LoadChunk("under_0-1", "under_0-1", blockTextures[1]);
-	/*ChunkManager::GetInstance()->LoadChunk("map/up_0-2", "up_0-2", blockTextures[1]);
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-3", "up_0-3", blockTextures[1]);
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-4", "up_0-4", blockTextures[1]);
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-5", "up_0-5", blockTextures[1]);
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-6", "up_0-6", blockTextures[1]);
-	ChunkManager::GetInstance()->LoadChunk("map/up_0-7", "up_0-7", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-1", "up_0-1", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-2", "up_0-2", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-3", "up_0-3", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-4", "up_0-4", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-5", "up_0-5", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-6", "up_0-6", blockTextures[0]);
+	ChunkManager::GetInstance()->LoadChunk("map/up_0-7", "up_0-7", blockTextures[0]);
 
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-1", "under_0-1", blockTextures[0]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-2", "under_0-2", blockTextures[0]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-3", "under_0-3", blockTextures[0]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-4", "under_0-4", blockTextures[0]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-5", "under_0-5", blockTextures[0]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-6", "under_0-6", blockTextures[0]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-7", "under_0-7", blockTextures[0]);*/
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-1", "under_0-1", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-2", "under_0-2", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-3", "under_0-3", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-4", "under_0-4", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-5", "under_0-5", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-6", "under_0-6", blockTextures[1]);
+	ChunkManager::GetInstance()->LoadChunk("map/under_0-7", "under_0-7", blockTextures[1]);
 
 	//マップの生成
 	std::unique_ptr<Map>map = std::make_unique<Map>();
 	map->Initialize();
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-1"), { 3 ,3 });
-	/*map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-2"), { 8 ,3 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-1"), { 3 ,3 });
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-2"), { 8 ,3 });
 	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-3"), { 13,3 });
 	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-4"), { 18,3 });
 	map->SetMap(ChunkManager::GetInstance()->FindChunk("up_0-5"), { 23,3 });
@@ -72,12 +73,13 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-4"), { 18,9 });
 	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-5"), { 23,9 });
 	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-6"), { 28,9 });
-	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-7"), { 33,9 });*/
+	map->SetMap(ChunkManager::GetInstance()->FindChunk("under_0-7"), { 33,9 });
+	map->CreateChunkChangeSwitch();
 	collision->SetMap(map->GetMap());
 
 	AABB startButton{
 		.min{200.0f,500.0f},
-		.max{250.0f,550.0f}
+		.max{232.0f,532.0f}
 	};
 
 	int color = BLUE;
@@ -95,7 +97,12 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	bool isSwap = false;
 	bool isFlip = false;
 
-	player->Initialize(keys, preKeys, map->GetMap(),playerTexture);
+	player->Initialize(keys, preKeys, map->GetMap(), playerTexture);
+
+	Vector2Int mousePos = {};
+
+	std::unique_ptr<ChunkChangeSwitch> chunkChangeSwitch = std::make_unique<ChunkChangeSwitch>();
+	chunkChangeSwitch->Initialize(startButton.min);
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
 	{
@@ -105,20 +112,21 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		// キー入力を受け取る
 		memcpy(preKeys, keys, 256);
 		Novice::GetHitKeyStateAll(keys);
+		Novice::GetMousePosition(&mousePos.x, &mousePos.y);
 
 		///
 		/// ↓更新処理ここから
 		///
 
 		player->Update();
+		chunkChangeSwitch->SetMousePos(mousePos);
+		chunkChangeSwitch->Update();
+		player->SetIsMove(chunkChangeSwitch->IsPressSwitch());
 
-		if (Collision::IsMouseOverRect(startButton))
+		if (Collision::IsPointInRect(startButton, Vector2(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))))
 		{
 			color = RED;
-			if (Novice::IsTriggerMouse(0))
-			{
-				player->SetIsMove(true);
-			}
+
 		}
 		else
 		{
@@ -126,7 +134,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		}
 
 
-		if (Collision::IsMouseOverRect(swapButton))
+		if (Collision::IsPointInRect(swapButton, Vector2(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))))
 		{
 			if (Novice::IsTriggerMouse(0))
 			{
@@ -135,7 +143,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		}
 
-		if (Collision::IsMouseOverRect(flipButton))
+		if (Collision::IsPointInRect(flipButton, Vector2(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))))
 		{
 			if (Novice::IsTriggerMouse(0))
 			{

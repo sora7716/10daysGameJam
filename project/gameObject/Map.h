@@ -1,7 +1,10 @@
 #pragma once
 #include <vector>
-#include "gameObject/ResourceData.h"
+#include <list>
+#include "ResourceData.h"
 #include "Chunk.h"
+//前方宣言
+class ChunkChangeSwitch;
 
 //描画用データ
 struct MapDrawData 
@@ -34,6 +37,12 @@ private://メンバ変数
 
 	//テクスチャ
 	std::vector<MapDrawData>mapDrawData_;
+
+	//チャンクの切り替えスイッチのリスト
+	std::list<ChunkChangeSwitch*>chunkChangeSwitchList_;
+
+	//チャンクの数
+	int chunkCount_ = 0;
 
 public://メンバ関数
 
@@ -73,6 +82,11 @@ public://メンバ関数
 	/// </summary>
 	/// <returns>map</returns>
 	std::vector<std::vector<int>> GetMap() { return map_; };
+
+	/// <summary>
+	/// チャンク切り替えスイッチの生成
+	/// </summary>
+	void CreateChunkChangeSwitch();
 
 };
 

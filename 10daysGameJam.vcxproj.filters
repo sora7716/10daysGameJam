@@ -37,10 +37,13 @@
     <ClCompile Include="project\gameObject\Map.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
-    <ClCompile Include="project\Collision.cpp">
+    <ClCompile Include="project\calc\Collision.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
-    <ClCompile Include="project\Vector2.cpp">
+    <ClCompile Include="project\calc\Vector2.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="project\gameObject\ChunkChangeSwitch.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,11 +134,12 @@
     </ClInclude>
     <ClInclude Include="project\gameObject\Chunk.h" />
     <ClInclude Include="project\gameObject\ChunkManager.h" />
-    <ClInclude Include="project\Vector2.h" />
     <ClInclude Include="project\gameObject\Map.h" />
-    <ClInclude Include="project\Collision.h" />
     <ClInclude Include="project\Vector2.h" />
-    <ClInclude Include="project\gameObject\PlayerData.h" />
+    <ClInclude Include="project\calc\Collision.h" />
+    <ClInclude Include="project\calc\Vector2.h" />
+    <ClInclude Include="project\gameObject\ResourceData.h" />
+    <ClInclude Include="project\gameObject\ChunkChangeSwitch.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project\.editorconfig" />

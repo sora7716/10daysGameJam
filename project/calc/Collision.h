@@ -36,11 +36,12 @@ public://メンバ関数
 	void SetMap(std::vector<std::vector<int>> map) { map_ = map; };
 
 	/// <summary>
-	/// AABBとマウスカーソルの当たり判定
+	/// AABBと点の衝突判定
 	/// </summary>
 	/// <param name="aabb">aabb</param>
-	/// <returns>当たり判定</returns>
-	static bool IsMouseOverRect(AABB aabb);
+	/// <param name="point">点</param>
+	/// <returns>衝突判定</returns>
+	static bool IsPointInRect(const AABB& aabb,const Vector2& point);
 };
 
 

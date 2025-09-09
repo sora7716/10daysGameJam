@@ -1,4 +1,6 @@
 #include "Map.h"
+#include "calc/Collision.h"
+#include "ChunkChangeSwitch.h"
 #include <Novice.h>
 
 //初期化
@@ -27,13 +29,28 @@ void Map::Draw()
 				int useTex = -1;
 				for (MapDrawData& mData : mapDrawData_)
 				{
-					if (y >= mData.begin.y && y < mData.begin.y + Chunk::kMaxHeight)
+					AABB aabb =
+					{
+						.min =
+						{
+							static_cast<float>(mData.begin.x),static_cast<float>(mData.begin.y)
+						},
+						.max =
+						{
+							static_cast<float>(mData.begin.x + Chunk::kMaxWidth),static_cast<float>(mData.begin.y + Chunk::kMaxHeight)
+						},
+
+					};
+					if (Collision::IsPointInRect(aabb, Vector2(static_cast<float>(x), static_cast<float>(y)))) {
+						useTex = mData.textureHandle;
+					}
+					/*if (y >= mData.begin.y && y < mData.begin.y + Chunk::kMaxHeight)
 					{
 						if (x >= mData.begin.x && x < mData.begin.x + Chunk::kMaxWidth)
 						{
-							useTex = mData.textureHandle;
+
 						}
-					}
+					}*/
 				}
 
 				Novice::DrawSprite
@@ -44,13 +61,14 @@ void Map::Draw()
 					1.0f, 1.0f, 0.0f, WHITE
 				);
 			}
-			else if (map_[y][x] == 3)
+			/*else if (map_[y][x] == 3)
 			{
 				Novice::DrawBox(
 					x * kBlockSize,
-					y * kBlockSize, kBlockSize, kBlockSize, 0.0f, WHITE, kFillModeWireFrame
+					y * kBlockSize,
+					kBlockSize, kBlockSize, 0.0f, RED, kFillModeSolid
 				);
-			}
+			}*/
 
 #ifdef _DEBUG
 			if (map_[y][x] == static_cast<int>(BlockType::kBlank))
@@ -64,11 +82,16 @@ void Map::Draw()
 #endif // _DEBUG
 		}
 	}
+
+	for (std::list<ChunkChangeSwitch*>::iterator it = chunkChangeSwitchList_.begin(); it != chunkChangeSwitchList_.end(); it++) {
+		(*it)->Draw();
+	}
 }
 
 //mapのセッター
 void Map::SetMap(const Chunk* chunk, const Vector2Int& begin)
 {
+	chunkCount_++;
 	for (int y = 0; y < Chunk::kMaxHeight; y++)
 	{
 		for (int x = 0; x < Chunk::kMaxWidth; x++)
@@ -106,6 +129,22 @@ void Map::SwapChunk(Chunk* under, Chunk* top, const Vector2Int& underChunkPos)
 	SetMap(top, underChunkPos);
 	//上のチャンクを下のチャンクに変更
 	SetMap(under, { underChunkPos.x,underChunkPos.y - Chunk::kMaxHeight });
+}
+
+//チャンク切り替えスイッチの生成
+void Map::CreateChunkChangeSwitch()
+{
+	for (int x = 1; x < chunkCount_ - 1; x++)
+	{
+		ChunkChangeSwitch* chunkChangeSwitch = new ChunkChangeSwitch();
+		chunkChangeSwitch->Initialize
+		({
+			static_cast<float>((mapDrawData_[x].begin.x + 2) * kBlockSize),
+			static_cast<float>(mapDrawData_[0].begin.y * kBlockSize + Chunk::kMaxHeight * kBlockSize)
+			});
+
+		chunkChangeSwitchList_.push_back(chunkChangeSwitch);
+	}
 }
 
 

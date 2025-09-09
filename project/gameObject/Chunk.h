@@ -7,8 +7,8 @@ class Chunk
 public://定数
 
 	//チャンクのサイズ
-	static inline const int kMaxWidth = 6;
-	static inline const int kMaxHeight = 6;
+	static inline const int kMaxWidth = 5;
+	static inline const int kMaxHeight = 5;
 
 private://メンバ変数
 
