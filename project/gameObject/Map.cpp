@@ -141,11 +141,11 @@ void Map::CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, cons
 	chunkChangeSwitchList_.push_back(ChunkTransitionData(chunkChangeSwitch, upperChunk, underChunk, begin, false));
 }
 
-//チャンクの反転スイッチの生成
-void Map::CreateInvertSwitch(const Vector2Int& begin)
-{
-	
-}
+////チャンクの反転スイッチの生成
+//void Map::CreateInvertSwitch(const Vector2Int& begin)
+//{
+//	
+//}
 
 //mapのセッター
 void Map::SetMap(const Chunk* chunk, const Vector2Int& begin)
