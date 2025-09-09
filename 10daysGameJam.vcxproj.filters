@@ -46,6 +46,9 @@
     <ClCompile Include="project\gameObject\GameSwitch.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>KamataEngine\Source\gameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -135,11 +138,13 @@
     <ClInclude Include="project\gameObject\Chunk.h" />
     <ClInclude Include="project\gameObject\ChunkManager.h" />
     <ClInclude Include="project\gameObject\Map.h" />
-    <ClInclude Include="project\Vector2.h" />
     <ClInclude Include="project\calc\Collision.h" />
     <ClInclude Include="project\calc\Vector2.h" />
     <ClInclude Include="project\gameObject\ResourceData.h" />
     <ClInclude Include="project\gameObject\GameSwitch.h" />
+    <ClInclude Include="Particle.h">
+      <Filter>KamataEngine\Source\gameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="project\.editorconfig" />

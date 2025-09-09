@@ -10,6 +10,7 @@
 #include "gameObject/Map.h"
 #include "gameObject/ChunkManager.h"
 #include "gameObject/GameSwitch.h"
+#include "gameObject/Particle"
 const char kWindowTitle[] = "MyGame";
 
 // Windowsアプリでのエントリーポイント(main関数)
