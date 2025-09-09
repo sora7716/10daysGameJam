@@ -16,14 +16,22 @@ struct MapDrawData
 	int textureHandle;
 };
 
-//スイッチに必要なデータ
+//入れ替えようのスイッチに使うデータ
 struct ChunkTransitionData
 {
 	ChunkChangeSwitch* switchResource;
 	Chunk* upperChunk;
 	Chunk* underChunk;
 	Vector2Int begin;
-	bool isChunkChange;
+	bool isTransitionChunk;
+};
+
+//反転用のスイッチに使うデータ
+struct ChunkInvertData 
+{
+	ChunkChangeSwitch* switchResource;
+	Vector2Int begin;
+	bool isInvertChunk;
 };
 
 //マップ
@@ -53,9 +61,6 @@ private://メンバ変数
 
 	//チャンクの切り替えスイッチのリスト
 	std::list<ChunkTransitionData>chunkChangeSwitchList_;
-
-	//チャンクの数
-	int chunkCount_ = 0;
 
 	//マウスの座標
 	const Vector2Int* mousePos_ = {};
@@ -96,6 +101,12 @@ public://メンバ関数
 	void CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, const Vector2Int& begin);
 
 	/// <summary>
+	/// チャンクの反転スイッチの生成
+	/// </summary>
+	/// <param name="begin"></param>
+	void CreateInvertSwitch(const Vector2Int& begin);
+
+	/// <summary>
     /// マップのゲッター
     /// </summary>
     /// <returns>map</returns>
@@ -114,7 +125,7 @@ private:
 	/// 逆転
 	/// </summary>
 	/// <param name="pos">読み込む位置</param>
-	void FlipChunk(const Vector2Int& pos);
+	void InvertChunk(const Vector2Int& pos);
 
 	/// <summary>
 	/// 切り替え

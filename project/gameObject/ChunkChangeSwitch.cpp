@@ -15,22 +15,30 @@ void ChunkChangeSwitch::Initialize(const Vector2& position)
 void ChunkChangeSwitch::Update()
 {
 	//スイッチの座標でaabbを作成
-	AABB aabb = {
+	AABB aabb =
+	{
 		.min = position_,
 		.max = {position_.x + size_.x,position_.y + size_.y}
 	};
 
 	//スイッチに重なったか
-	if (Collision::IsPointInRect(aabb, mousePos_)) {
+	if (Collision::IsPointInRect(aabb, mousePos_)) 
+	{
 		color_ = RED;
 		//スイッチをクリックしたか
-		if (Novice::IsTriggerMouse(0)) {
+		if (Novice::IsTriggerMouse(0)) 
+		{
  			isPressSwitch_ = !isPressSwitch_;
 		}
 	}
 	else
 	{
 		color_ = BLUE;
+	}
+
+	if (isPressSwitch_) 
+	{
+		color_ = GREEN;
 	}
 }
 

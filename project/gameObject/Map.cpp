@@ -25,24 +25,24 @@ void Map::Initialize(const Vector2Int* mousePos, Player* player)
 //更新
 void Map::Update()
 {
-	for (std::list<ChunkTransitionData>::iterator it = chunkChangeSwitchList_.begin(); it != chunkChangeSwitchList_.end(); it++) 
+	for (std::list<ChunkTransitionData>::iterator it = chunkChangeSwitchList_.begin(); it != chunkChangeSwitchList_.end(); it++)
 	{
 		//マウスを設定
 		it->switchResource->SetMousePos(*mousePos_);
 		//更新
-		it->switchResource->Update();	
+		it->switchResource->Update();
 
 		//移動しているかどうか
-		if (player_->IsMove()) 
+		if (player_->IsMove())
 		{
-			if (it->isChunkChange) 
+			if (it->isTransitionChunk)
 			{
 				SwapChunk(it->underChunk, it->upperChunk, it->begin);
 			}
 		}
-		else 
+		else
 		{
-			it->isChunkChange = it->switchResource->IsPressSwitch();
+			it->isTransitionChunk = it->switchResource->IsPressSwitch();
 		}
 	}
 }
@@ -105,9 +105,11 @@ void Map::Draw()
 	}
 
 	//チャンクの切り替えようスイッチ
-	for (std::list<ChunkTransitionData>::iterator it = chunkChangeSwitchList_.begin(); it != chunkChangeSwitchList_.end(); it++) 
+	for (std::list<ChunkTransitionData>::iterator it = chunkChangeSwitchList_.begin(); it != chunkChangeSwitchList_.end(); it++)
 	{
-		it->switchResource->Draw();
+		if (!player_->IsMove()) {
+			it->switchResource->Draw();
+		}
 	}
 }
 
@@ -137,8 +139,12 @@ void Map::CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, cons
 	});
 
 	chunkChangeSwitchList_.push_back(ChunkTransitionData(chunkChangeSwitch, upperChunk, underChunk, begin, false));
+}
 
-	chunkCount_++;
+//チャンクの反転スイッチの生成
+void Map::CreateInvertSwitch(const Vector2Int& begin)
+{
+	
 }
 
 //mapのセッター
@@ -155,7 +161,7 @@ void Map::SetMap(const Chunk* chunk, const Vector2Int& begin)
 }
 
 //逆転
-void Map::FlipChunk(const Vector2Int& pos)
+void Map::InvertChunk(const Vector2Int& pos)
 {
 	int tmp = {};
 	for (int y = 0; y < Chunk::kMaxHeight; y++)
