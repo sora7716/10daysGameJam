@@ -155,7 +155,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			player->SetIsMove(gameSwitch->IsPressSwitch());
 
 			collision->IsMapChipCollision();
-			if (!Novice::IsPlayingAudio(titleBgmHandle) || titleBgmHandle == -1) {
+			if (!Novice::IsPlayingAudio(titleBgmHandle) || titleBgmHandle == -1) 
+			{
 				titleBgmHandle = Novice::PlayAudio(gamePlayBgmHandle, true, 0.5f);
 			}
 		
