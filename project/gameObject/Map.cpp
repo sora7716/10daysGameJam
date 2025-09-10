@@ -193,7 +193,7 @@ void Map::Draw()
 }
 
 //終了
-void Map::Finalize()
+Map::~Map()
 {
 	for (std::list<ChunkTransitionData>::iterator it = chunkTransitionSwitchList_.begin(); it != chunkTransitionSwitchList_.end(); it++)
 	{
@@ -295,7 +295,7 @@ void Map::SetMap(Chunk* chunk, const Vector2Int& begin, bool isInitialize)
 	if (isInitialize) {
 		//マップデータのリストに追加
 		mapDatas_.push_back({ chunk,begin });
-		
+
 	}
 }
 
@@ -357,7 +357,7 @@ bool Map::IsCrossPlayerOfSegment(const Vector2& segmentBegin, const Vector2& seg
 	Vector2 end = segmentEnd;
 
 	Vector2 beginToEnd = end - begin;
-	Vector2 playerToBegin = (player_->GetPlayerData().gameObject.center + player_->GetPlayerData().gameObject.radius) - begin;
+	Vector2 playerToBegin = (player_->GetPlayerData().gameObject.center + player_->GetPlayerData().gameObject.radius + Vector2(static_cast<float>(kBlockSize/2), 0.0f)) - begin;
 
 	return beginToEnd.Cross(playerToBegin) < 0.0f;
 }

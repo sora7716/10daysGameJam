@@ -2,6 +2,17 @@
 #include "calc/Vector2.h"
 #include <cstdint>
 
+enum Scene
+{
+	kTitle,
+	kSelect,
+	kStage1,
+	kStage2,
+	kStage3,
+	kStage4,
+	kNone
+};
+
 //ゲームオブジェクト
 struct GameObject 
 {

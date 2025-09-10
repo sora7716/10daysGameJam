@@ -170,6 +170,10 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="project\gameObject\Particle.cpp" />
     <ClCompile Include="project\gameObject\Player.cpp" />
     <ClCompile Include="project\main.cpp" />
+    <ClCompile Include="project\scene\SelectScene.cpp" />
+    <ClCompile Include="project\scene\StageScene1.cpp" />
+    <ClCompile Include="project\scene\StageScene2.cpp" />
+    <ClCompile Include="project\scene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectXGame\3d\Camera.h" />
@@ -209,6 +213,10 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="project\gameObject\Particle.h" />
     <ClInclude Include="project\gameObject\Player.h" />
     <ClInclude Include="project\gameObject\ResourceData.h" />
+    <ClInclude Include="project\scene\SelectScene.h" />
+    <ClInclude Include="project\scene\StageScene1.h" />
+    <ClInclude Include="project\scene\StageScene2.h" />
+    <ClInclude Include="project\scene\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project\.editorconfig" />
