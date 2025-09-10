@@ -68,8 +68,6 @@ void Particle::Update()
 		}
 	}
 
-	Novice::ScreenPrintf(0, 0, "%f", particle_[0].scale);
-
 }
 
 //描画
