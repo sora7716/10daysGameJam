@@ -126,6 +126,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		.emitter{},
 		.speed = 1.0f,
 		.textureHandle = goalTexture,
+		.direction = 180.0f,
+		.isCircle = false,
 		.isAlive = true
 	};
 	particle->Initialize(particleSystemData);
