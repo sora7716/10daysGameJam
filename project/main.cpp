@@ -1,6 +1,8 @@
 #include <Novice.h>
 #include "scene/StageScene1.h"
 #include "scene/StageScene2.h"
+#include "scene/StageScene3.h"
+#include "scene/StageScene4.h"
 #include"gameObject/ChunkManager.h"
 #include "Scene/SelectScene.h"
 #include "Scene/TitleScene.h"
@@ -23,6 +25,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	StageScene1* stageScene1 = new StageScene1();
 	StageScene2* stageScene2 = new StageScene2();
+	StageScene3* stageScene3 = new StageScene3();
+	StageScene4* stageScene4 = new StageScene4();
 
 	int soundEffects[static_cast<int>(soundEffects::kCount)] =
 	{
@@ -104,6 +108,18 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), 0, 0.3f);
 				}
 			}
+			else if (scene == kStage2)
+			{
+				stageScene2->Initialize(keys, preKeys, &mousePos_);
+			}
+			else if (scene == kStage3)
+			{
+				stageScene3->Initialize(keys, preKeys, &mousePos_);
+			}
+			else if (scene == kStage4)
+			{
+				stageScene4->Initialize(keys, preKeys, &mousePos_);
+			}
 		}
 
 		preScene = scene;
@@ -146,7 +162,24 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			}
 			stageScene2->Draw();
 		}
-
+		else if (scene == kStage3)
+		{
+			stageScene3->Update();
+			if (stageScene3->IsFinised())
+			{
+				scene = stageScene3->GetNextScene();
+			}
+			stageScene3->Draw();
+		}
+		else if (scene == kStage4)
+		{
+			stageScene4->Update();
+			if (stageScene4->IsFinised())
+			{
+				scene = stageScene4->GetNextScene();
+			}
+			stageScene4->Draw();
+		}
 		///
 		/// ↓描画処理ここから
 		///
