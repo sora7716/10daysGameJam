@@ -172,6 +172,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="project\scene\StageScene1.cpp" />
     <ClCompile Include="project\scene\StageScene2.cpp" />
     <ClCompile Include="project\scene\TitleScene.cpp" />
+    <ClCompile Include="StageScene3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DirectXGame\3d\Camera.h" />
@@ -213,6 +214,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="project\scene\StageScene1.h" />
     <ClInclude Include="project\scene\StageScene2.h" />
     <ClInclude Include="project\scene\TitleScene.h" />
+    <ClInclude Include="StageScene3.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project\.editorconfig" />
