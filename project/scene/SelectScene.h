@@ -15,7 +15,9 @@ private://メンバ変数
 	Scene nextScene_ = kNone;
 
 	//シーンの終了フラグ
-	bool isFinised_ = false;
+	bool isFinished_ = false;
+
+	int bgTex_[5] = {};
 
 public://メンバ関数
 
@@ -27,6 +29,6 @@ public://メンバ関数
 
 	Scene GetNextScene() { return nextScene_; };
 	
-	bool IsFinised() { return isFinised_; };
+	bool IsFinised() { return isFinished_; };
 };
 

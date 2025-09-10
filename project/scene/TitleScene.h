@@ -17,6 +17,8 @@ private://メンバ変数
 	//シーンの終了フラグ
 	bool isFinised_ = false;
 
+	int bgTexs_[5] = {};
+
 public://メンバ関数
 
 	void Initialize(Vector2Int*mousePos);

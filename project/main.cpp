@@ -11,7 +11,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
 
 	// ライブラリの初期化
-	Novice::Initialize(kWindowTitle, 1312, 720);
+	Novice::Initialize(kWindowTitle, 1280, 720);
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
@@ -38,10 +38,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	Scene scene = kTitle;
 #ifdef _DEBUG
-	scene = kStage1;
+	//scene = kStage1;
 #endif // _DEBUG
 
-	Scene preScene = scene;
+	Scene preScene = kNone;
 	stageScene1->Initialize(keys, preKeys, &mousePos_);
 	stageScene2->Initialize(keys, preKeys, &mousePos_);
 
@@ -75,6 +75,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			else if (scene == kStage1)
 			{
 				stageScene1->Initialize(keys, preKeys, &mousePos_);
+			}
+			else if (scene == kStage2)
+			{
+				stageScene2->Initialize(keys, preKeys, &mousePos_);
 			}
 		}
 
