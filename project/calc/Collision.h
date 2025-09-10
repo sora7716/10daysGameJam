@@ -10,7 +10,9 @@ class Collision
 {
 private://メンバ変数
 
+	//プレイヤー
 	Player* player_ = nullptr;
+
 	//マップ
 	std::vector<std::vector<int>> map_;
 
