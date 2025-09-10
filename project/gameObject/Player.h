@@ -30,6 +30,7 @@ private://	メンバー変数
 
 	//リセットボタン
 	bool isReset_ = false;
+
 public://メンバー関数
 
 	/// <summary>

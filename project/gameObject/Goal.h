@@ -1,6 +1,7 @@
 #pragma once
 #include "calc/Vector2.h"
 #include <vector>
+#include "Particle.h"
 
 /// <summary>
 /// ゴール
@@ -23,6 +24,9 @@ private: //メンバ変数
 
 	//衝突したかどうかのフラグ
 	bool isCollision_ = false;
+
+	Particle* particle_ = nullptr;
+	ParticleSystemData particleData_ = {};
 
 public: //メンバ関数
 

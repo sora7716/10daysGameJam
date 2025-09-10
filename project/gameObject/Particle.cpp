@@ -13,14 +13,14 @@ float ConversionToRadian(float angle) {
 }
 
 //初期化
-void Particles::Initialize(const ParticleSystemData& particleSystemData)
+void Particle::Initialize(const ParticleSystemData& particleSystemData)
 {
 	//パーティクルシステムのデータを受け取る
 	particleSystemData_ = particleSystemData;
 
 	for (int32_t i = 0; i < kParticleNum; i++) {
 		//マウスのクリックした位置に配置
-		particle[i].position = particleSystemData_.emitter;
+		particle_[i].position = particleSystemData_.emitter;
 	}
 
 	//乱数エンジンの初期化
@@ -29,56 +29,83 @@ void Particles::Initialize(const ParticleSystemData& particleSystemData)
 }
 
 //更新
-void Particles::Update()
+void Particle::Update()
 {
 	//ランダムに設定
 	std::uniform_real_distribution<float>distribution(particleSystemData_.minAngle, particleSystemData_.maxAngle);
 	//パーティクルの生成
 	if (particleSystemData_.isAlive) {
-		for (int32_t i = 0; i < kParticleNum; i++) {
+		for (int32_t i = 0; i < particleSystemData_.spawnCount; i++) {
 			//パーティクルが生きていないなら
-			if (!particle[i].isAlive) {
-				particle[i].isAlive = true;//パーティクルが生きている状態にする
-				particle[i].speed = particleSystemData_.speed; //パーティクルの速度
-				particle[i].color = WHITE; //パーティクルの色
-				particle[i].angle = distribution(randomEngine_);//度数法でランダムな角度をもとめる
-				particle[i].angle = ConversionToRadian(particle[i].angle);//角度をラジアンに変換
+			if (!particle_[i].isAlive) {
+				particle_[i].isAlive = true;//パーティクルが生きている状態にする
+				particle_[i].speed = particleSystemData_.speed; //パーティクルの速度
+				particle_[i].color = WHITE; //パーティクルの色
+				particle_[i].angle = distribution(randomEngine_);//度数法でランダムな角度をもとめる
+				particle_[i].angle = ConversionToRadian(particle_[i].angle);//角度をラジアンに変換
 				break;
 			}
 		}
 	}
 
 	//パーティクルの移動
-	for (int32_t i = 0; i < kParticleNum; i++) {
-		if (particle[i].isAlive) {
+	for (int32_t i = 0; i < particleSystemData_.spawnCount; i++) {
+		if (particle_[i].isAlive) {
 			//極座標で動かす
-			particle[i].position.x += particle[i].speed * cosf(particle[i].angle);
-			particle[i].position.y += particle[i].speed * sinf(particle[i].angle);
+			particle_[i].position.x += particle_[i].speed * cosf(particle_[i].angle);
+			particle_[i].position.y += particle_[i].speed * sinf(particle_[i].angle);
+			particle_[i].scale += particleSystemData_.scale;
 			//パーティクルのアルファ値を変化させていく
-			if (particle[i].color > 0xFFFFFF00) {
-				particle[i].color -= 0x00000001;
+			if (particle_[i].color > 0xFFFFFF00) {
+				particle_[i].color -= particleSystemData_.subtructColor;
 			}
 			else {
-				particle[i].isAlive = false;//パーティクルが死んだ状態にする
-				particle[i].position = particleSystemData_.emitter;//パーティクルの位置を初期位置に戻す
-				particle[i].color = WHITE; //パーティクルの色を元に戻す
+				particle_[i].isAlive = false;//パーティクルが死んだ状態にする
+				particle_[i].position = particleSystemData_.emitter;//パーティクルの位置を初期位置に戻す
+				particle_[i].color = WHITE; //パーティクルの色を元に戻すparticle_[i].scale
+				particle_[i].scale = 0.0f;
 			}
 		}
 	}
 
+	Novice::ScreenPrintf(0, 0, "%f", particle_[0].scale);
+
 }
 
 //描画
-void Particles::Draw()
+void Particle::Draw()
 {
 	//パーティクル
-	for (int32_t i = 0; i < kParticleNum; i++) {
-		if (particle[i].isAlive) {
+	for (int32_t i = 0; i < particleSystemData_.spawnCount; i++) {
+		if (particle_[i].isAlive) {
 			Novice::DrawSprite(
-				static_cast<int32_t>(particle[i].position.x),
-				static_cast<int32_t>(particle[i].position.y),
+				static_cast<int32_t>(particle_[i].position.x),
+				static_cast<int32_t>(particle_[i].position.y),
 				particleSystemData_.textureHandle,
-				1.0f, 1.0f, 0.0f, particle[i].color
+				1.0f, 1.0f, 0.0f, particle_[i].color
+			);
+		}
+	}
+}
+
+//頂点描画
+void Particle::DrawRect()
+{
+	//パーティクル
+	for (int32_t i = 0; i < particleSystemData_.spawnCount; i++) {
+		if (particle_[i].isAlive) {
+
+			Novice::DrawQuad
+			(
+				static_cast<int32_t>(particle_[i].position.x - particle_[i].scale),
+				static_cast<int32_t>(particle_[i].position.y - particle_[i].scale),
+				static_cast<int32_t>(particle_[i].position.x + particle_[i].scale),
+				static_cast<int32_t>(particle_[i].position.y - particle_[i].scale),
+				static_cast<int32_t>(particle_[i].position.x - particle_[i].scale),
+				static_cast<int32_t>(particle_[i].position.y + particle_[i].scale),
+				static_cast<int32_t>(particle_[i].position.x + particle_[i].scale),
+				static_cast<int32_t>(particle_[i].position.y + particle_[i].scale),
+				0, 0, 32, 32, particleSystemData_.textureHandle, particle_[i].color
 			);
 		}
 	}

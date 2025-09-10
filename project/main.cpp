@@ -119,19 +119,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Goal* goal = new Goal();
 	int goalTexture = Novice::LoadTexture("./resources/goal.png");
 	goal->Initialize(map->GetMap(), goalTexture);
-
-	Particles* particle = new Particles();
-	ParticleSystemData particleSystemData =
-	{
-		.emitter{640.0f,600.0f},
-		.speed = 1.0f,
-		.textureHandle = goalTexture,
-		.minAngle = 90.0f,
-		.maxAngle = 300.0f,
-		.isAlive = true
-	};
-	particle->Initialize(particleSystemData);
-
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
 	{
@@ -166,10 +153,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			resetSwitch->SetIsPressSwitch(false);
 		}
 
+		if (goal->IsCollision()) 
+		{
+			player->SetIsMove(false);
+			player->SetVelocity({});
+		}
+
 		goal->SetTargetPos(player->GetPlayerData().gameObject.center);
 		goal->Update();
-
-		particle->Update();
 
 		///
 		/// ↑更新処理ここまで
@@ -195,8 +186,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		startSwitch->Draw();
 		resetSwitch->Draw();
 
-		particle->Draw();
-
 		///
 		/// ↑描画処理ここまで
 		///
@@ -217,7 +206,5 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	map->Finalize();
 	//チャンクマネージャーの終了
 	ChunkManager::GetInstance()->Finalize();
-	//パーティクルの削除
-	delete particle;
 	return 0;
 }

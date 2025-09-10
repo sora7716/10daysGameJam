@@ -72,6 +72,7 @@ struct ParticleProp
 {
 	Vector2 position; //パーティクルの位置
 	Vector2 beginPosition; //パーティクルの初期位置
+	float scale;//拡縮
 	float speed; //パーティクルの速度
 	float angle; //パーティクルの角度
 	uint32_t color; //パーティクルの色
@@ -83,9 +84,12 @@ struct ParticleSystemData
 {
 	Vector2 emitter;
 	float speed;
+	float scale;//拡縮
 	int textureHandle;
 	float minAngle;
 	float maxAngle;
+	int spawnCount;
+	unsigned int subtructColor;
 	bool isAlive;
 };
 

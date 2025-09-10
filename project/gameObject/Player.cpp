@@ -1,9 +1,9 @@
 #include "Player.h"
 #include"Novice.h"
 #include "calc/Collision.h"
+#include "GameSwitch.h"
 #ifdef _DEBUG
 #include <imgui.h>
-#include "GameSwitch.h"
 #endif // _DEBUG
 
 //初期化
@@ -35,7 +35,6 @@ void Player::Initialize(char* keys, char* preKeys, std::vector<std::vector<int>>
 			}
 		}
 	}
-
 }
 
 //更新
@@ -48,10 +47,10 @@ void Player::Update()
 	playerData_.gameObject.center += playerData_.gameObject.velocity;//位置に速度を足す
 
 	//スペースを押したら移動開始
-	if (keys_[DIK_SPACE] && !preKeys_[DIK_SPACE])
-	{
-		isMove_ = true;
-	}
+	//if (keys_[DIK_SPACE] && !preKeys_[DIK_SPACE])
+	//{
+	//	isMove_ = true;
+	//}
 
 	//ジャンプできるかどうか
 	if (isJump_ && isOnGround_)
@@ -78,7 +77,8 @@ void Player::Update()
 		playerData_.gameObject.velocity.y = 0.0f;
 		//加速度を0にする
 		playerData_.gameObject.acceleration.y = 0.0f;
-	} else
+	}
+	else
 	{
 		//加速度を元に戻す
 		playerData_.gameObject.acceleration.y = 0.8f;

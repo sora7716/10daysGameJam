@@ -28,11 +28,22 @@ void Goal::Initialize(const std::vector<std::vector<int>>& map, int textureHundl
 
 	targetRadius_ = static_cast<int>(kBlockSize) / 2;
 
+	particle_ = new Particle();
+	particleData_.emitter = { pos_.x + 16.0f,pos_.y + 16.0f };
+	particleData_.isAlive = false;
+	particleData_.minAngle = 0.0f;
+	particleData_.maxAngle = 360.0f;
+	particleData_.subtructColor = 0x00000009;
+	particleData_.textureHandle = Novice::LoadTexture("./resources/particle.png");
+	particle_->Initialize(particleData_);
+
 }
 
 //更新
 void Goal::Update()
 {
+	particle_->Update();
+
 	AABB aabb
 	{
 		.min = pos_,
@@ -49,6 +60,12 @@ void Goal::Update()
 		isCollision_ = true;
 	}
 
+	particleData_.isAlive = true;
+	particleData_.spawnCount = 5;
+	particleData_.speed = 0.0f;
+	particleData_.scale = 1.0f;
+	particle_->SetParticleSystemData(particleData_);
+
 #ifdef _DEBUG
 	ImGui::Begin("goal");
 	ImGui::Checkbox("isCollision", &isCollision_);
@@ -60,6 +77,7 @@ void Goal::Update()
 //描画
 void Goal::Draw()
 {
+	particle_->DrawRect();
 	Novice::DrawSprite(static_cast<int>(pos_.x), static_cast<int>(pos_.y), textureHundle_, 1.0f, 1.0f, 0.0f, WHITE);
 
 }
