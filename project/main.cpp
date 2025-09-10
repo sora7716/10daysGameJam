@@ -24,6 +24,17 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	StageScene1* stageScene1 = new StageScene1();
 	StageScene2* stageScene2 = new StageScene2();
 	
+	int soundEffects[static_cast<int>(soundEffects::kCount)] =
+	{
+		Novice::LoadAudio("./resources/sound/reset.mp3"),
+		Novice::LoadAudio("./resources/sound/jump.mp3"),
+		Novice::LoadAudio("./resources/sound/select.mp3"),
+		Novice::LoadAudio("./resources/sound/bgm.mp3"),
+		Novice::LoadAudio("./resources/sound/goal.mp3"),
+		Novice::LoadAudio("./resources/sound/start.mp3"),
+
+	};
+
 
 	Scene scene = kTitle;
 #ifdef _DEBUG

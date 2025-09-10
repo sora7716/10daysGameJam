@@ -10,7 +10,7 @@
 #include "gameObject/Map.h"
 #include "gameObject/ChunkManager.h"
 #include "gameObject/GameSwitch.h"
-
+#include "gameObject/Goal.h"
 
 
 void StageScene2::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
@@ -32,10 +32,15 @@ void StageScene2::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
 	{
 		Novice::LoadTexture("./resources/transitionSwitch.png"),
 		Novice::LoadTexture("./resources/invertSwitch.png"),
+		Novice::LoadTexture("./resources/startSwitch.png"),
+		Novice::LoadTexture("./resources/resetSwitch.png"),
 	};
 
-	playerTexture = Novice::LoadTexture("./resources/player.png");
-
+	int playerTextures[static_cast<int>(PlayerState::kCount)] =
+	{ Novice::LoadTexture("./resources/player.png"),
+		Novice::LoadTexture("./resources/playerWork.png"),
+		Novice::LoadTexture("./resources/playerJump.png"),
+	};
 	//チャンクの生成
 	/*ChunkManager::GetInstance()->LoadChunk("map/up_0-1", "up_0-1", blockTextures[static_cast<int>(TileTex::kUpper)]);
 	ChunkManager::GetInstance()->LoadChunk("map/up_0-2", "up_0-2", blockTextures[static_cast<int>(TileTex::kUpper)]);
@@ -85,17 +90,27 @@ void StageScene2::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
 	map->CreateTowLineMap(upperChunk6, underChunk6, { 28,3 }, switchTextures, true);
 	map->CreateTowLineMap(upperChunk7, underChunk7, { 33,3 }, switchTextures, true);*/
 	map->SettingUnderBorderLine();
-	player->Initialize(keys, preKeys, map->GetMap(), playerTexture);
+	player->Initialize(keys, preKeys, map->GetMap(), playerTextures);
+
+	Vector2 startSwitchOrigin = { 30.0f, 550.0f };
+	Vector2 startSwitchSize{ 256.0f,128.0f };
 
 	startSwitch = new GameSwitch();
-	startSwitch->Initialize(startSwitchData.min, switchTextures[0]);
+	startSwitch->Initialize(startSwitchOrigin, startSwitchSize, switchTextures[static_cast<int>(SwitchTex::kStart)]);
+
+	Vector2 resetSwitchOrigin = { 326.0f, 550.0f };
+	Vector2 resetSwitchSize{ 256.0f,128.0f };
 
 	resetSwitch = new GameSwitch();
-	resetSwitch->Initialize(resetSwitchData.min, switchTextures[1]);
+	resetSwitch->Initialize(resetSwitchOrigin, resetSwitchSize, switchTextures[static_cast<int>(SwitchTex::kReset)]);
 
 	isFinised_ = false;
 	nextScene_ = kNone;
 	isPressStart_ = false;
+
+	goal = new Goal();
+	int goalTexture = Novice::LoadTexture("./resources/goal.png");
+	goal->Initialize(map->GetMap(), goalTexture);
 }
 
 void StageScene2::Update()
@@ -104,7 +119,7 @@ void StageScene2::Update()
 	collision->SetMap(map->GetMap());
 	map->Update();
 	player->Update();
-	if (!isPressStart_) 
+	if (!isPressStart_)
 	{
 		isPressStart_ = startSwitch->IsPressSwitch();
 		startSwitch->SetMousePos(*mousePos_);
@@ -131,12 +146,17 @@ void StageScene2::Update()
 		isFinised_ = true;
 		nextScene_ = kSelect;
 	}
+
+	goal->SetTargetPos(player->GetPlayerData().gameObject.center);
+	goal->Update();
 }
+
 void StageScene2::Draw()
 {
 
 
 	map->Draw();
+	goal->Draw();
 	player->Draw();
 
 	/*for (int i = 0; i < 6; i++)
@@ -148,8 +168,8 @@ void StageScene2::Draw()
 			RED);
 	}*/
 
-	startSwitch->Draw();
-	resetSwitch->Draw();
+	startSwitch->DrawRect();
+	resetSwitch->DrawRect();
 
 
 }

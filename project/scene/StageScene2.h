@@ -5,6 +5,8 @@ class Player;
 class Collision;
 class Map;
 class GameSwitch;
+class Goal;
+
 /// <summary>
 /// ステージ1
 /// </summary>
@@ -43,6 +45,8 @@ private://メンバ変数
 
 	//スターとボタンを押したかどうか　
 	bool isPressStart_ = false;
+
+	Goal* goal = nullptr;
 
 public://メンバ関数
 
