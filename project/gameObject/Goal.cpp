@@ -27,7 +27,7 @@ void Goal::Initialize(const std::vector<std::vector<int>>& map, int textureHundl
 	textureHundle_ = textureHundle;
 
 	targetRadius_ = static_cast<int>(kBlockSize) / 2;
-
+	
 	particle_ = new Particle();
 	particleData_.emitter = { pos_.x + 16.0f,pos_.y + 16.0f };
 	particleData_.isAlive = false;
@@ -39,6 +39,7 @@ void Goal::Initialize(const std::vector<std::vector<int>>& map, int textureHundl
 
 }
 
+int soundHandle = 0;
 //更新
 void Goal::Update()
 {
@@ -57,6 +58,10 @@ void Goal::Update()
 
 	if (Collision::IsPointInRect(aabb, point))
 	{
+		if (!Novice::IsPlayingAudio(soundHandle)) {
+			soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kGoal), 0, 1);//
+		}		
+
 		isCollision_ = true;
 	}
 

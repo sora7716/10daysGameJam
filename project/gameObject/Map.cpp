@@ -28,6 +28,7 @@ void Map::Update()
 	//マップのリセット
 	if (player_->IsReset())
 	{
+
 		MapReset();//マップのリセット
 	}
 
@@ -302,6 +303,7 @@ void Map::SetMap(Chunk* chunk, const Vector2Int& begin, bool isInitialize)
 //逆転
 void Map::InvertChunk(const Vector2Int& pos)
 {
+	Novice::PlayAudio(static_cast<int>(soundEffects::kInversion), 0, 1);
 	int tmp = {};
 	for (int y = 0; y < Chunk::kMaxHeight; y++)
 	{
@@ -322,6 +324,7 @@ void Map::InvertChunk(const Vector2Int& pos)
 //切り替え
 void Map::SwapChunk(Chunk* under, Chunk* upper, const Vector2Int& begin)
 {
+	Novice::PlayAudio(static_cast<int>(soundEffects::kChange), 0, 1);
 	//下のチャンクを上のチャンクに変更
 	SetMap(under, begin);
 	//上のチャンクを下のチャンクに変更

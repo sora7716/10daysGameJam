@@ -23,25 +23,27 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	StageScene1* stageScene1 = new StageScene1();
 	StageScene2* stageScene2 = new StageScene2();
-	
+
 	int soundEffects[static_cast<int>(soundEffects::kCount)] =
 	{
-		Novice::LoadAudio("./resources/sound/reset.mp3"),
+		Novice::LoadAudio("./resources/sound/goal.mp3"),
 		Novice::LoadAudio("./resources/sound/jump.mp3"),
 		Novice::LoadAudio("./resources/sound/select.mp3"),
-		Novice::LoadAudio("./resources/sound/bgm.mp3"),
-		Novice::LoadAudio("./resources/sound/goal.mp3"),
-		Novice::LoadAudio("./resources/sound/start.mp3"),
+		Novice::LoadAudio("./resources/sound/bgmTitle.mp3"),
+		Novice::LoadAudio("./resources/sound/bgmSelect.mp3"),
+		Novice::LoadAudio("./resources/sound/bgmStage.mp3"),
+		Novice::LoadAudio("./resources/sound/inversion.mp3"),
+		Novice::LoadAudio("./resources/sound/change.mp3"),
 
 	};
 
-
+	int soundHandle = 0;
 	Scene scene = kTitle;
 #ifdef _DEBUG
-	scene = kStage1;
+	scene = kTitle;
 #endif // _DEBUG
 
-	Scene preScene = scene;
+	Scene preScene = kNone;
 	stageScene1->Initialize(keys, preKeys, &mousePos_);
 	stageScene2->Initialize(keys, preKeys, &mousePos_);
 
@@ -66,15 +68,31 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		{
 			if (scene == kTitle)
 			{
-				titleScene->Initialize(&mousePos_);
+					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmTitle), 0, 0.3f);
+					titleScene->Initialize(&mousePos_);
+				
 			}
 			else if (scene == kSelect)
 			{
+					Novice::StopAudio(soundHandle);
+
+				if (!Novice::IsPlayingAudio(soundHandle))
+				{
+					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmSelect), 0, 0.3f);
+				}				
 				selectScene->Initialize(&mousePos_);
 			}
 			else if (scene == kStage1)
 			{
+				
+				Novice::StopAudio(soundHandle);
+
 				stageScene1->Initialize(keys, preKeys, &mousePos_);
+				
+				if (!Novice::IsPlayingAudio(soundHandle)) 
+				{
+					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), 0, 0.3f);
+				}
 			}
 		}
 
