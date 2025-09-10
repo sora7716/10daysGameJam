@@ -47,6 +47,8 @@ class StageScene1
 
 		Goal* goal = nullptr;
 
+		int bgTex_ = 0;
+
 
 	public://メンバ関数
 

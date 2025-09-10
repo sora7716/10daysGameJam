@@ -19,6 +19,10 @@ void StageScene1::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
 	collision = new Collision();
 	collision->SetPlayer(player);
 
+	//背景
+	bgTex_= Novice::LoadTexture("./resources/stageBackGround.png");
+
+
 	//ブロックテクスチャの読み込み
 	int blockTextures[static_cast<int>(TileTex::kCount)] =
 	{
@@ -117,6 +121,8 @@ void StageScene1::Update()
 	map->Update();
 	player->Update();
 
+
+
 	if (!isPressStart_)
 	{
 		isPressStart_ = startSwitch->IsPressSwitch();
@@ -151,7 +157,7 @@ void StageScene1::Update()
 void StageScene1::Draw()
 {
 
-
+	Novice::DrawSprite(0, 0, bgTex_, 1.0f, 1.0f, 0.0f, WHITE);
 	map->Draw();
 	goal->Draw();
 	player->Draw();
