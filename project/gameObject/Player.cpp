@@ -54,6 +54,7 @@ void Player::Update()
 	if (isJump_ && isOnGround_)
 	{
 		Novice::PlayAudio(static_cast<int>(soundEffects::kJump), 0, 0.1f);
+
 		isOnGround_ = false;//地面から離れる
 		playerData_.gameObject.velocity.y = -8.0f;//ジャンプ力を設定
 		isJump_ = false;//ジャンプフラグをfalse
@@ -86,6 +87,8 @@ void Player::Update()
 	//移動するかどうか
 	if (isMove_)
 	{
+
+
 		//速度を設定
 		playerData_.gameObject.velocity.x = 2.0f;
 		if (!isJump_) {
