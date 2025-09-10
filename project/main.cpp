@@ -68,35 +68,41 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		{
 			if (scene == kTitle)
 			{
-					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmTitle), 0, 0.3f);
-					titleScene->Initialize(&mousePos_);
-				
+				soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmTitle), 0, 0.3f);
+				titleScene->Initialize(&mousePos_);
+
 			}
 			else if (scene == kSelect)
 			{
-					Novice::StopAudio(soundHandle);
+				Novice::StopAudio(soundHandle);
 
 				if (!Novice::IsPlayingAudio(soundHandle))
 				{
 					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmSelect), 0, 0.3f);
-				}				
+				}
 				selectScene->Initialize(&mousePos_);
 			}
 			else if (scene == kStage1)
 			{
-				
+
 				Novice::StopAudio(soundHandle);
 
 				stageScene1->Initialize(keys, preKeys, &mousePos_);
-				
-				if (!Novice::IsPlayingAudio(soundHandle)) 
+
+				if (!Novice::IsPlayingAudio(soundHandle))
 				{
 					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), 0, 0.3f);
 				}
 			}
 			else if (scene == kStage2)
 			{
+				Novice::StopAudio(soundHandle);
 				stageScene2->Initialize(keys, preKeys, &mousePos_);
+
+				if (!Novice::IsPlayingAudio(soundHandle))
+				{
+					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), 0, 0.3f);
+				}
 			}
 		}
 
