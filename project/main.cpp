@@ -136,7 +136,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	};
 
 	std::unique_ptr<GameSwitch> resetSwitch = std::make_unique<GameSwitch>();
-	resetSwitch->Initialize(resetSwitchData.min, switchTextures[1]);
+	resetSwitch->Initialize(resetSwitchData.min, resetSwitchSize, switchTextures[static_cast<int>(SwitchTex::kReset)]);
 
 	Goal* goal = new Goal();
 	int goalTexture = Novice::LoadTexture("./resources/goal.png");
@@ -176,7 +176,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			resetSwitch->SetIsPressSwitch(false);
 		}
 
-		if (goal->IsCollision()) 
+		if (goal->IsCollision())
 		{
 			player->SetIsMove(false);
 			player->SetVelocity({});

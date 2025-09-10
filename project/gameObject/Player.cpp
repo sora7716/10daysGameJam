@@ -44,19 +44,11 @@ void Player::Update()
 {
 	playerData_.time++;
 
-	
-
 	//マップチップ番号の取得
 	CheckMapChipIndex();
 
 	playerData_.gameObject.velocity += playerData_.gameObject.acceleration;//速度に加速度を足す
 	playerData_.gameObject.center += playerData_.gameObject.velocity;//位置に速度を足す
-
-	//スペースを押したら移動開始
-	//if (keys_[DIK_SPACE] && !preKeys_[DIK_SPACE])
-	//{
-	//	isMove_ = true;
-	//}
 
 	//ジャンプできるかどうか
 	if (isJump_ && isOnGround_)
@@ -94,10 +86,6 @@ void Player::Update()
 	//移動するかどうか
 	if (isMove_)
 	{
-		
-			
-			
-		
 		//速度を設定
 		playerData_.gameObject.velocity.x = 2.0f;
 		if (!isJump_) {
