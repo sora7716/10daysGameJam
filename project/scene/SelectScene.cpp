@@ -13,7 +13,7 @@ void SelectScene::Update()
 	if(Novice::IsTriggerMouse(0))
 	{
 		isFinised_ = true;
-		nextScene_ = kStage1;
+		nextScene_ = kStage3;
 	}
 }
 
