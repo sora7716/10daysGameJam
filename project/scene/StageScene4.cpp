@@ -20,6 +20,9 @@ void StageScene4::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
 	collision = new Collision();
 	collision->SetPlayer(player);
 
+	//背景
+	bgTex_ = Novice::LoadTexture("./resources/stageBackGround.png");
+
 	//ブロックテクスチャの読み込み
 	int blockTextures[static_cast<int>(TileTex::kCount)] =
 	{
@@ -75,12 +78,6 @@ void StageScene4::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
 	Chunk* underChunk5 = ChunkManager::GetInstance()->FindChunk("under4_5");
 	Chunk* underChunk6 = ChunkManager::GetInstance()->FindChunk("under4_6");
 	Chunk* underChunk7 = ChunkManager::GetInstance()->FindChunk("under4_7");
-
-	/*map->CreateOneLineMap(underChunk1, {7,9}, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
-	map->CreateOneLineMap(underChunk2, { 12,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
-	map->CreateOneLineMap(underChunk3, { 17,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
-	map->CreateOneLineMap(underChunk4, {22,9}, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
-	map->CreateOneLineMap(underChunk5, { 27,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);*/
 
 	map->CreateTowLineMap(upperChunk1, underChunk1, { 3,3 }, switchTextures, true);
 	map->CreateTowLineMap(upperChunk2, underChunk2, { 8,3 }, switchTextures, true);
@@ -141,7 +138,7 @@ void StageScene4::Update()
 		isPressStart_ = false;
 	}
 
-	if (Novice::IsTriggerMouse(1))
+	if (goal->IsCollision())
 	{
 		isFinised_ = true;
 		nextScene_ = kSelect;
@@ -153,25 +150,12 @@ void StageScene4::Update()
 
 void StageScene4::Draw()
 {
-
-
+	Novice::DrawSprite(0, 0, bgTex_, 1.0f, 1.0f, 0.0f, WHITE);
 	map->Draw();
 	goal->Draw();
 	player->Draw();
-
-	/*for (int i = 0; i < 6; i++)
-	{
-		Novice::DrawLine(line1.startPos.x + (i * 32 * 5),
-			line1.startPos.y,
-			line1.endPos.x + (i * 32 * 5),
-			line1.endPos.y,
-			RED);
-	}*/
-
 	startSwitch->DrawRect();
 	resetSwitch->DrawRect();
-
-
 }
 
 StageScene4::~StageScene4()

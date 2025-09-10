@@ -108,17 +108,25 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), 0, 0.3f);
 				}
 			}
-			else if (scene == kStage2)
-			{
-				stageScene2->Initialize(keys, preKeys, &mousePos_);
-			}
 			else if (scene == kStage3)
 			{
+				Novice::StopAudio(soundHandle);
 				stageScene3->Initialize(keys, preKeys, &mousePos_);
+
+				if (!Novice::IsPlayingAudio(soundHandle))
+				{
+					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), 0, 0.3f);
+				}
 			}
 			else if (scene == kStage4)
 			{
+				Novice::StopAudio(soundHandle);
 				stageScene4->Initialize(keys, preKeys, &mousePos_);
+
+				if (!Novice::IsPlayingAudio(soundHandle))
+				{
+					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), 0, 0.3f);
+				}
 			}
 		}
 

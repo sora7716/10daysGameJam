@@ -48,6 +48,8 @@ private://メンバ変数
 
 	Goal* goal = nullptr;
 
+	int bgTex_ = 0;
+
 public://メンバ関数
 
 	void Initialize(char* keys, char* preKeys, Vector2Int* mousePos);

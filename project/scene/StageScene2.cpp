@@ -161,20 +161,8 @@ void StageScene2::Draw()
 	map->Draw();
 	goal->Draw();
 	player->Draw();
-
-	/*for (int i = 0; i < 6; i++)
-	{
-		Novice::DrawLine(line1.startPos.x + (i * 32 * 5),
-			line1.startPos.y,
-			line1.endPos.x + (i * 32 * 5),
-			line1.endPos.y,
-			RED);
-	}*/
-
 	startSwitch->DrawRect();
 	resetSwitch->DrawRect();
-
-
 }
 
 StageScene2::~StageScene2()
