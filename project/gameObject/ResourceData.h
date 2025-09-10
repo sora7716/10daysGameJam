@@ -28,7 +28,8 @@ enum class BlockType
 {
 	kBlank,
 	kBlock,
-	kPlayer
+	kPlayer,
+	kGoal
 };
 
 //スイッチのテクスチャ

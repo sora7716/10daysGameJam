@@ -10,6 +10,7 @@
 #include "gameObject/Map.h"
 #include "gameObject/ChunkManager.h"
 #include "gameObject/GameSwitch.h"
+#include "gameObject/Goal.h"
 const char kWindowTitle[] = "MyGame";
 
 // Windowsアプリでのエントリーポイント(main関数)
@@ -113,6 +114,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	std::unique_ptr<GameSwitch> resetSwitch = std::make_unique<GameSwitch>();
 	resetSwitch->Initialize(resetSwitchData.min, switchTextures[1]);
+
+	Goal* goal = new Goal();
+	int goalTexture = Novice::LoadTexture("./resources/goal.png");
+	goal->Initialize(map->GetMap(), goalTexture);
+
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
 	{
@@ -147,6 +153,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 			resetSwitch->SetIsPressSwitch(false);
 		}
 
+		goal->SetTargetPos(player->GetPlayerData().gameObject.center);
+		goal->Update();
+
 		///
 		/// ↑更新処理ここまで
 		///
@@ -157,6 +166,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		map->Draw();
 		player->Draw();
+		goal->Draw();
 
 		/*for (int i = 0; i < 6; i++)
 		{
