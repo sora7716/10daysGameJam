@@ -58,7 +58,7 @@ void StageScene1::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
 	ChunkManager::GetInstance()->LoadChunk("map/under_0-7", "under_0-7", blockTextures[static_cast<int>(TileTex::kUnder)]);*/
 
 	//マップの生成
-	 map = new Map();
+	map = new Map();
 	map->Initialize(mousePos, player);
 	/*Chunk* upperChunk1 = ChunkManager::GetInstance()->FindChunk("up_0-1");
 	Chunk* upperChunk2 = ChunkManager::GetInstance()->FindChunk("up_0-2");
@@ -75,9 +75,9 @@ void StageScene1::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
 	Chunk* underChunk6 = ChunkManager::GetInstance()->FindChunk("under_0-6");
 	Chunk* underChunk7 = ChunkManager::GetInstance()->FindChunk("under_0-7");*/
 
-	map->CreateOneLineMap(underChunk1, { 13,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)],true);
-	map->CreateOneLineMap(underChunk2, { 18,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)],true);
-	map->CreateOneLineMap(underChunk3, { 23,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)],true);
+	map->CreateOneLineMap(underChunk1, { 13,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
+	map->CreateOneLineMap(underChunk2, { 18,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
+	map->CreateOneLineMap(underChunk3, { 23,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
 	/*map->CreateTowLineMap(upperChunk1, underChunk1, { 3,3 }, switchTextures, true);
 	map->CreateTowLineMap(upperChunk2, underChunk2, { 8,3 }, switchTextures, true);
 	map->CreateTowLineMap(upperChunk3, underChunk3, { 13,3 }, switchTextures, true);*/
@@ -112,7 +112,7 @@ void StageScene1::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
 
 void StageScene1::Update()
 {
-	
+
 	collision->SetMap(map->GetMap());
 	map->Update();
 	player->Update();
@@ -123,8 +123,17 @@ void StageScene1::Update()
 		startSwitch->SetMousePos(*mousePos_);
 		startSwitch->Update();
 	}
-	resetSwitch->SetMousePos(*mousePos_);
-	resetSwitch->Update();
+
+	if (!goal->IsCollision())
+	{
+		resetSwitch->SetMousePos(*mousePos_);
+		resetSwitch->Update();
+	}
+	else
+	{
+		isFinised_ = true;
+		nextScene_ = kSelect;
+	}
 
 	player->SetIsMove(startSwitch->IsPressSwitch());
 
