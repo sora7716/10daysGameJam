@@ -47,6 +47,7 @@ class StageScene1
 
 		Goal* goal = nullptr;
 
+
 	public://メンバ関数
 
 		void Initialize(char* keys,char* preKeys,Vector2Int*mousePos);

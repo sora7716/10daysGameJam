@@ -126,6 +126,17 @@ void StageScene2::Update()
 		startSwitch->Update();
 	}
 
+	if (!goal->IsCollision())
+	{
+		resetSwitch->SetMousePos(*mousePos_);
+		resetSwitch->Update();
+	}
+	else
+	{
+		isFinised_ = true;
+		nextScene_ = kSelect;
+	}
+
 	resetSwitch->SetMousePos(*mousePos_);
 	resetSwitch->Update();
 
