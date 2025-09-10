@@ -1,7 +1,5 @@
 #include "Particle.h"
 #include"Novice.h"
-#include <stdlib.h>
-#include <time.h>
 #include <numbers>
 #include <cmath>
 
@@ -17,10 +15,6 @@ float ConversionToRadian(float angle) {
 //初期化
 void Particles::Initialize(const ParticleSystemData& particleSystemData)
 {
-
-	//ランド関数の初期化
-	srand(static_cast<unsigned int>(time(nullptr)));
-
 	//パーティクルシステムのデータを受け取る
 	particleSystemData_ = particleSystemData;
 
@@ -29,11 +23,17 @@ void Particles::Initialize(const ParticleSystemData& particleSystemData)
 		particle[i].position = particleSystemData_.emitter;
 		particle[i].beginPosition = particle[i].position; //パーティクルの初期位置を設定
 	}
+
+	//乱数エンジンの初期化
+	std::random_device seedGenerator;
+	randomEngine_.seed(seedGenerator());
 }
 
 //更新
 void Particles::Update()
 {
+	//ランダムに設定
+	std::uniform_real_distribution<float>distribution(particleSystemData_.minAngle, particleSystemData_.maxAngle);
 	//パーティクルの生成
 	if (particleSystemData_.isAlive) {
 		for (int32_t i = 0; i < kParticleNum; i++) {
@@ -42,7 +42,7 @@ void Particles::Update()
 				particle[i].isAlive = true;//パーティクルが生きている状態にする
 				particle[i].speed = particleSystemData_.speed; //パーティクルの速度
 				particle[i].color = WHITE; //パーティクルの色
-				particle[i].angle = static_cast<float>(rand() % 360);//度数法でランダムな角度をもとめる
+				particle[i].angle = distribution(randomEngine_);//度数法でランダムな角度をもとめる
 				particle[i].angle = ConversionToRadian(particle[i].angle);//角度をラジアンに変換
 				break;
 			}

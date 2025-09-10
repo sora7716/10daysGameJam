@@ -123,9 +123,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Particles* particle = new Particles();
 	ParticleSystemData particleSystemData =
 	{
-		.emitter{},
+		.emitter{640.0f,600.0f},
 		.speed = 1.0f,
 		.textureHandle = goalTexture,
+		.minAngle = 90.0f,
+		.maxAngle = 300.0f,
 		.isAlive = true
 	};
 	particle->Initialize(particleSystemData);

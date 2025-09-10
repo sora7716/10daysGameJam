@@ -1,5 +1,6 @@
 #pragma once
 #include "gameObject/ResourceData.h"
+#include <random>
 
 /// <summary>
 /// パーティクル
@@ -14,6 +15,8 @@ private:
 	//パーティクル
 	ParticleProp particle[kParticleNum] = {};
 
+	//ランダムエンジン
+	std::mt19937 randomEngine_;
 public:
 	/// <summary>
 	/// 初期化

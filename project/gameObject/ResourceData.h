@@ -84,6 +84,8 @@ struct ParticleSystemData
 	Vector2 emitter;
 	float speed;
 	int textureHandle;
+	float minAngle;
+	float maxAngle;
 	bool isAlive;
 };
 
