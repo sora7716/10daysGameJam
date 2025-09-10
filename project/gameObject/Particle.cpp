@@ -21,7 +21,6 @@ void Particles::Initialize(const ParticleSystemData& particleSystemData)
 	for (int32_t i = 0; i < kParticleNum; i++) {
 		//マウスのクリックした位置に配置
 		particle[i].position = particleSystemData_.emitter;
-		particle[i].beginPosition = particle[i].position; //パーティクルの初期位置を設定
 	}
 
 	//乱数エンジンの初期化
@@ -61,7 +60,7 @@ void Particles::Update()
 			}
 			else {
 				particle[i].isAlive = false;//パーティクルが死んだ状態にする
-				particle[i].position = particle[i].beginPosition;//パーティクルの位置を初期位置に戻す
+				particle[i].position = particleSystemData_.emitter;//パーティクルの位置を初期位置に戻す
 				particle[i].color = WHITE; //パーティクルの色を元に戻す
 			}
 		}
