@@ -1,5 +1,6 @@
 #pragma once
 #include "calc/Vector2.h"
+#include <cstdint>
 
 //ゲームオブジェクト
 struct GameObject 
@@ -62,4 +63,29 @@ struct AABB {
 
 //ブロックサイズ
 const int kBlockSize = 32;
+
+const int32_t kParticleNum = 3000; //パーティクルの数
+const int32_t kParticleSize = 80; //パーティクルのサイズ
+
+//パーティクルに使うやつ
+struct ParticleProp
+{
+	Vector2 position; //パーティクルの位置
+	Vector2 beginPosition; //パーティクルの初期位置
+	float speed; //パーティクルの速度
+	float angle; //パーティクルの角度
+	uint32_t color; //パーティクルの色
+	bool isAlive; //パーティクルが生きているかどうか
+};
+
+//エミッター
+struct ParticleSystemData 
+{
+	Vector2 emitter;
+	float speed;
+	int textureHandle;
+	bool isAlive;
+};
+
+
 

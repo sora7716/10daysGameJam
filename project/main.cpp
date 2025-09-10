@@ -11,6 +11,7 @@
 #include "gameObject/ChunkManager.h"
 #include "gameObject/GameSwitch.h"
 #include "gameObject/Goal.h"
+#include "gameObject/Particle.h"
 const char kWindowTitle[] = "MyGame";
 
 // Windowsアプリでのエントリーポイント(main関数)
@@ -119,6 +120,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	int goalTexture = Novice::LoadTexture("./resources/goal.png");
 	goal->Initialize(map->GetMap(), goalTexture);
 
+	Particles* particle = new Particles();
+	ParticleSystemData particleSystemData =
+	{
+		.emitter{},
+		.speed = 1.0f,
+		.textureHandle = goalTexture,
+		.isAlive = true
+	};
+	particle->Initialize(particleSystemData);
+
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
 	{
@@ -156,6 +167,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		goal->SetTargetPos(player->GetPlayerData().gameObject.center);
 		goal->Update();
 
+		particle->Update();
+
 		///
 		/// ↑更新処理ここまで
 		///
@@ -180,6 +193,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		startSwitch->Draw();
 		resetSwitch->Draw();
 
+		particle->Draw();
+
 		///
 		/// ↑描画処理ここまで
 		///
@@ -200,5 +215,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	map->Finalize();
 	//チャンクマネージャーの終了
 	ChunkManager::GetInstance()->Finalize();
+	//パーティクルの削除
+	delete particle;
 	return 0;
 }
