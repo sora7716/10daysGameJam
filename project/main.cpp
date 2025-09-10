@@ -1,6 +1,7 @@
 #include <Novice.h>
-#include"gameObject/Player.h"
-const char kWindowTitle[] = "MyGame";
+#include "../Particles.h"
+
+const char kWindowTitle[] = "学籍番号";
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
@@ -9,10 +10,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	Novice::Initialize(kWindowTitle, 1280, 720);
 
 	// キー入力結果を受け取る箱
-	char keys[256] = {0};
-	char preKeys[256] = {0};
-	Player* player = new Player();
-	player->Initialize(keys, preKeys);
+	char keys[256] = { 0 };
+	char preKeys[256] = { 0 };
+	Particles* particles = new Particles();
+
+	
+	particles->Initialize();
+
+
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
 		// フレームの開始
@@ -25,7 +30,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		///
 		/// ↓更新処理ここから
 		///
-		player->Update();
+		particles->Update();
+
 		///
 		/// ↑更新処理ここまで
 		///
@@ -33,7 +39,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		///
 		/// ↓描画処理ここから
 		///
-		player->Draw();
+
+		particles->Draw();
+		
 		///
 		/// ↑描画処理ここまで
 		///
@@ -49,5 +57,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	// ライブラリの終了
 	Novice::Finalize();
+	delete particles;
 	return 0;
 }

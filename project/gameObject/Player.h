@@ -14,6 +14,7 @@ class Player
 		int jamp = false;
 		int deadTimer = false;
 		int dead = false;
+
 public://メンバー関数
 
 	/// <summary>

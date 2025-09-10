@@ -28,6 +28,9 @@
     <ClCompile Include="project\main.cpp">
       <Filter>KamataEngine\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Particles.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -117,6 +120,7 @@
     <ClInclude Include="Vector2.h">
       <Filter>KamataEngine\Source\gameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Particles.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project\.editorconfig" />
