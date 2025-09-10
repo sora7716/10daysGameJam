@@ -59,7 +59,7 @@ void Collision::IsMapChipCollision()
 	//右の判定
 	Vector2Int right =
 	{
-		static_cast<int>(center.x + radius.x + velocity.x) / kBlockSize,
+		static_cast<int>(center.x + radius.x + velocity.x - 1) / kBlockSize,
 		static_cast<int>(center.y) / kBlockSize
 	};
 

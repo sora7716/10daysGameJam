@@ -357,7 +357,7 @@ bool Map::IsCrossPlayerOfSegment(const Vector2& segmentBegin, const Vector2& seg
 	Vector2 end = segmentEnd;
 
 	Vector2 beginToEnd = end - begin;
-	Vector2 playerToBegin = (player_->GetPlayerData().gameObject.center + player_->GetPlayerData().gameObject.radius + Vector2(5.0f,0.0f)) - begin;
+	Vector2 playerToBegin = (player_->GetPlayerData().gameObject.center + player_->GetPlayerData().gameObject.radius + Vector2(static_cast<float>(kBlockSize/2), 0.0f)) - begin;
 
 	return beginToEnd.Cross(playerToBegin) < 0.0f;
 }

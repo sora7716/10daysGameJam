@@ -1,5 +1,6 @@
 #include <Novice.h>
 #include "scene/StageScene1.h"
+#include "scene/StageScene2.h"
 #include"gameObject/ChunkManager.h"
 #include "Scene/SelectScene.h"
 #include "Scene/TitleScene.h"
@@ -18,13 +19,20 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Vector2Int mousePos_ = {};
 
 	TitleScene* titleScene = new TitleScene();
-	StageScene1* stageScene1 = new StageScene1();
 	SelectScene* selectScene = new SelectScene();
 
-	Scene scene = kStage2;
+	StageScene1* stageScene1 = new StageScene1();
+	StageScene2* stageScene2 = new StageScene2();
+	
+
+	Scene scene = kTitle;
+#ifdef _DEBUG
+	scene = kStage1;
+#endif // _DEBUG
+
 	Scene preScene = scene;
 	stageScene1->Initialize(keys, preKeys, &mousePos_);
-
+	stageScene2->Initialize(keys, preKeys, &mousePos_);
 
 
 	// ウィンドウの×ボタンが押されるまでループ
@@ -89,6 +97,15 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 				scene = stageScene1->GetNextScene();
 			}
 			stageScene1->Draw();
+		}
+		else if (scene == kStage2)
+		{
+			stageScene2->Update();
+			if (stageScene2->IsFinised())
+			{
+				scene = stageScene2->GetNextScene();
+			}
+			stageScene2->Draw();
 		}
 
 		///

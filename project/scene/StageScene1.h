@@ -41,6 +41,8 @@ class StageScene1
 		.max{182.0f,632.0f}
 		};
 
+		//スターとボタンを押したかどうか　
+		bool isPressStart_ = false;
 
 	public://メンバ関数
 

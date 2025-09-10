@@ -43,9 +43,9 @@ void StageScene1::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
 	ChunkManager::GetInstance()->LoadChunk("map/up_0-6", "up_0-6", blockTextures[static_cast<int>(TileTex::kUpper)]);
 	ChunkManager::GetInstance()->LoadChunk("map/up_0-7", "up_0-7", blockTextures[static_cast<int>(TileTex::kUpper)]);*/
 
-	ChunkManager::GetInstance()->LoadChunk("map/stage1/under_1_stage1", "under_1", blockTextures[static_cast<int>(TileTex::kUnder)]);
-	ChunkManager::GetInstance()->LoadChunk("map/stage1/under_2_stage1", "under_2", blockTextures[static_cast<int>(TileTex::kUnder)]);
-	ChunkManager::GetInstance()->LoadChunk("map/stage1/under_3_stage1", "under_3", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/stage1/under_1_stage1", "under1_1", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/stage1/under_2_stage1", "under1_2", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/stage1/under_3_stage1", "under1_3", blockTextures[static_cast<int>(TileTex::kUnder)]);
 	/*ChunkManager::GetInstance()->LoadChunk("map/under_0-4", "under_0-4", blockTextures[static_cast<int>(TileTex::kUnder)]);
 	ChunkManager::GetInstance()->LoadChunk("map/under_0-5", "under_0-5", blockTextures[static_cast<int>(TileTex::kUnder)]);
 	ChunkManager::GetInstance()->LoadChunk("map/under_0-6", "under_0-6", blockTextures[static_cast<int>(TileTex::kUnder)]);
@@ -61,9 +61,9 @@ void StageScene1::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
 	Chunk* upperChunk5 = ChunkManager::GetInstance()->FindChunk("up_0-5");
 	Chunk* upperChunk6 = ChunkManager::GetInstance()->FindChunk("up_0-6");
 	Chunk* upperChunk7 = ChunkManager::GetInstance()->FindChunk("up_0-7");*/
-	Chunk* underChunk1 = ChunkManager::GetInstance()->FindChunk("under_1");
-	Chunk* underChunk2 = ChunkManager::GetInstance()->FindChunk("under_2");
-	Chunk* underChunk3 = ChunkManager::GetInstance()->FindChunk("under_3");
+	Chunk* underChunk1 = ChunkManager::GetInstance()->FindChunk("under1_1");
+	Chunk* underChunk2 = ChunkManager::GetInstance()->FindChunk("under1_2");
+	Chunk* underChunk3 = ChunkManager::GetInstance()->FindChunk("under1_3");
 	/*Chunk* underChunk4 = ChunkManager::GetInstance()->FindChunk("under_0-4");
 	Chunk* underChunk5 = ChunkManager::GetInstance()->FindChunk("under_0-5");
 	Chunk* underChunk6 = ChunkManager::GetInstance()->FindChunk("under_0-6");
@@ -98,9 +98,13 @@ void StageScene1::Update()
 	collision->SetMap(map->GetMap());
 	map->Update();
 	player->Update();
-	startSwitch->SetMousePos(*mousePos_);
-	startSwitch->Update();
 
+	if (!isPressStart_)
+	{
+		isPressStart_ = startSwitch->IsPressSwitch();
+		startSwitch->SetMousePos(*mousePos_);
+		startSwitch->Update();
+	}
 	resetSwitch->SetMousePos(*mousePos_);
 	resetSwitch->Update();
 
@@ -113,6 +117,7 @@ void StageScene1::Update()
 		player->SetIsReset(true);
 		startSwitch->SetIsPressSwitch(false);
 		resetSwitch->SetIsPressSwitch(false);
+		isPressStart_ = false;
 	}
 
 	if (Novice::IsTriggerMouse(1))

@@ -45,12 +45,12 @@ void StageScene2::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
 	ChunkManager::GetInstance()->LoadChunk("map/up_0-6", "up_0-6", blockTextures[static_cast<int>(TileTex::kUpper)]);
 	ChunkManager::GetInstance()->LoadChunk("map/up_0-7", "up_0-7", blockTextures[static_cast<int>(TileTex::kUpper)]);*/
 
-	ChunkManager::GetInstance()->LoadChunk("map/stage1/under_1_stage1", "under_1", blockTextures[static_cast<int>(TileTex::kUnder)]);
-	ChunkManager::GetInstance()->LoadChunk("map/stage1/under_2_stage1", "under_2", blockTextures[static_cast<int>(TileTex::kUnder)]);
-	ChunkManager::GetInstance()->LoadChunk("map/stage1/under_3_stage1", "under_3", blockTextures[static_cast<int>(TileTex::kUnder)]);
-	/*ChunkManager::GetInstance()->LoadChunk("map/under_0-4", "under_0-4", blockTextures[static_cast<int>(TileTex::kUnder)]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-5", "under_0-5", blockTextures[static_cast<int>(TileTex::kUnder)]);
-	ChunkManager::GetInstance()->LoadChunk("map/under_0-6", "under_0-6", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/stage2/under_1_stage2", "under2_1", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/stage2/under_2_stage2", "under2_2", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/stage2/under_3_stage2", "under2_3", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/stage2/under_4_stage2", "under2_4", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	ChunkManager::GetInstance()->LoadChunk("map/stage2/under_5_stage2", "under2_5", blockTextures[static_cast<int>(TileTex::kUnder)]);
+	/*ChunkManager::GetInstance()->LoadChunk("map/under_0-6", "under_0-6", blockTextures[static_cast<int>(TileTex::kUnder)]);
 	ChunkManager::GetInstance()->LoadChunk("map/under_0-7", "under_0-7", blockTextures[static_cast<int>(TileTex::kUnder)]);*/
 
 	//マップの生成
@@ -63,17 +63,20 @@ void StageScene2::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
 	Chunk* upperChunk5 = ChunkManager::GetInstance()->FindChunk("up_0-5");
 	Chunk* upperChunk6 = ChunkManager::GetInstance()->FindChunk("up_0-6");
 	Chunk* upperChunk7 = ChunkManager::GetInstance()->FindChunk("up_0-7");*/
-	Chunk* underChunk1 = ChunkManager::GetInstance()->FindChunk("under_1");
-	Chunk* underChunk2 = ChunkManager::GetInstance()->FindChunk("under_2");
-	Chunk* underChunk3 = ChunkManager::GetInstance()->FindChunk("under_3");
-	/*Chunk* underChunk4 = ChunkManager::GetInstance()->FindChunk("under_0-4");
-	Chunk* underChunk5 = ChunkManager::GetInstance()->FindChunk("under_0-5");
-	Chunk* underChunk6 = ChunkManager::GetInstance()->FindChunk("under_0-6");
+	Chunk* underChunk1 = ChunkManager::GetInstance()->FindChunk("under2_1");
+	Chunk* underChunk2 = ChunkManager::GetInstance()->FindChunk("under2_2");
+	Chunk* underChunk3 = ChunkManager::GetInstance()->FindChunk("under2_3");
+	Chunk* underChunk4 = ChunkManager::GetInstance()->FindChunk("under2_4");
+	Chunk* underChunk5 = ChunkManager::GetInstance()->FindChunk("under2_5");
+	/*Chunk* underChunk6 = ChunkManager::GetInstance()->FindChunk("under_0-6");
 	Chunk* underChunk7 = ChunkManager::GetInstance()->FindChunk("under_0-7");*/
 
-	map->CreateOneLineMap(underChunk1, { 13,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
-	map->CreateOneLineMap(underChunk2, { 18,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
-	map->CreateOneLineMap(underChunk3, { 23,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
+	map->CreateOneLineMap(underChunk1, { 7,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
+	map->CreateOneLineMap(underChunk2, { 12,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
+	map->CreateOneLineMap(underChunk3, { 17,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
+	map->CreateOneLineMap(underChunk4, { 22,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
+	map->CreateOneLineMap(underChunk5, { 27,9 }, switchTextures[static_cast<int>(SwitchTex::kInvert)], true);
+
 	/*map->CreateTowLineMap(upperChunk1, underChunk1, { 3,3 }, switchTextures, true);
 	map->CreateTowLineMap(upperChunk2, underChunk2, { 8,3 }, switchTextures, true);
 	map->CreateTowLineMap(upperChunk3, underChunk3, { 13,3 }, switchTextures, true);*/
@@ -92,6 +95,7 @@ void StageScene2::Initialize(char* keys, char* preKeys, Vector2Int* mousePos)
 
 	isFinised_ = false;
 	nextScene_ = kNone;
+	isPressStart_ = false;
 }
 
 void StageScene2::Update()
@@ -100,8 +104,12 @@ void StageScene2::Update()
 	collision->SetMap(map->GetMap());
 	map->Update();
 	player->Update();
-	startSwitch->SetMousePos(*mousePos_);
-	startSwitch->Update();
+	if (!isPressStart_) 
+	{
+		isPressStart_ = startSwitch->IsPressSwitch();
+		startSwitch->SetMousePos(*mousePos_);
+		startSwitch->Update();
+	}
 
 	resetSwitch->SetMousePos(*mousePos_);
 	resetSwitch->Update();
@@ -115,6 +123,7 @@ void StageScene2::Update()
 		player->SetIsReset(true);
 		startSwitch->SetIsPressSwitch(false);
 		resetSwitch->SetIsPressSwitch(false);
+		isPressStart_ = false;
 	}
 
 	if (Novice::IsTriggerMouse(1))
