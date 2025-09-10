@@ -173,9 +173,12 @@ private:
 	void CreateUnderBorderLine(const Vector2Int& begin);
 
 	/// <summary>
-	/// 線がプレイヤーと重なったら
+	/// 線にプレイヤーが重なったかどうか
 	/// </summary>
-	void CrossPlayerOfLine();
+	/// <param name="segmentBegin">線の開始位置</param>
+	/// <param name="segmentEnd">線の終わりの位置</param>
+	/// <returns>線にプレイヤーが重なったかどうか</returns>
+	bool IsCrossPlayerOfSegment(const Vector2& segmentBegin,const Vector2& segmentEnd);
 
 };
 

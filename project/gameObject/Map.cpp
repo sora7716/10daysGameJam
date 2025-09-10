@@ -25,9 +25,6 @@ void Map::Initialize(const Vector2Int* mousePos, Player* player)
 //更新
 void Map::Update()
 {
-	//線にプレイヤーが重なったかどうか
-	CrossPlayerOfLine();
-
 	for (std::list<ChunkTransitionData>::iterator it = chunkTransitionSwitchList_.begin(); it != chunkTransitionSwitchList_.end(); it++)
 	{
 		//マウスを設定
@@ -39,7 +36,19 @@ void Map::Update()
 		//移動しているかどうか
 		if (player_->IsMove())
 		{
-			if (it->isTransitionChunk)
+			Vector2 segmentBegin =
+			{
+				static_cast<float>(it->begin.x * kBlockSize),
+				static_cast<float>(it->begin.y * kBlockSize)
+			};
+
+			Vector2 segmentEnd =
+			{
+				segmentBegin.x,
+				segmentBegin.y + static_cast<float>(Chunk::kMaxWidth * kBlockSize),
+			};
+
+			if (it->isTransitionChunk && IsCrossPlayerOfSegment(segmentBegin, segmentEnd))
 			{
 				SwapChunk(it->underChunk, it->upperChunk, it->begin);
 			}
@@ -52,6 +61,7 @@ void Map::Update()
 
 	for (std::list<ChunkInvertData>::iterator it = chunkInvertSwitchList_.begin(); it != chunkInvertSwitchList_.end(); it++)
 	{
+
 		//マウスを設定
 		it->switchResource->SetMousePos(*mousePos_);
 
@@ -61,7 +71,19 @@ void Map::Update()
 		//移動しているかどうか
 		if (player_->IsMove())
 		{
-			if (it->isInvertChunk)
+			Vector2 segmentBegin =
+			{
+				static_cast<float>(it->begin.x * kBlockSize),
+				static_cast<float>(it->begin.y * kBlockSize)
+			};
+
+			Vector2 segmentEnd =
+			{
+				segmentBegin.x,
+				segmentBegin.y + static_cast<float>(Chunk::kMaxWidth * kBlockSize),
+			};
+
+			if (it->isInvertChunk && IsCrossPlayerOfSegment(segmentBegin, segmentEnd))
 			{
 				InvertChunk(it->begin);
 				it->isInvertChunk = false;
@@ -224,7 +246,7 @@ void Map::InitializeInvertSwitch(const Vector2Int& begin, int textureHandle)
 	GameSwitch* chunkInvertSwitch = new GameSwitch();
 	chunkInvertSwitch->Initialize
 	({
-		  static_cast<float>((begin.x + Chunk::kMaxWidth - 1) * kBlockSize),
+		  static_cast<float>((begin.x + 2) * kBlockSize),
 		  static_cast<float>((begin.y + Chunk::kMaxHeight + 1) * kBlockSize - kBlockSize / 2)
 		}, textureHandle);
 
@@ -293,7 +315,7 @@ void Map::CreateUnderBorderLine(const Vector2Int& begin)
 		{
 			.origin =
 			 {
-			   static_cast<float>((begin.x) * kBlockSize) - kBlockSize / 2,
+			   static_cast<float>((begin.x) * kBlockSize),
 			   static_cast<float>(begin.y * kBlockSize)
 			 },
 			.diff = {0.0f,static_cast<float>(Chunk::kMaxHeight * kBlockSize)}
@@ -305,16 +327,14 @@ void Map::CreateUnderBorderLine(const Vector2Int& begin)
 	underBorderLines_.push_back(underBorderline);
 }
 
-//線がプレイヤーと重なったら
-void Map::CrossPlayerOfLine()
+//線にプレイヤーが重なったかどうか
+bool Map::IsCrossPlayerOfSegment(const Vector2& segmentBegin, const Vector2& segmentEnd)
 {
-	for (BorderLine& borderLine : underBorderLines_) 
-	{
-		borderLine.beginToEnd = borderLine.segment.origin + borderLine.segment.diff - borderLine.segment.origin;
-		borderLine.beginToPlayer = player_->GetPlayerData().gameObject.center - borderLine.segment.origin;
-		float cross = 0.0f;
-		if (borderLine.beginToEnd.Cross(borderLine.beginToPlayer) < 0.0f) {
-			borderLine.isCrossed = true;
-		}
-	}
+	Vector2 begin = segmentBegin;
+	Vector2 end = segmentEnd;
+
+	Vector2 beginToEnd = end - begin;
+	Vector2 playerToBegin = (player_->GetPlayerData().gameObject.center + player_->GetPlayerData().gameObject.radius) - begin;
+
+	return beginToEnd.Cross(playerToBegin) < 0.0f;
 }
