@@ -6,7 +6,7 @@
 #include"gameObject/ChunkManager.h"
 #include "Scene/SelectScene.h"
 #include "Scene/TitleScene.h"
-const char kWindowTitle[] = "MyGame";
+const char kWindowTitle[] = "0000_INVERTIA";
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
@@ -72,7 +72,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		{
 			if (scene == kTitle)
 			{
-				soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmTitle), 0, 0.3f);
+				soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmTitle), true, 0.3f);
 				titleScene->Initialize(&mousePos_);
 
 			}
@@ -82,7 +82,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 				if (!Novice::IsPlayingAudio(soundHandle))
 				{
-					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmSelect), 0, 0.3f);
+					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmSelect), true, 0.3f);
 				}
 				selectScene->Initialize(&mousePos_);
 			}
@@ -95,7 +95,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 				if (!Novice::IsPlayingAudio(soundHandle))
 				{
-					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), 0, 0.3f);
+					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), true, 0.3f);
 				}
 			}
 			else if (scene == kStage2)
@@ -105,7 +105,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 				if (!Novice::IsPlayingAudio(soundHandle))
 				{
-					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), 0, 0.3f);
+					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), true, 0.3f);
 				}
 			}
 			else if (scene == kStage3)
@@ -115,7 +115,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 				if (!Novice::IsPlayingAudio(soundHandle))
 				{
-					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), 0, 0.3f);
+					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), true, 0.3f);
 				}
 			}
 			else if (scene == kStage4)
@@ -125,7 +125,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 				if (!Novice::IsPlayingAudio(soundHandle))
 				{
-					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), 0, 0.3f);
+					soundHandle = Novice::PlayAudio(static_cast<int>(soundEffects::kBgmStage), true, 0.3f);
 				}
 			}
 		}

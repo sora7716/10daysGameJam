@@ -34,6 +34,10 @@ private://メンバ変数
 
 	Vector2 stageNamePos = {};
 
+	Vector2 screenPos_{ 351.0f ,137.0f };
+	int screenTextureList_[4] = {};
+	int screenTexture_ = 0;
+
 public://メンバ関数
 
 	void Initialize(Vector2Int* mousePos);

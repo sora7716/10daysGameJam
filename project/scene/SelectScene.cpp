@@ -24,7 +24,13 @@ void SelectScene::Initialize(Vector2Int* mousePos)
 	stageMoji_[2] = Novice::LoadTexture("./resources/selectStage3Text.png");
 	stageMoji_[3] = Novice::LoadTexture("./resources/selectStage4Text.png");
 
+	screenTextureList_[0]= Novice::LoadTexture("./resources/stage1.png");
+	screenTextureList_[1]= Novice::LoadTexture("./resources/stage2.png");
+	screenTextureList_[2]= Novice::LoadTexture("./resources/stage3.png");
+	screenTextureList_[3]= Novice::LoadTexture("./resources/stage4.png");
+
 	stageTitleName = stageMoji_[0];
+	screenTexture_ = screenTextureList_[0];
 
 	for (int i = 1; i < 5; i++)
 	{
@@ -46,18 +52,22 @@ void SelectScene::Update()
 	if (gameSwitch_[0]->IsCross()) 
 	{
 		stageTitleName = stageMoji_[0];
+		screenTexture_ = screenTextureList_[0];
 	}
 	else if (gameSwitch_[1]->IsCross())
 	{
 		stageTitleName = stageMoji_[1];
+		screenTexture_ = screenTextureList_[1];
 	}
 	else if (gameSwitch_[2]->IsCross())
 	{
 		stageTitleName = stageMoji_[2];
+		screenTexture_ = screenTextureList_[2];
 	}
 	else if (gameSwitch_[3]->IsCross())
 	{
 		stageTitleName = stageMoji_[3];
+		screenTexture_ = screenTextureList_[3];
 	}
 
 	if (gameSwitch_[0]->IsPressSwitch())
@@ -84,7 +94,7 @@ void SelectScene::Update()
 
 #ifdef _DEBUG
 	ImGui::Begin("stageName");
-	ImGui::DragFloat2("translate", &stageNamePos.x, 0.1f);
+	ImGui::DragFloat2("translate", &screenPos_.x, 0.1f);
 	ImGui::End();
 #endif // _DEBUG
 
@@ -109,5 +119,13 @@ void SelectScene::Draw()
 		stageTitleName,
 		1.0f, 1.0f, 0.0f, WHITE
 	);
+	
 
+	Novice::DrawSprite
+	(
+		static_cast<int>(screenPos_.x),
+		static_cast<int>(screenPos_.y),
+		screenTexture_,
+		0.8f, 0.8f, 0.0f, WHITE
+	);
 }
