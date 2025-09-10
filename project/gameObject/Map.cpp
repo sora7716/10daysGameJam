@@ -229,7 +229,7 @@ void Map::CreateTowLineMap(Chunk* upperChunk, Chunk* underChunk, const Vector2In
 		static_cast<float>((begin.x + 2) * kBlockSize),
 		static_cast<float>(begin.y * kBlockSize + Chunk::kMaxHeight * kBlockSize)
 
-		}, textureHandles[static_cast<int>(SwitchTex::kTransition)]
+		}, {32.0f, 32.0f}, textureHandles[static_cast<int>(SwitchTex::kTransition)]
 	);
 
 	//切り替えスイッチのリストに追加
@@ -255,7 +255,7 @@ void Map::InitializeInvertSwitch(const Vector2Int& begin, int textureHandle)
 	({
 		  static_cast<float>((begin.x + 2) * kBlockSize),
 		  static_cast<float>((begin.y + Chunk::kMaxHeight + 1) * kBlockSize - kBlockSize / 2)
-		}, textureHandle);
+		}, { 32.0f, 32.0f },textureHandle);
 
 	//リストの追加
 	chunkInvertSwitchList_.push_back(ChunkInvertData(chunkInvertSwitch, begin));

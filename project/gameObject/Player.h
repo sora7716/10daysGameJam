@@ -30,6 +30,10 @@ private://	メンバー変数
 
 	//リセットボタン
 	bool isReset_ = false;
+
+	int playerTexIndex;
+
+
 public://メンバー関数
 
 	/// <summary>
@@ -38,8 +42,8 @@ public://メンバー関数
 	/// <param name="keys">現在のキー</param>
 	/// <param name="preKeys">過去のキー</param>
 	/// <param name="map">マップ</param>
-	/// <param name="textureHandle">テクスチャハンドル</param>
-	void Initialize(char* keys, char* preKeys,std::vector<std::vector<int>>map,int textureHandle);
+	/// <param name="textureHandles">テクスチャハンドル</param>
+	void Initialize(char* keys, char* preKeys,std::vector<std::vector<int>>map,int* textureHandles);
 
 	/// <summary>
 	/// 更新

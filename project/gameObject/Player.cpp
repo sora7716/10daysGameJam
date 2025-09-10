@@ -7,7 +7,7 @@
 #endif // _DEBUG
 
 //初期化
-void Player::Initialize(char* keys, char* preKeys, std::vector<std::vector<int>>map, int textureHandle)
+void Player::Initialize(char* keys, char* preKeys, std::vector<std::vector<int>>map, int* textureHandles)
 {
 	//キーの受け取り
 	keys_ = keys;
@@ -17,7 +17,9 @@ void Player::Initialize(char* keys, char* preKeys, std::vector<std::vector<int>>
 	playerData_.gameObject.size = { 32.0f,32.0f };
 	playerData_.gameObject.radius = playerData_.gameObject.size / 2.0f;
 	playerData_.gameObject.acceleration = { 0.0f,0.8f };
-	playerData_.textureHandle = textureHandle;
+	for (int i = 0; i < static_cast<int>(PlayerState::kCount); i++) {
+		playerData_.textureHandles[i] = textureHandles[i];
+	}
 
 	//プレイヤーの位置を探索
 	for (int y = 0; y < map.size(); y++)
@@ -41,6 +43,8 @@ void Player::Initialize(char* keys, char* preKeys, std::vector<std::vector<int>>
 //更新
 void Player::Update()
 {
+	playerData_.time++;
+
 	//マップチップ番号の取得
 	CheckMapChipIndex();
 
@@ -78,7 +82,8 @@ void Player::Update()
 		playerData_.gameObject.velocity.y = 0.0f;
 		//加速度を0にする
 		playerData_.gameObject.acceleration.y = 0.0f;
-	} else
+	}
+	else
 	{
 		//加速度を元に戻す
 		playerData_.gameObject.acceleration.y = 0.8f;
@@ -89,6 +94,26 @@ void Player::Update()
 	{
 		//速度を設定
 		playerData_.gameObject.velocity.x = 2.0f;
+		if (!isJump_) {
+			playerTexIndex = static_cast<int>(PlayerState::kWork);
+		}
+		else
+		{
+			playerTexIndex = static_cast<int>(PlayerState::kJump);
+		}
+	}
+	else
+	{
+		playerTexIndex = static_cast<int>(PlayerState::kIdol);
+	}
+
+	//アニメーションの処理
+	if (playerData_.uvPos.x <= 128 - kBlockSize)
+	{
+
+		playerData_.frameCount = (playerData_.time / 4) % 4;
+		playerData_.uvPos.x = 32 * playerData_.frameCount;
+
 	}
 
 	//リセット
@@ -104,6 +129,7 @@ void Player::Update()
 	ImGui::Begin("Player");
 	ImGui::DragFloat2("position", &playerData_.gameObject.center.x, 0.1f);
 	ImGui::Checkbox("isOnGround", &isOnGround_);
+	ImGui::Checkbox("isJump", &isJump_);
 	ImGui::DragInt2("leftTop", &playerData_.leftTop.x);
 	ImGui::DragInt2("rightTop", &playerData_.leftTop.x);
 	ImGui::DragInt2("leftBottom", &playerData_.leftBottom.x);
@@ -116,11 +142,16 @@ void Player::Update()
 //描画
 void Player::Draw()
 {
-	Novice::DrawSprite(
+	Novice::DrawSpriteRect(
 		static_cast<int>(playerData_.gameObject.center.x - playerData_.gameObject.radius.x),
 		static_cast<int>(playerData_.gameObject.center.y - playerData_.gameObject.radius.y),
-		playerData_.textureHandle,
-		1.0f, 1.0f, 0.0f, WHITE
+		playerData_.uvPos.x,
+		playerData_.uvPos.y,
+		kBlockSize, kBlockSize,
+		playerData_.textureHandles[playerTexIndex],
+		(static_cast<float>(kBlockSize) / static_cast<float>(kBlockSize * 4)), 1.0f,
+		0.0f,
+		WHITE
 	);
 }
 

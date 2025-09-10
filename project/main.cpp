@@ -45,9 +45,24 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	{
 		Novice::LoadTexture("./resources/transitionSwitch.png"),
 		Novice::LoadTexture("./resources/invertSwitch.png"),
+		Novice::LoadTexture("./resources/startSwitch.png"),
+		Novice::LoadTexture("./resources/resetSwitch.png"),
 	};
 
-	int playerTexture = Novice::LoadTexture("./resources/player.png");
+	int playerTextures[static_cast<int>(PlayerState::kCount)] =
+	{ Novice::LoadTexture("./resources/player.png"),
+		Novice::LoadTexture("./resources/playerWork.png"),
+		Novice::LoadTexture("./resources/playerJump.png"),
+	};
+
+	/*int soundEffects[static_cast<int>(soundEffects::kCount)] =
+	{
+		Novice::LoadAudio("./resources/sound/select.mp3"),
+		Novice::LoadAudio("./resources/sound/reset.mp3"),
+		Novice::LoadAudio("./resources/sound/bgm.mp3"),
+
+	};*/
+
 
 	//チャンクの生成
 	ChunkManager::GetInstance()->LoadChunk("map/up_0-1", "up_0-1", blockTextures[static_cast<int>(TileTex::kUpper)]);
@@ -94,25 +109,29 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	map->CreateTowLineMap(upperChunk6, underChunk6, { 28,3 }, switchTextures, true);
 	map->CreateTowLineMap(upperChunk7, underChunk7, { 33,3 }, switchTextures, true);
 	map->SettingUnderBorderLine();
-	player->Initialize(keys, preKeys, map->GetMap(), playerTexture);
+	player->Initialize(keys, preKeys, map->GetMap(), playerTextures);
 
+	Vector2 startSwitchOrigin = { 30.0f, 550.0f };
+	Vector2 startSwitchSize{ 256.0f,128.0f };
 	AABB startSwitchData
 	{
-		.min{100.0f,600.0f},
-		.max{132.0f,632.0f}
+		.min = startSwitchOrigin,
+		.max = startSwitchOrigin + startSwitchSize,
 	};
 
 	std::unique_ptr<GameSwitch> startSwitch = std::make_unique<GameSwitch>();
-	startSwitch->Initialize(startSwitchData.min, switchTextures[0]);
+	startSwitch->Initialize(startSwitchData.min, startSwitchSize, switchTextures[static_cast<int>(SwitchTex::kStart)]);
 
+	Vector2 resetSwitchOrigin = { 326.0f, 550.0f };
+	Vector2 resetSwitchSize{ 256.0f,128.0f };
 	AABB resetSwitchData
 	{
-		.min{150.0f,600.0f},
-		.max{182.0f,632.0f}
+		.min = resetSwitchOrigin,
+		.max = resetSwitchOrigin + resetSwitchSize,
 	};
 
 	std::unique_ptr<GameSwitch> resetSwitch = std::make_unique<GameSwitch>();
-	resetSwitch->Initialize(resetSwitchData.min, switchTextures[1]);
+	resetSwitch->Initialize(resetSwitchData.min, resetSwitchSize, switchTextures[static_cast<int>(SwitchTex::kReset)]);
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
 	{
@@ -167,8 +186,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 				RED);
 		}*/
 
-		startSwitch->Draw();
-		resetSwitch->Draw();
+		startSwitch->DrawRect();
+		resetSwitch->DrawRect();
 
 		///
 		/// ↑描画処理ここまで
