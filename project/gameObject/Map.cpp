@@ -15,6 +15,9 @@ void Map::Initialize(const Vector2Int* mousePos, Player* player)
 		map_[y].resize(kMaxMapSize.x);
 	}
 
+	//境界線
+	boderLineTex_ = Novice::LoadTexture("./resources/line.png");
+
 	//マウスの座標
 	mousePos_ = mousePos;
 
@@ -182,13 +185,11 @@ void Map::Draw()
 	//下の境界線
 	for (int i = 1; i < underBorderLines_.size(); i++)
 	{
-		Novice::DrawLine
+		Novice::DrawSprite
 		(
 			static_cast<int>(underBorderLines_[i].segment.origin.x),
 			static_cast<int>(underBorderLines_[i].segment.origin.y),
-			static_cast<int>(underBorderLines_[i].segment.origin.x + underBorderLines_[i].segment.diff.x),
-			static_cast<int>(underBorderLines_[i].segment.origin.y + underBorderLines_[i].segment.diff.y),
-			RED
+			boderLineTex_, 1.0f, 1.0f, 0.0f, WHITE
 		);
 	}
 }

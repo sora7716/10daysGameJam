@@ -94,6 +94,9 @@ private://メンバ変数
 	//マップデータのリスト
 	std::vector<MapData>mapDatas_;
 
+	//境界線
+	int boderLineTex_ = 0;
+
 public://メンバ関数
 
 	/// <summary>
