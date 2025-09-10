@@ -62,8 +62,8 @@ enum class TileTex
 };
 enum class soundEffects
 {
-	kStart,
-	kReset,
+	kMove,
+	kJump,
 	kSelect,
 	kBgm,
 	kInversion,

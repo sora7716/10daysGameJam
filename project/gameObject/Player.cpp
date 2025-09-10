@@ -38,12 +38,15 @@ void Player::Initialize(char* keys, char* preKeys, std::vector<std::vector<int>>
 		}
 	}
 
+	
 }
 
 //更新
 void Player::Update()
 {
 	playerData_.time++;
+
+	
 
 	//マップチップ番号の取得
 	CheckMapChipIndex();
@@ -60,6 +63,7 @@ void Player::Update()
 	//ジャンプできるかどうか
 	if (isJump_ && isOnGround_)
 	{
+		Novice::PlayAudio(static_cast<int>(soundEffects::kJump), 0, 1);
 		isOnGround_ = false;//地面から離れる
 		playerData_.gameObject.velocity.y = -8.0f;//ジャンプ力を設定
 		isJump_ = false;//ジャンプフラグをfalse
@@ -92,6 +96,10 @@ void Player::Update()
 	//移動するかどうか
 	if (isMove_)
 	{
+		
+			
+			
+		
 		//速度を設定
 		playerData_.gameObject.velocity.x = 2.0f;
 		if (!isJump_) {

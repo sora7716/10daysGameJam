@@ -31,7 +31,7 @@ void GameSwitch::Update()
 		//スイッチをクリックしたか
 		if (Novice::IsTriggerMouse(0))
 		{
-			//Novice::PlayAudio(static_cast<int>(soundEffects::kSelect),0,1);
+			Novice::PlayAudio(static_cast<int>(soundEffects::kSelect),0,1);
 			isPressSwitch_ = !isPressSwitch_;
 			
 		}

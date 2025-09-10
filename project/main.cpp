@@ -55,13 +55,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		Novice::LoadTexture("./resources/playerJump.png"),
 	};
 
-	/*int soundEffects[static_cast<int>(soundEffects::kCount)] =
+	int soundEffects[static_cast<int>(soundEffects::kCount)] =
 	{
-		Novice::LoadAudio("./resources/sound/select.mp3"),
 		Novice::LoadAudio("./resources/sound/reset.mp3"),
+		Novice::LoadAudio("./resources/sound/jump.mp3"),
+		Novice::LoadAudio("./resources/sound/select.mp3"),
 		Novice::LoadAudio("./resources/sound/bgm.mp3"),
+		Novice::LoadAudio("./resources/sound/goal.mp3"),
+		Novice::LoadAudio("./resources/sound/start.mp3"),
 
-	};*/
+	};
 
 
 	//チャンクの生成
