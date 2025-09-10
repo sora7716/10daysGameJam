@@ -22,6 +22,7 @@ void SelectScene::Initialize(Vector2Int* mousePos)
 	stageMoji_[0] = Novice::LoadTexture("./resources/selectStage1Text.png");
 	stageMoji_[1] = Novice::LoadTexture("./resources/selectStage2Text.png");
 	stageMoji_[2] = Novice::LoadTexture("./resources/selectStage3Text.png");
+	stageMoji_[3] = Novice::LoadTexture("./resources/selectStage4Text.png");
 
 	stageTitleName = stageMoji_[0];
 
