@@ -10,8 +10,17 @@
 #include "gameObject/Map.h"
 #include "gameObject/ChunkManager.h"
 #include "gameObject/GameSwitch.h"
-#include "gameObject/Particle"
+//#include "gameObject/Particle"
 const char kWindowTitle[] = "MyGame";
+
+enum Seane
+{
+	TITLE,
+	STAGESELECT,
+	GAMEPLAY,
+	GAMECLEAR,
+	GAMEOVER,
+};
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
@@ -24,6 +33,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
 
+	Seane seane = GAMEPLAY;
+
 	Vector2Int mousePos = {};
 
 	Player* player = new Player();
@@ -33,6 +44,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	/*Line line1;
 	line1.startPos = { 160,0 };
 	line1.endPos = { 160,416 };*/
+
+	//BGM読み込み
+	int titleBgmHandle = Novice::LoadAudio("./resource/BGM/Future_1.mp3");
+	int gamePlayBgmHandle = Novice::LoadAudio("./resource/BGM/Future_2.mp3");
+	/*int gameClearBgmHandle = Novice::LoadAudio("./resource/BGM/Future_3.mp3");*/
 
 	//ブロックテクスチャの読み込み
 	int blockTextures[static_cast<int>(TileTex::kCount)] =
@@ -119,15 +135,45 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		///
 		/// ↓更新処理ここから
 		///
-		collision->SetMap(map->GetMap());
-		map->Update();
-		player->Update();
-		gameSwitch->SetMousePos(mousePos);
-		gameSwitch->Update();
-		player->SetIsMove(gameSwitch->IsPressSwitch());
+		
+		switch (seane)
+		{
+		case TITLE:
 
-		collision->IsMapChipCollision();
+			break;
+		case STAGESELECT:
 
+
+			break;
+		case GAMEPLAY:
+
+			collision->SetMap(map->GetMap());
+			map->Update();
+			player->Update();
+			gameSwitch->SetMousePos(mousePos);
+			gameSwitch->Update();
+			player->SetIsMove(gameSwitch->IsPressSwitch());
+
+			collision->IsMapChipCollision();
+			if (!Novice::IsPlayingAudio(titleBgmHandle) || titleBgmHandle == -1) {
+				titleBgmHandle = Novice::PlayAudio(gamePlayBgmHandle, true, 0.5f);
+			}
+		
+			break;
+		case GAMECLEAR:
+
+
+			break;
+		case GAMEOVER:
+
+
+			break;
+
+		default:
+
+			break;
+		}
+		
 		///
 		/// ↑更新処理ここまで
 		///
