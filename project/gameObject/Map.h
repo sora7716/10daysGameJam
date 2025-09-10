@@ -116,7 +116,7 @@ public://メンバ関数
 	/// <summary>
 	/// 終了
 	/// </summary>
-	void Finalize();
+	~Map();
 
 	/// <summary>
 	/// 二行のマップ生成
