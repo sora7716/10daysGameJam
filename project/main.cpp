@@ -38,7 +38,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	Scene scene = kTitle;
 #ifdef _DEBUG
-	//scene = kStage1;
+	scene = kSelect;
 #endif // _DEBUG
 
 	Scene preScene = kNone;

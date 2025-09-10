@@ -27,6 +27,8 @@ void GameSwitch::Update()
 	//スイッチに重なったか
 	if (Collision::IsPointInRect(aabb, mousePos_))
 	{
+		//重なったかどうか
+		isCross_ = true;
 		color_ = WHITE;
 		//スイッチをクリックしたか
 		if (Novice::IsTriggerMouse(0))
@@ -38,6 +40,7 @@ void GameSwitch::Update()
 	}
 	else
 	{
+		isCross_ = false;
 		color_ = 0xFFFFFF55;
 		
 	}

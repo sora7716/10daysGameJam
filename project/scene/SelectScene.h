@@ -1,6 +1,8 @@
 #pragma once
 #include "gameObject/ResourceData.h"
 
+class GameSwitch;
+
 /// <summary>
 /// セレクトシーン
 /// </summary>
@@ -17,7 +19,20 @@ private://メンバ変数
 	//シーンの終了フラグ
 	bool isFinished_ = false;
 
-	int bgTex_[5] = {};
+	//ゲームシーン
+	GameSwitch* gameSwitch_[4] = { nullptr };
+
+	Vector2 gameSwitchPos_[4] = {};
+
+	int bgTex_[6] = {};
+
+	int stageMoji_[4] = {};
+
+	int stageTitleName = 0;
+
+	int switchTex = 0;
+
+	Vector2 stageNamePos = {};
 
 public://メンバ関数
 
@@ -28,7 +43,7 @@ public://メンバ関数
 	void Draw();
 
 	Scene GetNextScene() { return nextScene_; };
-	
+
 	bool IsFinised() { return isFinished_; };
 };
 

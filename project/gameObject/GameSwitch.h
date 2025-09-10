@@ -52,6 +52,12 @@ public://メンバ関数
 	/// <param name="isPressSwitch">スイッチを押したかどうかのセッター</param>
 	void SetIsPressSwitch(bool isPressSwitch) { isPressSwitch_ = isPressSwitch; };
 
+	/// <summary>
+	/// 重なったかどうか
+	/// </summary>
+	/// <returns>重なったかどうか</returns>
+	bool IsCross() { return isCross_; };
+
 private://メンバ変数
 	//座標
 	Vector2 position_ = {};
@@ -69,5 +75,7 @@ private://メンバ変数
 	//テクスチャ
 	int textureHandle_ = 0;
 	
+	//重なったかどうか
+	bool isCross_ = false;
 	
 };
