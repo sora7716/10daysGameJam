@@ -86,6 +86,7 @@ void Player::Update()
 	//移動するかどうか
 	if (isMove_)
 	{
+		
 		//速度を設定
 		playerData_.gameObject.velocity.x = 2.0f;
 		if (!isJump_) {

@@ -14,7 +14,7 @@ enum Scene
 };
 
 //ゲームオブジェクト
-struct GameObject 
+struct GameObject
 {
 	Vector2 center;
 	Vector2 velocity;
@@ -57,7 +57,7 @@ enum class BlockType
 };
 
 //スイッチのテクスチャ
-enum class SwitchTex 
+enum class SwitchTex
 {
 	kTransition,
 	kInvert,
@@ -67,7 +67,7 @@ enum class SwitchTex
 };
 
 //タイルのテクスチャ
-enum class TileTex 
+enum class TileTex
 {
 	kUpper,
 	kUnder,
@@ -75,14 +75,28 @@ enum class TileTex
 };
 enum class soundEffects
 {
-	kMove,
+	kGoal,
 	kJump,
 	kSelect,
-	kBgm,
+	kBgmTitle,
+	kBgmSelect,
+	kBgmStage,
 	kInversion,
 	kChange,
 	kCount
 };
+
+enum class soundHandle
+{
+
+	kTitle,
+	kSelect,
+	kStage1,
+	kStage2,
+	kStage3
+
+};
+
 
 struct  Line
 {
@@ -115,7 +129,7 @@ struct ParticleProp
 };
 
 //エミッター
-struct ParticleSystemData 
+struct ParticleSystemData
 {
 	Vector2 emitter;
 	float speed;
