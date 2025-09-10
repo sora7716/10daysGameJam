@@ -126,12 +126,7 @@ void StageScene2::Update()
 		startSwitch->Update();
 	}
 
-	if (!goal->IsCollision())
-	{
-		resetSwitch->SetMousePos(*mousePos_);
-		resetSwitch->Update();
-	}
-	else
+	if (goal->IsCollision())
 	{
 		isFinised_ = true;
 		nextScene_ = kSelect;
@@ -150,12 +145,6 @@ void StageScene2::Update()
 		startSwitch->SetIsPressSwitch(false);
 		resetSwitch->SetIsPressSwitch(false);
 		isPressStart_ = false;
-	}
-
-	if (Novice::IsTriggerMouse(1))
-	{
-		isFinised_ = true;
-		nextScene_ = kSelect;
 	}
 
 	goal->SetTargetPos(player->GetPlayerData().gameObject.center);

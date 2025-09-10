@@ -123,13 +123,10 @@ void StageScene1::Update()
 		startSwitch->SetMousePos(*mousePos_);
 		startSwitch->Update();
 	}
+	resetSwitch->SetMousePos(*mousePos_);
+	resetSwitch->Update();
 
-	if (!goal->IsCollision())
-	{
-		resetSwitch->SetMousePos(*mousePos_);
-		resetSwitch->Update();
-	}
-	else
+	if (goal->IsCollision())
 	{
 		isFinised_ = true;
 		nextScene_ = kSelect;
@@ -147,11 +144,6 @@ void StageScene1::Update()
 		isPressStart_ = false;
 	}
 
-	if (Novice::IsTriggerMouse(1))
-	{
-		isFinised_ = true;
-		nextScene_ = kSelect;
-	}
 	goal->SetTargetPos(player->GetPlayerData().gameObject.center);
 	goal->Update();
 }

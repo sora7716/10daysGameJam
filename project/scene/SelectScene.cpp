@@ -58,6 +58,29 @@ void SelectScene::Update()
 	{
 		stageTitleName = stageMoji_[3];
 	}
+
+	if (gameSwitch_[0]->IsPressSwitch())
+	{
+		isFinished_ = true;
+		nextScene_ =kStage1;
+	}
+	else if (gameSwitch_[1]->IsPressSwitch())
+	{
+		isFinished_ = true;
+		nextScene_ = kStage2;
+	}
+	else if (gameSwitch_[2]->IsPressSwitch())
+	{
+		isFinished_ = true;
+		nextScene_ = kStage3;
+	}
+	else if (gameSwitch_[3]->IsPressSwitch())
+	{
+		isFinished_ = true;
+		nextScene_ = kStage4;
+	}
+
+
 #ifdef _DEBUG
 	ImGui::Begin("stageName");
 	ImGui::DragFloat2("translate", &stageNamePos.x, 0.1f);
