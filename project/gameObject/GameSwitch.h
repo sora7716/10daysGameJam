@@ -12,8 +12,9 @@ public://メンバ関数
 	/// 初期化
 	/// </summary>
 	/// <param name="position">表示する座標</param>
+	/// <param name="size">大きさ</param>
 	/// <param name="textureHandle">テクスチャハンドル</param>
-	void Initialize(const Vector2& position,int textureHandle);
+	void Initialize(const Vector2& position, const Vector2& size, int textureHandle );
 
 	/// <summary>
 	/// 更新
@@ -26,6 +27,11 @@ public://メンバ関数
 	void Draw();
 
 	/// <summary>
+	/// 
+	/// </summary>
+	void DrawRect();
+
+	/// <summary>
 	/// スイッチを押したかどうかのゲッター
 	/// </summary>
 	/// <returns>スイッチを押したかどうか</returns>
@@ -35,8 +41,8 @@ public://メンバ関数
 	/// マウスの座標のセッター
 	/// </summary>
 	/// <param name="mousePos">マウスの座標</param>
-	void SetMousePos(const Vector2Int& mousePos) 
-	{ 
+	void SetMousePos(const Vector2Int& mousePos)
+	{
 		mousePos_ = { static_cast<float>(mousePos.x),static_cast<float>(mousePos.y) };
 	}
 
@@ -55,8 +61,13 @@ private://メンバ変数
 	Vector2 mousePos_ = {};
 	//当たったかのフラグ
 	bool isPressSwitch_ = false;
+
+	int start = 0;
+
 	//色
 	unsigned int color_ = 0;
 	//テクスチャ
 	int textureHandle_ = 0;
+	
+	
 };
