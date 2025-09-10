@@ -25,6 +25,12 @@ void Map::Initialize(const Vector2Int* mousePos, Player* player)
 //更新
 void Map::Update()
 {
+	//マップのリセット
+	if (player_->IsReset())
+	{
+		MapReset();//マップのリセット
+	}
+
 	for (std::list<ChunkTransitionData>::iterator it = chunkTransitionSwitchList_.begin(); it != chunkTransitionSwitchList_.end(); it++)
 	{
 		//マウスを設定
@@ -51,6 +57,7 @@ void Map::Update()
 			if (it->isTransitionChunk && IsCrossPlayerOfSegment(segmentBegin, segmentEnd))
 			{
 				SwapChunk(it->underChunk, it->upperChunk, it->begin);
+				it->isTransitionChunk = false;
 			}
 		}
 		else
@@ -107,7 +114,7 @@ void Map::Draw()
 			{
 				//衝突判定
 				int useTex = -1;
-				for (MapDrawData& mData : mapDrawData_)
+				for (MapDrawData& mData : mapDrawDatas_)
 				{
 					AABB aabb =
 					{
@@ -203,14 +210,14 @@ void Map::Finalize()
 	chunkInvertSwitchList_.clear();
 }
 
-//チャンク切り替えスイッチの生成
-void Map::CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, const Vector2Int& begin, int* textureHandles)
+//二行のマップ生成
+void Map::CreateTowLineMap(Chunk* upperChunk, Chunk* underChunk, const Vector2Int& begin, int* textureHandles, bool isInitialize)
 {
 	//上のチャンクの読み込み
-	SetMap(upperChunk, begin);
+	SetMap(upperChunk, begin, isInitialize);
 
 	//下のチャンクの読み込み
-	SetMap(underChunk, { begin.x,begin.y + Chunk::kMaxHeight + 1 });
+	SetMap(underChunk, { begin.x,begin.y + Chunk::kMaxHeight + 1 }, isInitialize);
 
 	//反転スイッチの生成
 	InitializeInvertSwitch({ begin.x,begin.y + Chunk::kMaxHeight + 1 }, textureHandles[static_cast<int>(SwitchTex::kInvert)]);
@@ -229,11 +236,11 @@ void Map::CreateChunkTransitionSwitch(Chunk* upperChunk, Chunk* underChunk, cons
 	chunkTransitionSwitchList_.push_back(ChunkTransitionData(chunkChangeSwitch, upperChunk, underChunk, begin, false));
 }
 
-//チャンクの反転スイッチの生成
-void Map::CreateChunkInvertSwitch(Chunk* chunk, const Vector2Int& begin, int textureHandle)
+//一行のマップ生成
+void Map::CreateOneLineMap(Chunk* chunk, const Vector2Int& begin, int textureHandle, bool isInitialize)
 {
 	//チャンクの読み込み
-	SetMap(chunk, begin);
+	SetMap(chunk, begin, isInitialize);
 
 	//初期化
 	InitializeInvertSwitch(begin, textureHandle);
@@ -263,8 +270,17 @@ void Map::SettingUnderBorderLine()
 	}
 }
 
+//マップのリセット
+void Map::MapReset()
+{
+	for (MapData mapData : mapDatas_)
+	{
+		SetMap(mapData.chunk, mapData.begin);
+	}
+}
+
 //mapのセッター
-void Map::SetMap(const Chunk* chunk, const Vector2Int& begin)
+void Map::SetMap(Chunk* chunk, const Vector2Int& begin, bool isInitialize)
 {
 	for (int y = 0; y < Chunk::kMaxHeight; y++)
 	{
@@ -273,7 +289,14 @@ void Map::SetMap(const Chunk* chunk, const Vector2Int& begin)
 			map_[y + begin.y][x + begin.x] = chunk->GetChunk()[y][x];
 		}
 	}
-	mapDrawData_.push_back({ begin,chunk->GetTextureHandle() });
+	//マップの描画用のリストに追加
+	mapDrawDatas_.push_back({ begin,chunk->GetTextureHandle() });
+	//初期化だったら
+	if (isInitialize) {
+		//マップデータのリストに追加
+		mapDatas_.push_back({ chunk,begin });
+		
+	}
 }
 
 //逆転

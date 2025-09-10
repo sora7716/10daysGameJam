@@ -31,6 +31,7 @@ void Player::Initialize(char* keys, char* preKeys, std::vector<std::vector<int>>
 					static_cast<float>(x * kBlockSize) - playerData_.gameObject.radius.x,
 					static_cast<float>(y * kBlockSize) - playerData_.gameObject.radius.y,
 				};
+				playerData_.beginPos = playerData_.gameObject.center;//初期値を設定
 			}
 		}
 	}
@@ -40,6 +41,7 @@ void Player::Initialize(char* keys, char* preKeys, std::vector<std::vector<int>>
 //更新
 void Player::Update()
 {
+	//マップチップ番号の取得
 	CheckMapChipIndex();
 
 	playerData_.gameObject.velocity += playerData_.gameObject.acceleration;//速度に加速度を足す
@@ -66,6 +68,7 @@ void Player::Update()
 		isOnGround_ = true;//地面にくっつく
 		isMove_ = false;//移動を止める
 		playerData_.gameObject.velocity = {};//速度を0にする
+		isReset_ = true;//リセットする
 	}
 
 	//地面にいるかどうか
@@ -88,6 +91,15 @@ void Player::Update()
 		playerData_.gameObject.velocity.x = 2.0f;
 	}
 
+	//リセット
+	if (isReset_) {
+		playerData_.gameObject.center = playerData_.beginPos;//初期値に戻す
+		playerData_.gameObject.velocity = {};
+		playerData_.gameObject.acceleration = {};
+		isMove_ = false;
+		isReset_ = false;
+	}
+
 #ifdef _DEBUG
 	ImGui::Begin("Player");
 	ImGui::DragFloat2("position", &playerData_.gameObject.center.x, 0.1f);
@@ -99,85 +111,11 @@ void Player::Update()
 	ImGui::End();
 #endif // _DEBUG
 
-	//if (!dead)//死亡条件
-	//{
-
-
-	//	if (playerData_.pos.x <= 0.0f && playerData_.pos.x <= 1000)//移動が止まり、ゴールまでたどり着いてなければ
-	//	{
-	//		deadTimer = true;
-	//	}
-	//	else
-	//	{
-	//		timer = 0.0f;
-	//		deadTimer = false;
-	//	}
-	//	if (deadTimer)//死亡までのカウントダウン
-	//	{
-	//		timer += 1.0f;
-
-	//		if (timer >= 300.0f)//カウントダウンが溜まったら
-	//		{
-	//			dead = true;
-	//		}
-	//	}
-
-	//}
-
-
-
-//}
-//if (dead)//死亡後の処理
-//{
-//	playerData_.velocity = { 0.0f , 0.0f };
-//	deadTimer = false;
-//	Move = false;
-//	jamp = false;
-//	timer -= 1.0f;
-
-//	if (timer <= 0.0f)
-//	{
-//		timer = 0.0f;
-//		playerData_.pos = { 60.0f,600.0f };
-//		dead = false;
-//	}
-//}
 }
 
 //描画
 void Player::Draw()
 {
-	//if (!dead)//生きていたら表示
-	//{
-	//	Novice::DrawBox(
-	//		static_cast<int>(playerData_.pos.x), //円のX座標
-	//		static_cast<int>(playerData_.pos.y), //円のY座標
-	//		static_cast<int>(playerData_.width), static_cast<int>(playerData_.height), //円の半径X方向,Y方向
-	//		0.0f, //円の角度
-	//		WHITE, //円の色
-	//		kFillModeSolid //塗りつぶすか否か
-	//	);
-	//}
-	//else//死亡したら表示
-	//{
-	//	Novice::DrawBox(
-	//		static_cast<int>(playerData_.pos.x), //円のX座標
-	//		static_cast<int>(playerData_.pos.y), //円のY座標
-	//		static_cast<int>(playerData_.width), static_cast<int>(playerData_.height), //円の半径X方向,Y方向
-	//		0.0f, //円の角度
-	//		BLACK, //円の色
-	//		kFillModeSolid);//塗りつぶすか否か
-	//}
-
-	/*Novice::DrawBox
-	(
-		static_cast<int>(playerData_.gameObject.center.x - playerData_.gameObject.radius.x),
-		static_cast<int>(playerData_.gameObject.center.y - playerData_.gameObject.radius.y),
-		static_cast<int>(playerData_.gameObject.size.x),
-		static_cast<int>(playerData_.gameObject.size.y),
-		0.0f, BLUE, kFillModeSolid
-	);*/
-
 	Novice::DrawSprite(
 		static_cast<int>(playerData_.gameObject.center.x - playerData_.gameObject.radius.x),
 		static_cast<int>(playerData_.gameObject.center.y - playerData_.gameObject.radius.y),

@@ -25,13 +25,11 @@ private://	メンバー変数
 	//移動するかのフラグK
 	bool isMove_ = false;
 
-	
-
-
 	//プレイヤーのデータ
 	PlayerData playerData_ = {};
 
-
+	//リセットボタン
+	bool isReset_ = false;
 public://メンバー関数
 
 	/// <summary>
@@ -125,7 +123,17 @@ public://メンバー関数
 	/// <param name="isMove">移動フラグ</param>
 	void SetIsMove(bool isMove) { isMove_ = isMove; };
 
+	/// <summary>
+	/// リセットボタンのセッター
+	/// </summary>
+	/// <param name="isReset">リセットボタン</param>
+	void SetIsReset(bool isReset) { isReset_ = isReset; };
 
+	/// <summary>
+	/// リセットのゲッター
+	/// </summary>
+	/// <returns>リセットフラグ</returns>
+	bool IsReset() { return isReset_; };
 private:
 
 	/// <summary>

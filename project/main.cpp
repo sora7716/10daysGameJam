@@ -86,25 +86,33 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	//map->CreateChunkInvertSwitch(underChunk1, { 3,9 }, switchTexture[static_cast<int>(SwitchTex::kInvert)]);
 	//map->CreateChunkInvertSwitch(underChunk2, { 8,9 }, switchTexture[static_cast<int>(SwitchTex::kInvert)]);
-	map->CreateChunkTransitionSwitch(upperChunk1, underChunk1, { 3,3 }, switchTextures);
-	map->CreateChunkTransitionSwitch(upperChunk2, underChunk2, { 8,3 }, switchTextures);
-	map->CreateChunkTransitionSwitch(upperChunk3, underChunk3, { 13,3 }, switchTextures);
-	map->CreateChunkTransitionSwitch(upperChunk4, underChunk4, { 18,3 }, switchTextures);
-	map->CreateChunkTransitionSwitch(upperChunk5, underChunk5, { 23,3 }, switchTextures);
-	map->CreateChunkTransitionSwitch(upperChunk6, underChunk6, { 28,3 }, switchTextures);
-	map->CreateChunkTransitionSwitch(upperChunk7, underChunk7, { 33,3 }, switchTextures);
+	map->CreateTowLineMap(upperChunk1, underChunk1, { 3,3 }, switchTextures, true);
+	map->CreateTowLineMap(upperChunk2, underChunk2, { 8,3 }, switchTextures, true);
+	map->CreateTowLineMap(upperChunk3, underChunk3, { 13,3 }, switchTextures, true);
+	map->CreateTowLineMap(upperChunk4, underChunk4, { 18,3 }, switchTextures, true);
+	map->CreateTowLineMap(upperChunk5, underChunk5, { 23,3 }, switchTextures, true);
+	map->CreateTowLineMap(upperChunk6, underChunk6, { 28,3 }, switchTextures, true);
+	map->CreateTowLineMap(upperChunk7, underChunk7, { 33,3 }, switchTextures, true);
 	map->SettingUnderBorderLine();
+	player->Initialize(keys, preKeys, map->GetMap(), playerTexture);
 
-	AABB startButton
+	AABB startSwitchData
 	{
 		.min{100.0f,600.0f},
 		.max{132.0f,632.0f}
 	};
 
-	player->Initialize(keys, preKeys, map->GetMap(), playerTexture);
+	std::unique_ptr<GameSwitch> startSwitch = std::make_unique<GameSwitch>();
+	startSwitch->Initialize(startSwitchData.min, switchTextures[0]);
 
-	std::unique_ptr<GameSwitch> gameSwitch = std::make_unique<GameSwitch>();
-	gameSwitch->Initialize(startButton.min, switchTextures[0]);
+	AABB resetSwitchData
+	{
+		.min{150.0f,600.0f},
+		.max{182.0f,632.0f}
+	};
+
+	std::unique_ptr<GameSwitch> resetSwitch = std::make_unique<GameSwitch>();
+	resetSwitch->Initialize(resetSwitchData.min, switchTextures[1]);
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0)
 	{
@@ -122,11 +130,22 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		collision->SetMap(map->GetMap());
 		map->Update();
 		player->Update();
-		gameSwitch->SetMousePos(mousePos);
-		gameSwitch->Update();
-		player->SetIsMove(gameSwitch->IsPressSwitch());
+		startSwitch->SetMousePos(mousePos);
+		startSwitch->Update();
+
+		resetSwitch->SetMousePos(mousePos);
+		resetSwitch->Update();
+
+		player->SetIsMove(startSwitch->IsPressSwitch());
 
 		collision->IsMapChipCollision();
+
+		if (resetSwitch->IsPressSwitch())
+		{
+			player->SetIsReset(true);
+			startSwitch->SetIsPressSwitch(false);
+			resetSwitch->SetIsPressSwitch(false);
+		}
 
 		///
 		/// ↑更新処理ここまで
@@ -148,7 +167,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 				RED);
 		}*/
 
-		gameSwitch->Draw();
+		startSwitch->Draw();
+		resetSwitch->Draw();
 
 		///
 		/// ↑描画処理ここまで

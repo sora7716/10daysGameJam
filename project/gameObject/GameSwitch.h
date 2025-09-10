@@ -40,6 +40,12 @@ public://メンバ関数
 		mousePos_ = { static_cast<float>(mousePos.x),static_cast<float>(mousePos.y) };
 	}
 
+	/// <summary>
+	/// スイッチを押したかどうかのセッター
+	/// </summary>
+	/// <param name="isPressSwitch">スイッチを押したかどうかのセッター</param>
+	void SetIsPressSwitch(bool isPressSwitch) { isPressSwitch_ = isPressSwitch; };
+
 private://メンバ変数
 	//座標
 	Vector2 position_ = {};
